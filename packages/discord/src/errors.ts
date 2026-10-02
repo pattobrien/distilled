@@ -22,7 +22,7 @@ export {
   DEFAULT_ERRORS,
   API_ERRORS,
 } from "@distilled.cloud/core/errors";
-import type { DefaultErrors as CoreDefaultErrors } from "@distilled.cloud/core/errors";
+import type { API_ERRORS } from "@distilled.cloud/core/errors";
 
 import * as Schema from "effect/Schema";
 import * as Category from "@distilled.cloud/core/category";
@@ -61,7 +61,11 @@ export class DiscordParseError extends Schema.TaggedError<DiscordParseError>()(
 export type ClientErrors = UnknownDiscordError | DiscordParseError;
 
 /**
- * Default Discord operation errors: the shared HTTP status errors from core
- * plus the client-level fallback/decode errors.
+ * Default Discord operation errors: every class DiscordProtocol's status map
+ * (core `HTTP_STATUS_MAP`) can fail with, plus the client-level
+ * fallback/decode errors. The spec types failures only as `4XX`, so per-op
+ * error lists never carry `NotFound`/`Forbidden`/`BadRequest`.
  */
-export type DefaultErrors = CoreDefaultErrors | ClientErrors;
+export type DefaultErrors =
+  | InstanceType<(typeof API_ERRORS)[number]>
+  | ClientErrors;
