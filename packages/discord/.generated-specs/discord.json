@@ -59,25 +59,10 @@
         "primary_sku_id": {
           "target": "smithy.api#String"
         },
-        "flags": {
-          "target": "smithy.api#Integer",
-          "traits": {
-            "smithy.api#required": {}
-          }
-        },
-        "flags_new": {
-          "target": "smithy.api#String",
-          "traits": {
-            "smithy.api#required": {}
-          }
-        },
         "bot": {
           "target": "com.discord.api#UserResponse"
         },
         "slug": {
-          "target": "smithy.api#String"
-        },
-        "vibegrations_project_id": {
           "target": "smithy.api#String"
         },
         "guild_id": {
@@ -108,6 +93,18 @@
           "target": "com.discord.api#PrivateApplicationResponseIntegrationTypesConfigMap"
         },
         "verify_key": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#required": {}
+          }
+        },
+        "flags": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#required": {}
+          }
+        },
+        "flags_new": {
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#required": {}
@@ -2225,25 +2222,10 @@
         "primary_sku_id": {
           "target": "smithy.api#String"
         },
-        "flags": {
-          "target": "smithy.api#Integer",
-          "traits": {
-            "smithy.api#required": {}
-          }
-        },
-        "flags_new": {
-          "target": "smithy.api#String",
-          "traits": {
-            "smithy.api#required": {}
-          }
-        },
         "bot": {
           "target": "com.discord.api#UserResponse"
         },
         "slug": {
-          "target": "smithy.api#String"
-        },
-        "vibegrations_project_id": {
           "target": "smithy.api#String"
         },
         "guild_id": {
@@ -2274,6 +2256,18 @@
           "target": "com.discord.api#ApplicationResponseIntegrationTypesConfigMap"
         },
         "verify_key": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#required": {}
+          }
+        },
+        "flags": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#required": {}
+          }
+        },
+        "flags_new": {
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#required": {}
@@ -8149,6 +8143,11 @@
       "output": {
         "target": "com.discord.api#GetChannelResponse"
       },
+      "errors": [
+        {
+          "target": "com.discord.api#NotFound"
+        }
+      ],
       "traits": {
         "smithy.api#http": {
           "method": "GET",
@@ -9421,25 +9420,10 @@
         "primary_sku_id": {
           "target": "smithy.api#String"
         },
-        "flags": {
-          "target": "smithy.api#Integer",
-          "traits": {
-            "smithy.api#required": {}
-          }
-        },
-        "flags_new": {
-          "target": "smithy.api#String",
-          "traits": {
-            "smithy.api#required": {}
-          }
-        },
         "bot": {
           "target": "com.discord.api#UserResponse"
         },
         "slug": {
-          "target": "smithy.api#String"
-        },
-        "vibegrations_project_id": {
           "target": "smithy.api#String"
         },
         "guild_id": {
@@ -9470,6 +9454,18 @@
           "target": "com.discord.api#InviteApplicationResponseIntegrationTypesConfigMap"
         },
         "verify_key": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#required": {}
+          }
+        },
+        "flags": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#required": {}
+          }
+        },
+        "flags_new": {
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#required": {}
@@ -12730,18 +12726,6 @@
         },
         "primary_sku_id": {
           "target": "smithy.api#String"
-        },
-        "flags": {
-          "target": "smithy.api#Integer",
-          "traits": {
-            "smithy.api#required": {}
-          }
-        },
-        "flags_new": {
-          "target": "smithy.api#String",
-          "traits": {
-            "smithy.api#required": {}
-          }
         },
         "bot": {
           "target": "com.discord.api#UserResponse"
@@ -20134,6 +20118,11 @@
       "output": {
         "target": "com.discord.api#GuildWithCountsResponse"
       },
+      "errors": [
+        {
+          "target": "com.discord.api#NotFound"
+        }
+      ],
       "traits": {
         "smithy.api#http": {
           "method": "GET",
@@ -25453,18 +25442,6 @@
         },
         "primary_sku_id": {
           "target": "smithy.api#String"
-        },
-        "flags": {
-          "target": "smithy.api#Integer",
-          "traits": {
-            "smithy.api#required": {}
-          }
-        },
-        "flags_new": {
-          "target": "smithy.api#String",
-          "traits": {
-            "smithy.api#required": {}
-          }
         },
         "bot": {
           "target": "com.discord.api#UserResponse"
@@ -39824,6 +39801,19 @@
           "uri": "/webhooks/{webhook_id}/{webhook_token}/slack",
           "code": 200
         }
+      }
+    },
+    "com.discord.api#NotFound": {
+      "type": "structure",
+      "members": {},
+      "traits": {
+        "smithy.api#error": "client",
+        "smithy.api#httpError": 404,
+        "com.distilled.openapi#errorMatchers": [
+          {
+            "status": 404
+          }
+        ]
       }
     },
     "com.discord.api#Discord": {

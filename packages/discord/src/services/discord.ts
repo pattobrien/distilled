@@ -2,6 +2,7 @@
 import * as S from "@distilled.cloud/core/schema";
 import * as Redacted from "effect/Redacted";
 import * as API from "@distilled.cloud/core/api";
+import * as C from "@distilled.cloud/core/category";
 import * as T from "../traits.ts";
 import {
   DiscordProtocol,
@@ -12,6 +13,15 @@ import { UnknownDiscordError } from "../errors.ts";
 import * as Retry from "../retry.ts";
 
 export type { DiscordOpError, DiscordOpContext };
+
+export class NotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedError<NotFound>()("NotFound", {
+      code: S.Number,
+      message: S.String,
+    }).pipe(C.withBadRequestError),
+    [{ status: 404 }],
+  ) {}
 
 export interface AddGroupDmUserRequest {
   channel_id: string;
@@ -4912,11 +4922,8 @@ export interface InviteApplicationResponse {
   type: ApplicationTypes | null;
   cover_image?: string;
   primary_sku_id?: string;
-  flags: number;
-  flags_new: string;
   bot?: UserResponse;
   slug?: string;
-  vibegrations_project_id?: string;
   guild_id?: string;
   rpc_origins?: InviteApplicationResponseRpcOriginsList;
   bot_public?: boolean;
@@ -4927,6 +4934,8 @@ export interface InviteApplicationResponse {
   install_params?: ApplicationOAuth2InstallParamsResponse;
   integration_types_config?: InviteApplicationResponseIntegrationTypesConfigMap;
   verify_key: string;
+  flags: number;
+  flags_new: string;
   max_participants?: number | null;
   tags?: InviteApplicationResponseTagsList;
 }
@@ -4939,11 +4948,8 @@ export const InviteApplicationResponse = /*@__PURE__*/ S.suspend(() =>
     type: S.NullOr(ApplicationTypes),
     cover_image: S.optional(S.String),
     primary_sku_id: S.optional(S.String),
-    flags: S.Number,
-    flags_new: S.String,
     bot: S.optional(UserResponse),
     slug: S.optional(S.String),
-    vibegrations_project_id: S.optional(S.String),
     guild_id: S.optional(S.String),
     rpc_origins: S.optional(InviteApplicationResponseRpcOriginsList),
     bot_public: S.optional(S.Boolean),
@@ -4956,6 +4962,8 @@ export const InviteApplicationResponse = /*@__PURE__*/ S.suspend(() =>
       InviteApplicationResponseIntegrationTypesConfigMap,
     ),
     verify_key: S.String,
+    flags: S.Number,
+    flags_new: S.String,
     max_participants: S.optional(S.NullOr(S.Number)),
     tags: S.optional(InviteApplicationResponseTagsList),
   }),
@@ -8942,11 +8950,8 @@ export interface ApplicationResponse {
   type: ApplicationTypes | null;
   cover_image?: string;
   primary_sku_id?: string;
-  flags: number;
-  flags_new: string;
   bot?: UserResponse;
   slug?: string;
-  vibegrations_project_id?: string;
   guild_id?: string;
   rpc_origins?: ApplicationResponseRpcOriginsList;
   bot_public?: boolean;
@@ -8957,6 +8962,8 @@ export interface ApplicationResponse {
   install_params?: ApplicationOAuth2InstallParamsResponse;
   integration_types_config?: ApplicationResponseIntegrationTypesConfigMap;
   verify_key: string;
+  flags: number;
+  flags_new: string;
   max_participants?: number | null;
   tags?: ApplicationResponseTagsList;
 }
@@ -8969,11 +8976,8 @@ export const ApplicationResponse = /*@__PURE__*/ S.suspend(() =>
     type: S.NullOr(ApplicationTypes),
     cover_image: S.optional(S.String),
     primary_sku_id: S.optional(S.String),
-    flags: S.Number,
-    flags_new: S.String,
     bot: S.optional(UserResponse),
     slug: S.optional(S.String),
-    vibegrations_project_id: S.optional(S.String),
     guild_id: S.optional(S.String),
     rpc_origins: S.optional(ApplicationResponseRpcOriginsList),
     bot_public: S.optional(S.Boolean),
@@ -8986,6 +8990,8 @@ export const ApplicationResponse = /*@__PURE__*/ S.suspend(() =>
       ApplicationResponseIntegrationTypesConfigMap,
     ),
     verify_key: S.String,
+    flags: S.Number,
+    flags_new: S.String,
     max_participants: S.optional(S.NullOr(S.Number)),
     tags: S.optional(ApplicationResponseTagsList),
   }),
@@ -9962,8 +9968,6 @@ export interface BasicApplicationResponseWithBot {
   type: ApplicationTypes | null;
   cover_image?: string;
   primary_sku_id?: string;
-  flags: number;
-  flags_new: string;
   bot?: UserResponse;
 }
 export const BasicApplicationResponseWithBot = /*@__PURE__*/ S.suspend(() =>
@@ -9975,8 +9979,6 @@ export const BasicApplicationResponseWithBot = /*@__PURE__*/ S.suspend(() =>
     type: S.NullOr(ApplicationTypes),
     cover_image: S.optional(S.String),
     primary_sku_id: S.optional(S.String),
-    flags: S.Number,
-    flags_new: S.String,
     bot: S.optional(UserResponse),
   }),
 ).annotate({
@@ -14042,11 +14044,8 @@ export interface PrivateApplicationResponse {
   type: ApplicationTypes | null;
   cover_image?: string;
   primary_sku_id?: string;
-  flags: number;
-  flags_new: string;
   bot?: UserResponse;
   slug?: string;
-  vibegrations_project_id?: string;
   guild_id?: string;
   rpc_origins?: PrivateApplicationResponseRpcOriginsList;
   bot_public?: boolean;
@@ -14057,6 +14056,8 @@ export interface PrivateApplicationResponse {
   install_params?: ApplicationOAuth2InstallParamsResponse;
   integration_types_config?: PrivateApplicationResponseIntegrationTypesConfigMap;
   verify_key: string;
+  flags: number;
+  flags_new: string;
   max_participants?: number | null;
   tags?: PrivateApplicationResponseTagsList;
   redirect_uris: PrivateApplicationResponseRedirectUrisList;
@@ -14082,11 +14083,8 @@ export const PrivateApplicationResponse = /*@__PURE__*/ S.suspend(() =>
     type: S.NullOr(ApplicationTypes),
     cover_image: S.optional(S.String),
     primary_sku_id: S.optional(S.String),
-    flags: S.Number,
-    flags_new: S.String,
     bot: S.optional(UserResponse),
     slug: S.optional(S.String),
-    vibegrations_project_id: S.optional(S.String),
     guild_id: S.optional(S.String),
     rpc_origins: S.optional(PrivateApplicationResponseRpcOriginsList),
     bot_public: S.optional(S.Boolean),
@@ -14099,6 +14097,8 @@ export const PrivateApplicationResponse = /*@__PURE__*/ S.suspend(() =>
       PrivateApplicationResponseIntegrationTypesConfigMap,
     ),
     verify_key: S.String,
+    flags: S.Number,
+    flags_new: S.String,
     max_participants: S.optional(S.NullOr(S.Number)),
     tags: S.optional(PrivateApplicationResponseTagsList),
     redirect_uris: PrivateApplicationResponseRedirectUrisList,
@@ -24994,7 +24994,7 @@ export const getBotGateway: API.OperationMethod<
   retry: Retry.Retry,
 }));
 
-export type GetChannelError = DiscordOpError;
+export type GetChannelError = NotFound | DiscordOpError;
 export const getChannel: API.OperationMethod<
   GetChannelRequest,
   GetChannelResponse,
@@ -25003,7 +25003,7 @@ export const getChannel: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   input: GetChannelRequest,
   output: GetChannelResponse,
-  errors: [UnknownDiscordError],
+  errors: [NotFound, UnknownDiscordError],
   protocol: DiscordProtocol,
   retry: Retry.Retry,
 }));
@@ -25064,7 +25064,7 @@ export const getGateway: API.OperationMethod<
   retry: Retry.Retry,
 }));
 
-export type GetGuildError = DiscordOpError;
+export type GetGuildError = NotFound | DiscordOpError;
 export const getGuild: API.OperationMethod<
   GetGuildRequest,
   GuildWithCountsResponse,
@@ -25073,7 +25073,7 @@ export const getGuild: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   input: GetGuildRequest,
   output: GuildWithCountsResponse,
-  errors: [UnknownDiscordError],
+  errors: [NotFound, UnknownDiscordError],
   protocol: DiscordProtocol,
   retry: Retry.Retry,
 }));

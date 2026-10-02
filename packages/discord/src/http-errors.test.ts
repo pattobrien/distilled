@@ -4,9 +4,8 @@ import * as Layer from "effect/Layer";
 import * as HttpClient from "effect/http/HttpClient";
 import * as HttpClientResponse from "effect/http/HttpClientResponse";
 import { credentials } from "./credentials.ts";
-import { Forbidden, NotFound } from "./errors.ts";
 import * as Retry from "./retry.ts";
-import { getGuild } from "./services/discord.ts";
+import { getChannel, getGuild, NotFound } from "./services/discord.ts";
 
 const respond = (status: number, body: unknown) =>
   Layer.mergeAll(
@@ -21,7 +20,7 @@ const respond = (status: number, body: unknown) =>
     ),
   );
 
-test("getGuild surfaces a 404 as a catchable NotFound", () =>
+test("getGuild decodes HTTP 404 with its generated NotFound class", () =>
   Effect.runPromise(
     getGuild({ guild_id: "1" }).pipe(
       Retry.none,
@@ -29,6 +28,7 @@ test("getGuild surfaces a 404 as a catchable NotFound", () =>
       Effect.catchTag("NotFound", (error) =>
         Effect.sync(() => {
           expect(error).toBeInstanceOf(NotFound);
+          expect(error.code).toBe(10004);
           return error.message;
         }),
       ),
@@ -37,18 +37,19 @@ test("getGuild surfaces a 404 as a catchable NotFound", () =>
     ),
   ));
 
-test("getGuild surfaces a 403 as a catchable Forbidden", () =>
+test("getChannel decodes HTTP 404 with its generated NotFound class", () =>
   Effect.runPromise(
-    getGuild({ guild_id: "1" }).pipe(
+    getChannel({ channel_id: "1" }).pipe(
       Retry.none,
       Effect.map(() => "found"),
-      Effect.catchTag("Forbidden", (error) =>
+      Effect.catchTag("NotFound", (error) =>
         Effect.sync(() => {
-          expect(error).toBeInstanceOf(Forbidden);
+          expect(error).toBeInstanceOf(NotFound);
+          expect(error.code).toBe(10003);
           return error.message;
         }),
       ),
-      Effect.provide(respond(403, { message: "Missing Access", code: 50001 })),
-      Effect.map((result) => expect(result).toBe("Missing Access")),
+      Effect.provide(respond(404, { message: "Unknown Channel", code: 10003 })),
+      Effect.map((result) => expect(result).toBe("Unknown Channel")),
     ),
   ));
