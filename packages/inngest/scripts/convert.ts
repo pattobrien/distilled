@@ -28,5 +28,6 @@ await runOpenApiConvert({
     namespace: "com.inngest.api",
     serviceName: "Inngest",
     skipDeprecated: true,
+    headerParams: true,
   },
 });

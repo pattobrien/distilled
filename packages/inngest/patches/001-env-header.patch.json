@@ -1,0 +1,41 @@
+{
+  "description": "Accept X-Inngest-Env on environment list/update and app list so an environment-scoped signing key can observe and archive its branch child environments and their apps.",
+  "patches": [
+    {
+      "op": "add",
+      "path": "/paths/~1envs/get/parameters/-",
+      "value": {
+        "description": "Scope the request to an environment by name (e.g. a branch environment)",
+        "in": "header",
+        "name": "X-Inngest-Env",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1envs~1{id}/patch/parameters/-",
+      "value": {
+        "description": "Scope the request to an environment by name (e.g. a branch environment)",
+        "in": "header",
+        "name": "X-Inngest-Env",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1apps/get/parameters/-",
+      "value": {
+        "description": "Scope the request to an environment by name (e.g. a branch environment)",
+        "in": "header",
+        "name": "X-Inngest-Env",
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

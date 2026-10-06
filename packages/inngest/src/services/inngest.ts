@@ -395,6 +395,8 @@ export const V2EventFilter = /*@__PURE__*/ S.suspend(() =>
 ).annotate({ identifier: "V2EventFilter" }) as any as S.Schema<V2EventFilter>;
 
 export interface CreateV2WebhookRequest {
+  /** Target environment for the webhook (e.g., 'production', 'staging', 'development') */
+  xInngestEnv: string;
   eventFilter?: V2EventFilter;
   /** Descriptive name for the webhook */
   name?: string;
@@ -405,6 +407,7 @@ export interface CreateV2WebhookRequest {
 }
 export const CreateV2WebhookRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
+    xInngestEnv: S.String.pipe(T.Header("X-Inngest-Env")),
     eventFilter: S.optional(V2EventFilter),
     name: S.optional(S.String),
     response: S.optional(S.String),
@@ -540,11 +543,14 @@ export interface FetchV2AccountEnvsRequest {
   cursor?: string;
   /** Number of environments to return per page (min: 1, max: 250) */
   limit?: number;
+  /** Scope the request to an environment by name (e.g. a branch environment) */
+  xInngestEnv?: string;
 }
 export const FetchV2AccountEnvsRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     cursor: S.optional(S.String.pipe(T.Query())),
     limit: S.optional(S.Number.pipe(T.Query())),
+    xInngestEnv: S.optional(S.String.pipe(T.Header("X-Inngest-Env"))),
   }).pipe(T.Http({ method: "GET", uri: "/envs", code: 200 })),
 ).annotate({
   identifier: "FetchV2AccountEnvsRequest",
@@ -588,11 +594,14 @@ export interface FetchV2AccountEventKeysRequest {
   cursor?: string;
   /** Number of event keys to return per page (min: 1, max: 100) */
   limit?: number;
+  /** Filter event keys by environment (e.g., 'production', 'staging', 'development') */
+  xInngestEnv?: string;
 }
 export const FetchV2AccountEventKeysRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     cursor: S.optional(S.String.pipe(T.Query())),
     limit: S.optional(S.Number.pipe(T.Query())),
+    xInngestEnv: S.optional(S.String.pipe(T.Header("X-Inngest-Env"))),
   }).pipe(T.Http({ method: "GET", uri: "/keys/events", code: 200 })),
 ).annotate({
   identifier: "FetchV2AccountEventKeysRequest",
@@ -640,11 +649,14 @@ export interface FetchV2AccountSigningKeysRequest {
   cursor?: string;
   /** Number of signing keys to return per page (min: 1, max: 100) */
   limit?: number;
+  /** Filter signing keys by environment (e.g., 'production', 'staging', 'development') */
+  xInngestEnv?: string;
 }
 export const FetchV2AccountSigningKeysRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     cursor: S.optional(S.String.pipe(T.Query())),
     limit: S.optional(S.Number.pipe(T.Query())),
+    xInngestEnv: S.optional(S.String.pipe(T.Header("X-Inngest-Env"))),
   }).pipe(T.Http({ method: "GET", uri: "/keys/signing", code: 200 })),
 ).annotate({
   identifier: "FetchV2AccountSigningKeysRequest",
@@ -804,12 +816,15 @@ export interface GetV2AppsRequest {
   limit?: number;
   /** Whether to return archived apps instead of active apps */
   archived?: boolean;
+  /** Scope the request to an environment by name (e.g. a branch environment) */
+  xInngestEnv?: string;
 }
 export const GetV2AppsRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     cursor: S.optional(S.String.pipe(T.Query())),
     limit: S.optional(S.Number.pipe(T.Query())),
     archived: S.optional(S.Boolean.pipe(T.Query())),
+    xInngestEnv: S.optional(S.String.pipe(T.Header("X-Inngest-Env"))),
   }).pipe(T.Http({ method: "GET", uri: "/apps", code: 200 })),
 ).annotate({ identifier: "GetV2AppsRequest" }) as any as S.Schema<GetV2AppsRequest>;
 
@@ -2290,11 +2305,14 @@ export interface ListV2WebhooksRequest {
   cursor?: string;
   /** Number of webhooks to return per page (min: 1, max: 100) */
   limit?: number;
+  /** Target environment for the webhooks (e.g., 'production', 'staging', 'development') */
+  xInngestEnv: string;
 }
 export const ListV2WebhooksRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     cursor: S.optional(S.String.pipe(T.Query())),
     limit: S.optional(S.Number.pipe(T.Query())),
+    xInngestEnv: S.String.pipe(T.Header("X-Inngest-Env")),
   }).pipe(T.Http({ method: "GET", uri: "/env/webhooks", code: 200 })),
 ).annotate({ identifier: "ListV2WebhooksRequest" }) as any as S.Schema<ListV2WebhooksRequest>;
 
@@ -2319,12 +2337,15 @@ export const V2ListWebhooksResponse = /*@__PURE__*/ S.suspend(() =>
 export interface PatchV2EnvRequest {
   /** The ID of the environment to update */
   id: string;
+  /** Scope the request to an environment by name (e.g. a branch environment) */
+  xInngestEnv?: string;
   /** Updates the archived status of the environment. Set to true to archive the environment or false to unarchive it. */
   isArchived?: boolean;
 }
 export const PatchV2EnvRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     id: S.String.pipe(T.Label()),
+    xInngestEnv: S.optional(S.String.pipe(T.Header("X-Inngest-Env"))),
     isArchived: S.optional(S.Boolean),
   }).pipe(T.Http({ method: "PATCH", uri: "/envs/{id}", code: 200 })),
 ).annotate({ identifier: "PatchV2EnvRequest" }) as any as S.Schema<PatchV2EnvRequest>;
