@@ -68,6 +68,24 @@ export class Conflict
     [{ status: 409 }],
   ) {}
 
+/** No environment has the given id (Inngest `env_not_found`, HTTP 404). */
+export class EnvironmentNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedError<EnvironmentNotFound>()("EnvironmentNotFound", {
+      message: S.String,
+    }).pipe(C.withBadRequestError),
+    [{ status: 404, body: { "/errors/0/code": "env_not_found" } }],
+  ) {}
+
+/** The key cannot reach the environment named by `X-Inngest-Env` (Inngest `authorization_header_missing`, HTTP 401). Inngest answers this both when no environment has that name for the key and when the key itself is missing or invalid. */
+export class EnvironmentUnauthorized
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedError<EnvironmentUnauthorized>()("EnvironmentUnauthorized", {
+      message: S.String,
+    }).pipe(C.withAuthError),
+    [{ status: 401, body: { "/errors/0/code": "authorization_header_missing" } }],
+  ) {}
+
 export class Forbidden
   extends /*@__PURE__*/ T.applyErrorMatchers(
     /*@__PURE__*/ S.TaggedError<Forbidden>()("Forbidden", {
@@ -3163,7 +3181,12 @@ export const fetchV2Account: API.OperationMethod<
   retry: Retry.Retry,
 }));
 
-export type FetchV2AccountEnvsError = BadRequest | Forbidden | NotFound | InngestOpError;
+export type FetchV2AccountEnvsError =
+  | BadRequest
+  | Forbidden
+  | NotFound
+  | EnvironmentUnauthorized
+  | InngestOpError;
 /** List environments List of all custom environments. */
 export const fetchV2AccountEnvs: API.PaginatedOperationMethod<
   FetchV2AccountEnvsRequest,
@@ -3175,7 +3198,7 @@ export const fetchV2AccountEnvs: API.PaginatedOperationMethod<
   () => ({
     input: FetchV2AccountEnvsRequest,
     output: V2FetchAccountEnvsResponse,
-    errors: [BadRequest, Forbidden, NotFound, UnknownInngestError],
+    errors: [BadRequest, Forbidden, NotFound, EnvironmentUnauthorized, UnknownInngestError],
     protocol: InngestProtocol,
     retry: Retry.Retry,
     pagination: {
@@ -3792,6 +3815,8 @@ export type PatchV2EnvError =
   | Forbidden
   | NotFound
   | UnprocessableEntity
+  | EnvironmentNotFound
+  | EnvironmentUnauthorized
   | InngestOpError;
 /** Update environment Partially updates an environment. Only the provided fields will be modified. */
 export const patchV2Env: API.OperationMethod<
@@ -3802,7 +3827,15 @@ export const patchV2Env: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   input: PatchV2EnvRequest,
   output: V2PatchEnvsResponse,
-  errors: [BadRequest, Forbidden, NotFound, UnprocessableEntity, UnknownInngestError],
+  errors: [
+    BadRequest,
+    Forbidden,
+    NotFound,
+    UnprocessableEntity,
+    EnvironmentNotFound,
+    EnvironmentUnauthorized,
+    UnknownInngestError,
+  ],
   protocol: InngestProtocol,
   retry: Retry.Retry,
 }));

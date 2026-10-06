@@ -2054,6 +2054,9 @@
         },
         {
           "target": "com.inngest.api#NotFound"
+        },
+        {
+          "target": "com.inngest.api#EnvironmentUnauthorized"
         }
       ],
       "traits": {
@@ -2180,6 +2183,12 @@
         },
         {
           "target": "com.inngest.api#UnprocessableEntity"
+        },
+        {
+          "target": "com.inngest.api#EnvironmentNotFound"
+        },
+        {
+          "target": "com.inngest.api#EnvironmentUnauthorized"
         }
       ],
       "traits": {
@@ -5912,6 +5921,48 @@
             "status": 422,
             "body": {
               "/errors/0/code": "unauthorized"
+            }
+          }
+        ]
+      }
+    },
+    "com.inngest.api#EnvironmentNotFound": {
+      "type": "structure",
+      "members": {
+        "message": {
+          "target": "smithy.api#String"
+        }
+      },
+      "traits": {
+        "smithy.api#error": "client",
+        "smithy.api#httpError": 404,
+        "smithy.api#documentation": "No environment has the given id (Inngest `env_not_found`, HTTP 404).",
+        "com.distilled.openapi#errorMatchers": [
+          {
+            "status": 404,
+            "body": {
+              "/errors/0/code": "env_not_found"
+            }
+          }
+        ]
+      }
+    },
+    "com.inngest.api#EnvironmentUnauthorized": {
+      "type": "structure",
+      "members": {
+        "message": {
+          "target": "smithy.api#String"
+        }
+      },
+      "traits": {
+        "smithy.api#error": "client",
+        "smithy.api#httpError": 401,
+        "smithy.api#documentation": "The key cannot reach the environment named by `X-Inngest-Env` (Inngest `authorization_header_missing`, HTTP 401). Inngest answers this both when no environment has that name for the key and when the key itself is missing or invalid.",
+        "com.distilled.openapi#errorMatchers": [
+          {
+            "status": 401,
+            "body": {
+              "/errors/0/code": "authorization_header_missing"
             }
           }
         ]
