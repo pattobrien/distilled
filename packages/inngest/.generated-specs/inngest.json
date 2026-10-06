@@ -370,6 +370,13 @@
             "smithy.api#required": {},
             "smithy.api#documentation": "The user-defined app ID"
           }
+        },
+        "xInngestEnv": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "X-Inngest-Env",
+            "smithy.api#documentation": "Scope the request to an environment by name (e.g. a branch environment)"
+          }
         }
       },
       "traits": {
@@ -403,7 +410,12 @@
           "code": 200
         },
         "smithy.api#documentation": "Get app\n\nFetches details for a single app, including sync metadata and function count"
-      }
+      },
+      "errors": [
+        {
+          "target": "com.inngest.api#AppNotFound"
+        }
+      ]
     },
     "com.inngest.api#GetV2FunctionsRequest": {
       "type": "structure",
@@ -427,6 +439,13 @@
           "traits": {
             "smithy.api#httpQuery": "limit",
             "smithy.api#documentation": "Number of functions to return per page (min: 1, max: 100)"
+          }
+        },
+        "xInngestEnv": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "X-Inngest-Env",
+            "smithy.api#documentation": "Scope the request to an environment by name (e.g. a branch environment)"
           }
         }
       },
@@ -816,6 +835,13 @@
             "smithy.api#httpLabel": {},
             "smithy.api#required": {}
           }
+        },
+        "xInngestEnv": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "X-Inngest-Env",
+            "smithy.api#documentation": "Scope the request to an environment by name (e.g. a branch environment)"
+          }
         }
       },
       "traits": {
@@ -849,7 +875,12 @@
           "code": 200
         },
         "smithy.api#documentation": "Get function\n\nFetches function configuration and status details for a function within an app"
-      }
+      },
+      "errors": [
+        {
+          "target": "com.inngest.api#FunctionNotFound"
+        }
+      ]
     },
     "com.inngest.api#ListV2Experiments2Request": {
       "type": "structure",
@@ -1537,6 +1568,13 @@
             "smithy.api#documentation": "App ID"
           }
         },
+        "xInngestEnv": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "X-Inngest-Env",
+            "smithy.api#documentation": "Scope the request to an environment by name (e.g. a branch environment)"
+          }
+        },
         "url": {
           "target": "smithy.api#String",
           "traits": {
@@ -1651,6 +1689,15 @@
         },
         {
           "target": "com.inngest.api#UnprocessableEntity"
+        },
+        {
+          "target": "com.inngest.api#AppIdMismatch"
+        },
+        {
+          "target": "com.inngest.api#AppUnreachable"
+        },
+        {
+          "target": "com.inngest.api#AppUnauthorized"
         }
       ],
       "traits": {
@@ -5757,6 +5804,117 @@
       "traits": {
         "smithy.api#title": "Inngest REST API v2",
         "smithy.api#documentation": "The v2 API delivers a significantly improved developer experience with consistent design patterns and enhanced functionality."
+      }
+    },
+    "com.inngest.api#AppNotFound": {
+      "type": "structure",
+      "members": {
+        "message": {
+          "target": "smithy.api#String"
+        }
+      },
+      "traits": {
+        "smithy.api#error": "client",
+        "smithy.api#httpError": 404,
+        "smithy.api#documentation": "The app does not exist in the environment (Inngest `not_found`, HTTP 404).",
+        "com.distilled.openapi#errorMatchers": [
+          {
+            "status": 404,
+            "body": {
+              "/errors/0/code": "not_found"
+            }
+          }
+        ]
+      }
+    },
+    "com.inngest.api#FunctionNotFound": {
+      "type": "structure",
+      "members": {
+        "message": {
+          "target": "smithy.api#String"
+        }
+      },
+      "traits": {
+        "smithy.api#error": "client",
+        "smithy.api#httpError": 404,
+        "smithy.api#documentation": "The function (or its app) does not exist in the environment (Inngest `not_found`, HTTP 404).",
+        "com.distilled.openapi#errorMatchers": [
+          {
+            "status": 404,
+            "body": {
+              "/errors/0/code": "not_found"
+            }
+          }
+        ]
+      }
+    },
+    "com.inngest.api#AppIdMismatch": {
+      "type": "structure",
+      "members": {
+        "message": {
+          "target": "smithy.api#String"
+        }
+      },
+      "traits": {
+        "smithy.api#error": "client",
+        "smithy.api#httpError": 422,
+        "smithy.api#documentation": "The SDK served at the sync URL reports a different app id than the one being synced (Inngest `app_mismatch`, HTTP 422).",
+        "com.distilled.openapi#errorMatchers": [
+          {
+            "status": 422,
+            "body": {
+              "/errors/0/code": "app_mismatch"
+            }
+          }
+        ]
+      }
+    },
+    "com.inngest.api#AppUnreachable": {
+      "type": "structure",
+      "members": {
+        "message": {
+          "target": "smithy.api#String"
+        }
+      },
+      "traits": {
+        "smithy.api#error": "client",
+        "smithy.api#httpError": 422,
+        "smithy.api#documentation": "Inngest could not reach the sync URL (HTTP 422 `http_unreachable`, or \"We could not reach your URL\").",
+        "com.distilled.openapi#errorMatchers": [
+          {
+            "status": 422,
+            "body": {
+              "/errors/0/code": "http_unreachable"
+            }
+          },
+          {
+            "status": 422,
+            "message": {
+              "includes": "could not reach your URL"
+            }
+          }
+        ]
+      }
+    },
+    "com.inngest.api#AppUnauthorized": {
+      "type": "structure",
+      "members": {
+        "message": {
+          "target": "smithy.api#String"
+        }
+      },
+      "traits": {
+        "smithy.api#error": "client",
+        "smithy.api#httpError": 422,
+        "smithy.api#documentation": "The app at the sync URL rejected Inngest because it signs with a different signing key (Inngest `unauthorized`, HTTP 422).",
+        "com.distilled.openapi#errorMatchers": [
+          {
+            "status": 422,
+            "body": {
+              "/errors/0/code": "unauthorized"
+            }
+          }
+        ]
       }
     }
   }

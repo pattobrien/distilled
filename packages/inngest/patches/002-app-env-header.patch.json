@@ -1,0 +1,53 @@
+{
+  "description": "Accept X-Inngest-Env on app get/sync and function get/list so an environment-scoped (branch) signing key resolves the app in its environment instead of failing with not_found or internal_error.",
+  "patches": [
+    {
+      "op": "add",
+      "path": "/paths/~1apps~1{appId}/get/parameters/-",
+      "value": {
+        "description": "Scope the request to an environment by name (e.g. a branch environment)",
+        "in": "header",
+        "name": "X-Inngest-Env",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1apps~1{appId}~1functions/get/parameters/-",
+      "value": {
+        "description": "Scope the request to an environment by name (e.g. a branch environment)",
+        "in": "header",
+        "name": "X-Inngest-Env",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1apps~1{appId}~1functions~1{functionId}/get/parameters/-",
+      "value": {
+        "description": "Scope the request to an environment by name (e.g. a branch environment)",
+        "in": "header",
+        "name": "X-Inngest-Env",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1apps~1{appId}~1syncs/post/parameters/-",
+      "value": {
+        "description": "Scope the request to an environment by name (e.g. a branch environment)",
+        "in": "header",
+        "name": "X-Inngest-Env",
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}
