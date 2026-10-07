@@ -413,3 +413,8 @@
 	url = https://github.com/distilled-mirror/spec-mirror-iceberg.git
 	ignore = dirty
 	shallow = true
+[submodule "packages/linear/specs/spec-mirror-linear"]
+	path = packages/linear/specs/spec-mirror-linear
+	url = https://github.com/distilled-mirror/spec-mirror-linear.git
+	ignore = dirty
+	shallow = true
