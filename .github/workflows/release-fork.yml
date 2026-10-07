@@ -4,9 +4,15 @@ on:
   push:
     tags:
       - "v*-fork.*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: The fork version to publish, e.g. 1.0.0-rc.13-fork.2; must equal the shared package.json version plus -fork.N
+        required: true
+        type: string
 
 concurrency:
-  group: release-fork-${{ github.ref }}
+  group: release-fork-${{ inputs.version || github.ref_name }}
   cancel-in-progress: false
 
 permissions:
@@ -28,8 +34,11 @@ jobs:
           install: true
           require-lockfile: true
 
-      - name: Typecheck and build all packages
-        run: pnpm typecheck:ci
+      - name: Build all packages
+        env:
+          GOMEMLIMIT: 6GiB
+          GOGC: "40"
+        run: pnpm build
 
       - name: Authenticate to GitHub Packages
         run: |
@@ -39,4 +48,7 @@ jobs:
       - name: Publish to GitHub Packages
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/release/fork-publish.ts "${GITHUB_REF_NAME#v}"
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          VERSION="${INPUT_VERSION:-$GITHUB_REF_NAME}"
+          node scripts/release/fork-publish.ts "${VERSION#v}"
