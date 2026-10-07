@@ -462,7 +462,7 @@ export const V2EventFilter = /*@__PURE__*/ S.suspend(() =>
 
 export interface CreateV2WebhookRequest {
   /** Target environment for the webhook (e.g., 'production', 'staging', 'development') */
-  xInngestEnv: string;
+  xInngestEnv?: string;
   eventFilter?: V2EventFilter;
   /** Descriptive name for the webhook */
   name?: string;
@@ -473,7 +473,7 @@ export interface CreateV2WebhookRequest {
 }
 export const CreateV2WebhookRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
-    xInngestEnv: S.String.pipe(T.Header("X-Inngest-Env")),
+    xInngestEnv: S.optional(S.String.pipe(T.Header("X-Inngest-Env"))),
     eventFilter: S.optional(V2EventFilter),
     name: S.optional(S.String),
     response: S.optional(S.String),
@@ -2381,13 +2381,13 @@ export interface ListV2WebhooksRequest {
   /** Number of webhooks to return per page (min: 1, max: 100) */
   limit?: number;
   /** Target environment for the webhooks (e.g., 'production', 'staging', 'development') */
-  xInngestEnv: string;
+  xInngestEnv?: string;
 }
 export const ListV2WebhooksRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     cursor: S.optional(S.String.pipe(T.Query())),
     limit: S.optional(S.Number.pipe(T.Query())),
-    xInngestEnv: S.String.pipe(T.Header("X-Inngest-Env")),
+    xInngestEnv: S.optional(S.String.pipe(T.Header("X-Inngest-Env"))),
   }).pipe(T.Http({ method: "GET", uri: "/env/webhooks", code: 200 })),
 ).annotate({ identifier: "ListV2WebhooksRequest" }) as any as S.Schema<ListV2WebhooksRequest>;
 

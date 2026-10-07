@@ -1730,7 +1730,6 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#httpHeader": "X-Inngest-Env",
-            "smithy.api#required": {},
             "smithy.api#documentation": "Target environment for the webhooks (e.g., 'production', 'staging', 'development')"
           }
         }
@@ -1868,7 +1867,6 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#httpHeader": "X-Inngest-Env",
-            "smithy.api#required": {},
             "smithy.api#documentation": "Target environment for the webhook (e.g., 'production', 'staging', 'development')"
           }
         },
