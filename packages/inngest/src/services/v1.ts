@@ -38,10 +38,13 @@ export class WebhookNotFound
 
 export interface CancelRunRequest {
   runID: string;
+  /** Branch environment name when using a branch signing key */
+  xInngestEnv?: string;
 }
 export const CancelRunRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     runID: S.String.pipe(T.Label()),
+    xInngestEnv: S.optional(S.String.pipe(T.Header("x-inngest-env"))),
   }).pipe(T.Http({ method: "DELETE", uri: "/v1/runs/{runID}", code: 200 })),
 ).annotate({ identifier: "CancelRunRequest" }) as any as S.Schema<CancelRunRequest>;
 
@@ -51,6 +54,8 @@ export const CancelRunResponse = /*@__PURE__*/ S.suspend(() => S.Struct({})).ann
 }) as any as S.Schema<CancelRunResponse>;
 
 export interface CreateCancellationRequest {
+  /** Branch environment name when using a branch signing key */
+  xInngestEnv?: string;
   /** The client ID specified via the SDK for the app, eg: `new Inngest({ id: "this-id" })` */
   app_id: string;
   /** The function ID specified in the SDK */
@@ -61,6 +66,7 @@ export interface CreateCancellationRequest {
 }
 export const CreateCancellationRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
+    xInngestEnv: S.optional(S.String.pipe(T.Header("x-inngest-env"))),
     app_id: S.String,
     function_id: S.String,
     started_before: S.String,
@@ -154,10 +160,13 @@ export const WebhookResponse = /*@__PURE__*/ S.suspend(() =>
 
 export interface DeleteCancellationRequest {
   id: string;
+  /** Branch environment name when using a branch signing key */
+  xInngestEnv?: string;
 }
 export const DeleteCancellationRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     id: S.String.pipe(T.Label()),
+    xInngestEnv: S.optional(S.String.pipe(T.Header("x-inngest-env"))),
   }).pipe(T.Http({ method: "DELETE", uri: "/v1/cancellations/{id}", code: 200 })),
 ).annotate({
   identifier: "DeleteCancellationRequest",
@@ -201,10 +210,13 @@ export const DeleteWebhookResponse = /*@__PURE__*/ S.suspend(() =>
 
 export interface GetEventRequest {
   internalID: string;
+  /** Branch environment name when using a branch signing key */
+  xInngestEnv?: string;
 }
 export const GetEventRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     internalID: S.String.pipe(T.Label()),
+    xInngestEnv: S.optional(S.String.pipe(T.Header("x-inngest-env"))),
   }).pipe(T.Http({ method: "GET", uri: "/v1/events/{internalID}", code: 200 })),
 ).annotate({ identifier: "GetEventRequest" }) as any as S.Schema<GetEventRequest>;
 
@@ -277,10 +289,13 @@ export const GetEventResponse = /*@__PURE__*/ S.suspend(() =>
 
 export interface GetRunRequest {
   runID: string;
+  /** Branch environment name when using a branch signing key */
+  xInngestEnv?: string;
 }
 export const GetRunRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     runID: S.String.pipe(T.Label()),
+    xInngestEnv: S.optional(S.String.pipe(T.Header("x-inngest-env"))),
   }).pipe(T.Http({ method: "GET", uri: "/v1/runs/{runID}", code: 200 })),
 ).annotate({ identifier: "GetRunRequest" }) as any as S.Schema<GetRunRequest>;
 
@@ -342,10 +357,13 @@ export const GetRunResponse = /*@__PURE__*/ S.suspend(() =>
 
 export interface GetRunJobsRequest {
   runID: string;
+  /** Branch environment name when using a branch signing key */
+  xInngestEnv?: string;
 }
 export const GetRunJobsRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     runID: S.String.pipe(T.Label()),
+    xInngestEnv: S.optional(S.String.pipe(T.Header("x-inngest-env"))),
   }).pipe(T.Http({ method: "GET", uri: "/v1/runs/{runID}/jobs", code: 200 })),
 ).annotate({ identifier: "GetRunJobsRequest" }) as any as S.Schema<GetRunJobsRequest>;
 
@@ -397,9 +415,14 @@ export const GetWebhookRequest = /*@__PURE__*/ S.suspend(() =>
   }).pipe(T.Http({ method: "GET", uri: "/v1/webhooks/{id}", code: 200 })),
 ).annotate({ identifier: "GetWebhookRequest" }) as any as S.Schema<GetWebhookRequest>;
 
-export interface ListCancellationsRequest {}
+export interface ListCancellationsRequest {
+  /** Branch environment name when using a branch signing key */
+  xInngestEnv?: string;
+}
 export const ListCancellationsRequest = /*@__PURE__*/ S.suspend(() =>
-  S.Struct({}).pipe(T.Http({ method: "GET", uri: "/v1/cancellations", code: 200 })),
+  S.Struct({
+    xInngestEnv: S.optional(S.String.pipe(T.Header("x-inngest-env"))),
+  }).pipe(T.Http({ method: "GET", uri: "/v1/cancellations", code: 200 })),
 ).annotate({ identifier: "ListCancellationsRequest" }) as any as S.Schema<ListCancellationsRequest>;
 
 export type ListCancellationsResponseDataItem = CreateCancellationResponseData;
@@ -423,10 +446,13 @@ export const ListCancellationsResponse = /*@__PURE__*/ S.suspend(() =>
 
 export interface ListEventRunsRequest {
   internalID: string;
+  /** Branch environment name when using a branch signing key */
+  xInngestEnv?: string;
 }
 export const ListEventRunsRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     internalID: S.String.pipe(T.Label()),
+    xInngestEnv: S.optional(S.String.pipe(T.Header("x-inngest-env"))),
   }).pipe(T.Http({ method: "GET", uri: "/v1/events/{internalID}/runs", code: 200 })),
 ).annotate({ identifier: "ListEventRunsRequest" }) as any as S.Schema<ListEventRunsRequest>;
 
@@ -504,6 +530,8 @@ export interface ListEventsRequest {
   name?: string;
   /** The internal event ID used as a cursor to paginate through events within your time range */
   cursor?: string;
+  /** Branch environment name when using a branch signing key */
+  xInngestEnv?: string;
 }
 export const ListEventsRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
@@ -512,6 +540,7 @@ export const ListEventsRequest = /*@__PURE__*/ S.suspend(() =>
     limit: S.optional(S.Number.pipe(T.Query())),
     name: S.optional(S.String.pipe(T.Query())),
     cursor: S.optional(S.String.pipe(T.Query())),
+    xInngestEnv: S.optional(S.String.pipe(T.Header("x-inngest-env"))),
   }).pipe(T.Http({ method: "GET", uri: "/v1/events", code: 200 })),
 ).annotate({ identifier: "ListEventsRequest" }) as any as S.Schema<ListEventsRequest>;
 
@@ -558,6 +587,8 @@ export const WebhookListResponse = /*@__PURE__*/ S.suspend(() =>
 ).annotate({ identifier: "WebhookListResponse" }) as any as S.Schema<WebhookListResponse>;
 
 export interface ResumeSignalRequest {
+  /** Branch environment name when using a branch signing key */
+  xInngestEnv?: string;
   /** The signal to resume. This is a unique string, and represents a single run waiting for the signal via `step.waitForSignal`. */
   signal?: string;
   /** The data to be sent to the waiting function run. */
@@ -565,6 +596,7 @@ export interface ResumeSignalRequest {
 }
 export const ResumeSignalRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
+    xInngestEnv: S.optional(S.String.pipe(T.Header("x-inngest-env"))),
     signal: S.optional(S.String),
     data: S.optional(S.Unknown),
   }).pipe(T.Http({ method: "POST", uri: "/v1/signals", code: 200 })),

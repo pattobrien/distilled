@@ -55,6 +55,13 @@
             "smithy.api#httpQuery": "cursor",
             "smithy.api#documentation": "The internal event ID used as a cursor to paginate through events within your time range"
           }
+        },
+        "xInngestEnv": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "x-inngest-env",
+            "smithy.api#documentation": "Branch environment name when using a branch signing key"
+          }
         }
       },
       "traits": {
@@ -223,6 +230,13 @@
             "smithy.api#httpLabel": {},
             "smithy.api#required": {}
           }
+        },
+        "xInngestEnv": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "x-inngest-env",
+            "smithy.api#documentation": "Branch environment name when using a branch signing key"
+          }
         }
       },
       "traits": {
@@ -389,6 +403,13 @@
           "traits": {
             "smithy.api#httpLabel": {},
             "smithy.api#required": {}
+          }
+        },
+        "xInngestEnv": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "x-inngest-env",
+            "smithy.api#documentation": "Branch environment name when using a branch signing key"
           }
         }
       },
@@ -588,6 +609,13 @@
             "smithy.api#httpLabel": {},
             "smithy.api#required": {}
           }
+        },
+        "xInngestEnv": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "x-inngest-env",
+            "smithy.api#documentation": "Branch environment name when using a branch signing key"
+          }
         }
       },
       "traits": {
@@ -779,6 +807,13 @@
             "smithy.api#httpLabel": {},
             "smithy.api#required": {}
           }
+        },
+        "xInngestEnv": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "x-inngest-env",
+            "smithy.api#documentation": "Branch environment name when using a branch signing key"
+          }
         }
       },
       "traits": {
@@ -810,6 +845,13 @@
           "traits": {
             "smithy.api#httpLabel": {},
             "smithy.api#required": {}
+          }
+        },
+        "xInngestEnv": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "x-inngest-env",
+            "smithy.api#documentation": "Branch environment name when using a branch signing key"
           }
         }
       },
@@ -908,6 +950,13 @@
     "com.inngest.v1#ResumeSignalRequest": {
       "type": "structure",
       "members": {
+        "xInngestEnv": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "x-inngest-env",
+            "smithy.api#documentation": "Branch environment name when using a branch signing key"
+          }
+        },
         "signal": {
           "target": "smithy.api#String",
           "traits": {
@@ -951,6 +1000,21 @@
           "code": 200
         },
         "smithy.api#documentation": "Resume signal\n\nSends data to resume a given signal"
+      }
+    },
+    "com.inngest.v1#ListCancellationsRequest": {
+      "type": "structure",
+      "members": {
+        "xInngestEnv": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "x-inngest-env",
+            "smithy.api#documentation": "Branch environment name when using a branch signing key"
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#input": {}
       }
     },
     "com.inngest.v1#ListCancellationsResponseDataItem": {
@@ -1016,7 +1080,7 @@
     "com.inngest.v1#ListCancellations": {
       "type": "operation",
       "input": {
-        "target": "smithy.api#Unit"
+        "target": "com.inngest.v1#ListCancellationsRequest"
       },
       "output": {
         "target": "com.inngest.v1#ListCancellationsResponse"
@@ -1033,6 +1097,13 @@
     "com.inngest.v1#CreateCancellationRequest": {
       "type": "structure",
       "members": {
+        "xInngestEnv": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "x-inngest-env",
+            "smithy.api#documentation": "Branch environment name when using a branch signing key"
+          }
+        },
         "app_id": {
           "target": "smithy.api#String",
           "traits": {
@@ -1145,6 +1216,13 @@
           "traits": {
             "smithy.api#httpLabel": {},
             "smithy.api#required": {}
+          }
+        },
+        "xInngestEnv": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "x-inngest-env",
+            "smithy.api#documentation": "Branch environment name when using a branch signing key"
           }
         }
       },
