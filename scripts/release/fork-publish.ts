@@ -107,6 +107,7 @@ const command = Command.make(
     ),
     dryRun: Flag.Boolean("dry-run").pipe(
       Flag.withDescription("Rewrite and pack every package, print the plan, publish nothing"),
+      Flag.withDefault(false),
     ),
   },
   Effect.fn(function* ({ version, dryRun }) {
