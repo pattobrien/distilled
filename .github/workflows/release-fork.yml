@@ -1,0 +1,42 @@
+name: Release (fork)
+
+on:
+  push:
+    tags:
+      - "v*-fork.*"
+
+concurrency:
+  group: release-fork-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    name: Build and publish to GitHub Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup pnpm, Node.js and install dependencies
+        uses: pnpm/setup@703c52620218391530e48b9e8870d5c0082e1b9b # v2.1.0
+        with:
+          cache: true
+          install: true
+          require-lockfile: true
+
+      - name: Typecheck and build all packages
+        run: pnpm typecheck:ci
+
+      - name: Authenticate to GitHub Packages
+        run: |
+          echo '@pattobrien:registry=https://npm.pkg.github.com' >> .npmrc
+          echo '//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}' >> .npmrc
+
+      - name: Publish to GitHub Packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/release/fork-publish.ts "${GITHUB_REF_NAME#v}"
