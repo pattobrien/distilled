@@ -1,0 +1,10 @@
+{
+  "description": "GET /v3/me declares `last_seen_at` as a string, but a live call with a config service token on 2026-10-13 returned `\"last_seen_at\": null`.",
+  "patches": [
+    {
+      "op": "replace",
+      "path": "/paths/~1v3~1me/get/responses/200/content/application~1json/schema/properties/last_seen_at/type",
+      "value": ["string", "null"]
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "description": "The OIDC identity login (https://docs.doppler.com/docs/service-account-identities) always returns the short-lived token and its expiry; the token is a credential and must be delivered redacted. (The endpoint is public \u2014 the OIDC token is the credential \u2014 which scripts/generate.ts enforces through PUBLIC_OPERATIONS; the converter does not read operation-level `security`.)",
+  "description": "The OIDC identity login (https://docs.doppler.com/docs/service-account-identities) always returns the short-lived token and its expiry; the token is a credential and must be delivered redacted. The request's `token` is the OIDC token issued by the caller's provider, the credential the login exchanges, so it is sensitive too. (The endpoint is public \u2014 the OIDC token is the credential \u2014 which scripts/generate.ts enforces through PUBLIC_OPERATIONS; the converter does not read operation-level `security`.)",
   "patches": [
     {
       "op": "test",
@@ -15,6 +15,11 @@
       "op": "add",
       "path": "/paths/~1v3~1auth~1oidc/post/responses/200/content/application~1json/schema/required",
       "value": ["token", "expires_at"]
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1auth~1oidc/post/requestBody/content/application~1json/schema/properties/token/x-sensitive",
+      "value": true
     }
   ]
 }
