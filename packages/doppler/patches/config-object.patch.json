@@ -1,0 +1,431 @@
+{
+  "description": "Only the inheritable and inherits responses declare a config's slug and its inheritance state, and they declare `inherits` and `inheritedBy` as arrays with no item schema. Every config endpoint returns the same config object: a live GET /v3/configs/config on 2026-10-13 returned slug, inheritable, inheriting, inherits and inheritedBy, and GET /v3/configs returned every one of them except inheritedBy. Both clients read the same object from create, rename, clone, lock and unlock (DopplerHQ/cli pkg/models/parse.go:107-155; DopplerHQ/terraform-provider-doppler doppler/models.go:247-266), and both read inherits and inheritedBy items as {project, config} (DopplerHQ/cli pkg/models/parse.go:142-150).",
+  "patches": [
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs/get/responses/200/content/application~1json/schema/properties/configs/items/properties/slug",
+      "value": {
+        "type": "string"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs/get/responses/200/content/application~1json/schema/properties/configs/items/properties/inheritable",
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs/get/responses/200/content/application~1json/schema/properties/configs/items/properties/inheriting",
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs/get/responses/200/content/application~1json/schema/properties/configs/items/properties/inherits",
+      "value": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string"
+            },
+            "config": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs/post/responses/200/content/application~1json/schema/properties/config/properties/slug",
+      "value": {
+        "type": "string"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs/post/responses/200/content/application~1json/schema/properties/config/properties/inheritable",
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs/post/responses/200/content/application~1json/schema/properties/config/properties/inheriting",
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs/post/responses/200/content/application~1json/schema/properties/config/properties/inherits",
+      "value": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string"
+            },
+            "config": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs/post/responses/200/content/application~1json/schema/properties/config/properties/inheritedBy",
+      "value": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string"
+            },
+            "config": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config/get/responses/200/content/application~1json/schema/properties/config/properties/slug",
+      "value": {
+        "type": "string"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config/get/responses/200/content/application~1json/schema/properties/config/properties/inheritable",
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config/get/responses/200/content/application~1json/schema/properties/config/properties/inheriting",
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config/get/responses/200/content/application~1json/schema/properties/config/properties/inherits",
+      "value": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string"
+            },
+            "config": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config/get/responses/200/content/application~1json/schema/properties/config/properties/inheritedBy",
+      "value": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string"
+            },
+            "config": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config/post/responses/200/content/application~1json/schema/properties/config/properties/slug",
+      "value": {
+        "type": "string"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config/post/responses/200/content/application~1json/schema/properties/config/properties/inheritable",
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config/post/responses/200/content/application~1json/schema/properties/config/properties/inheriting",
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config/post/responses/200/content/application~1json/schema/properties/config/properties/inherits",
+      "value": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string"
+            },
+            "config": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config/post/responses/200/content/application~1json/schema/properties/config/properties/inheritedBy",
+      "value": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string"
+            },
+            "config": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1clone/post/responses/200/content/application~1json/schema/properties/config/properties/slug",
+      "value": {
+        "type": "string"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1clone/post/responses/200/content/application~1json/schema/properties/config/properties/inheritable",
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1clone/post/responses/200/content/application~1json/schema/properties/config/properties/inheriting",
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1clone/post/responses/200/content/application~1json/schema/properties/config/properties/inherits",
+      "value": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string"
+            },
+            "config": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1clone/post/responses/200/content/application~1json/schema/properties/config/properties/inheritedBy",
+      "value": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string"
+            },
+            "config": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1lock/post/responses/200/content/application~1json/schema/properties/config/properties/slug",
+      "value": {
+        "type": "string"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1lock/post/responses/200/content/application~1json/schema/properties/config/properties/inheritable",
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1lock/post/responses/200/content/application~1json/schema/properties/config/properties/inheriting",
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1lock/post/responses/200/content/application~1json/schema/properties/config/properties/inherits",
+      "value": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string"
+            },
+            "config": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1lock/post/responses/200/content/application~1json/schema/properties/config/properties/inheritedBy",
+      "value": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string"
+            },
+            "config": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1unlock/post/responses/200/content/application~1json/schema/properties/config/properties/slug",
+      "value": {
+        "type": "string"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1unlock/post/responses/200/content/application~1json/schema/properties/config/properties/inheritable",
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1unlock/post/responses/200/content/application~1json/schema/properties/config/properties/inheriting",
+      "value": {
+        "type": "boolean"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1unlock/post/responses/200/content/application~1json/schema/properties/config/properties/inherits",
+      "value": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string"
+            },
+            "config": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1unlock/post/responses/200/content/application~1json/schema/properties/config/properties/inheritedBy",
+      "value": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "project": {
+              "type": "string"
+            },
+            "config": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1inheritable/post/responses/200/content/application~1json/schema/properties/config/properties/inherits/items",
+      "value": {
+        "type": "object",
+        "properties": {
+          "project": {
+            "type": "string"
+          },
+          "config": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1inheritable/post/responses/200/content/application~1json/schema/properties/config/properties/inheritedBy/items",
+      "value": {
+        "type": "object",
+        "properties": {
+          "project": {
+            "type": "string"
+          },
+          "config": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/paths/~1v3~1configs~1config~1inherits/post/responses/200/content/application~1json/schema/properties/config/properties/inheritedBy/items",
+      "value": {
+        "type": "object",
+        "properties": {
+          "project": {
+            "type": "string"
+          },
+          "config": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ]
+}
