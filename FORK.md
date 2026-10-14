@@ -13,6 +13,9 @@ not merged yet.
   [alchemy-run/distilled#835](https://github.com/alchemy-run/distilled/pull/835).
 - The Linear SDK in `packages/linear`. Upstream PR:
   [alchemy-run/distilled#698](https://github.com/alchemy-run/distilled/pull/698).
+- Doppler accepts any secret name, nullable change-request fields and the full config object, and
+  marks service token keys sensitive. Upstream PR:
+  [alchemy-run/distilled#876](https://github.com/alchemy-run/distilled/pull/876).
 - The fork release workflow `.github/workflows/release-fork.yml` and its script
   `scripts/release/fork-publish.ts`.
 
