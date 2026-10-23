@@ -24,7 +24,7 @@
         "target": "com.azure.imagebuilder#DeleteTriggerRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.imagebuilder#DeleteTriggerResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -35,6 +35,28 @@
         },
         "smithy.api#documentation": "Delete a trigger for the specified virtual machine image template",
         "com.distilled.openapi#apiVersion": "2025-10-01"
+      }
+    },
+    "com.azure.imagebuilder#DeleteTriggerResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.imagebuilder#DeleteTriggerRequest": {
@@ -127,6 +149,20 @@
           "target": "com.azure.imagebuilder#TriggerProperties",
           "traits": {
             "smithy.api#documentation": "The properties of a trigger"
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -864,7 +900,7 @@
         "target": "com.azure.imagebuilder#RunVirtualMachineImageTemplateRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.imagebuilder#RunVirtualMachineImageTemplateResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -875,6 +911,35 @@
         },
         "smithy.api#documentation": "Create artifacts from a existing image template",
         "com.distilled.openapi#apiVersion": "2025-10-01"
+      }
+    },
+    "com.azure.imagebuilder#RunVirtualMachineImageTemplateResponse": {
+      "type": "structure",
+      "members": {
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "The URL to query for the status of the asynchronous operation."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The URL to query for the result of the asynchronous operation."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.imagebuilder#RunVirtualMachineImageTemplateRequest": {
@@ -915,7 +980,7 @@
         "target": "com.azure.imagebuilder#CancelVirtualMachineImageTemplateRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.imagebuilder#CancelVirtualMachineImageTemplateResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -926,6 +991,35 @@
         },
         "smithy.api#documentation": "Cancel the long running image build based on the image template",
         "com.distilled.openapi#apiVersion": "2025-10-01"
+      }
+    },
+    "com.azure.imagebuilder#CancelVirtualMachineImageTemplateResponse": {
+      "type": "structure",
+      "members": {
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "The URL to query for the status of the asynchronous operation."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The URL to query for the result of the asynchronous operation."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.imagebuilder#CancelVirtualMachineImageTemplateRequest": {
@@ -966,7 +1060,7 @@
         "target": "com.azure.imagebuilder#DeleteVirtualMachineImageTemplateRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.imagebuilder#DeleteVirtualMachineImageTemplateResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -977,6 +1071,28 @@
         },
         "smithy.api#documentation": "Delete a virtual machine image template",
         "com.distilled.openapi#apiVersion": "2025-10-01"
+      }
+    },
+    "com.azure.imagebuilder#DeleteVirtualMachineImageTemplateResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.imagebuilder#DeleteVirtualMachineImageTemplateRequest": {
@@ -1081,6 +1197,27 @@
           "traits": {
             "smithy.api#documentation": "The identity of the image template, if configured.",
             "smithy.api#required": {}
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "The URL to query for the status of the asynchronous operation."
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The URL to query for the result of the asynchronous operation."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -1737,6 +1874,60 @@
           "traits": {
             "smithy.api#documentation": "Tags that will be applied to the artifact once it has been created/updated by the distributor."
           }
+        },
+        "imageId": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "ManagedImage: ARM resource ID of the managed image to create."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "ManagedImage: Azure location of the managed image."
+          }
+        },
+        "galleryImageId": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "SharedImage: ARM resource ID of the gallery image definition or version."
+          }
+        },
+        "replicationRegions": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "SharedImage: (deprecated) regions to replicate to."
+          }
+        },
+        "targetRegions": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "SharedImage: target regions with replica counts and storage types."
+          }
+        },
+        "versioning": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "SharedImage: version numbering scheme (`Latest` / `Source`)."
+          }
+        },
+        "storageAccountType": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "SharedImage: (deprecated) storage account type."
+          }
+        },
+        "excludeFromLatest": {
+          "target": "smithy.api#Boolean",
+          "traits": {
+            "smithy.api#documentation": "SharedImage: exclude the version from `latest`."
+          }
+        },
+        "uri": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "VHD: optional destination blob URI."
+          }
         }
       },
       "traits": {
@@ -1804,6 +1995,54 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Friendly Name to provide context on what this validation step does"
+          }
+        },
+        "scriptUri": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Shell/PowerShell: URI of the script to run."
+          }
+        },
+        "sha256Checksum": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Shell/PowerShell/File: SHA256 checksum of the script or file."
+          }
+        },
+        "inline": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Shell/PowerShell: array of inline commands."
+          }
+        },
+        "validExitCodes": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "PowerShell: array of valid exit codes."
+          }
+        },
+        "runElevated": {
+          "target": "smithy.api#Boolean",
+          "traits": {
+            "smithy.api#documentation": "PowerShell: run with elevated privileges."
+          }
+        },
+        "runAsSystem": {
+          "target": "smithy.api#Boolean",
+          "traits": {
+            "smithy.api#documentation": "PowerShell: run as the Local System user."
+          }
+        },
+        "sourceUri": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "File: URI of the file to download."
+          }
+        },
+        "destination": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "File: absolute destination path on the build VM."
           }
         }
       },
@@ -1935,6 +2174,90 @@
           "traits": {
             "smithy.api#documentation": "Friendly Name to provide context on what this customization step does"
           }
+        },
+        "scriptUri": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Shell/PowerShell: URI of the script to run."
+          }
+        },
+        "sha256Checksum": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Shell/PowerShell/File: SHA256 checksum of the script or file."
+          }
+        },
+        "inline": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Shell/PowerShell: array of inline commands."
+          }
+        },
+        "validExitCodes": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "PowerShell: array of valid exit codes."
+          }
+        },
+        "runElevated": {
+          "target": "smithy.api#Boolean",
+          "traits": {
+            "smithy.api#documentation": "PowerShell: run with elevated privileges."
+          }
+        },
+        "runAsSystem": {
+          "target": "smithy.api#Boolean",
+          "traits": {
+            "smithy.api#documentation": "PowerShell: run as the Local System user."
+          }
+        },
+        "restartCommand": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "WindowsRestart: command to execute the restart."
+          }
+        },
+        "restartCheckCommand": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "WindowsRestart: command to check whether the restart succeeded."
+          }
+        },
+        "restartTimeout": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "WindowsRestart: restart timeout, e.g. `5m`."
+          }
+        },
+        "searchCriteria": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "WindowsUpdate: update search criteria."
+          }
+        },
+        "filters": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "WindowsUpdate: array of update filters."
+          }
+        },
+        "updateLimit": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#documentation": "WindowsUpdate: maximum number of updates to apply at a time."
+          }
+        },
+        "sourceUri": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "File: URI of the file to download."
+          }
+        },
+        "destination": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "File: absolute destination path on the build VM."
+          }
         }
       },
       "traits": {
@@ -1949,6 +2272,54 @@
           "traits": {
             "smithy.api#documentation": "Specifies the type of source image you want to start with.",
             "smithy.api#required": {}
+          }
+        },
+        "publisher": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "PlatformImage: image publisher, e.g. `Canonical`."
+          }
+        },
+        "offer": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "PlatformImage: image offer, e.g. `ubuntu-24_04-lts`."
+          }
+        },
+        "sku": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "PlatformImage: image SKU, e.g. `server`."
+          }
+        },
+        "version": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "PlatformImage: image version or `latest`."
+          }
+        },
+        "exactVersion": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "PlatformImage: resolved image version (read-only)."
+          }
+        },
+        "planInfo": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "PlatformImage: marketplace purchase plan (`planName`, `planProduct`, `planPublisher`)."
+          }
+        },
+        "imageId": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "ManagedImage: ARM resource ID of the managed image."
+          }
+        },
+        "imageVersionId": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "SharedImageVersion: ARM resource ID of the gallery image version."
           }
         }
       },
@@ -2168,6 +2539,20 @@
           "traits": {
             "smithy.api#documentation": "The identity of the image template, if configured.",
             "smithy.api#required": {}
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },

@@ -32,7 +32,7 @@ has a tag.
 
 ## Cutting a release
 
-1. Type-check `main` with `pnpm exec tsc -b`.
+1. Type-check `main` with `pnpm typecheck:ci`.
 2. To preview the package map, run
    `node scripts/release/fork-publish.ts --dry-run <upstream>-fork.N`. The dry run rewrites every
    `packages/*/package.json` in place, so run `git checkout -- packages` afterwards.

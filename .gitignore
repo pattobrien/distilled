@@ -26,5 +26,11 @@ lib/
 # per command with DISTILLED_SPECS_LOCAL=1.
 packages/*/specs/.local/
 
+# Scratch copies `pnpm patches:audit` converts in; removed when it exits.
+packages/.audit-*/
+
 # pkg pack output (CI artifact hand-off)
 .pkg
+
+# Declaration output of packages/*/tsconfig.test.json (type-check only).
+.test-types/

@@ -542,6 +542,20 @@
             "smithy.api#documentation": "The properties of a private endpoint connection",
             "smithy.api#required": {}
           }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
         }
       },
       "traits": {
@@ -734,6 +748,20 @@
           "traits": {
             "smithy.api#documentation": "The properties of a private endpoint connection",
             "smithy.api#required": {}
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -1923,6 +1951,14 @@
             "smithy.api#httpQuery": "certificate.nonce",
             "smithy.api#documentation": "Random number generated to indicate Proof of Possession."
           }
+        },
+        "ifMatch": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "If-Match",
+            "smithy.api#required": {},
+            "smithy.api#documentation": "ETag of the certificate. A value of \"*\" applies to any version."
+          }
         }
       },
       "traits": {
@@ -2049,6 +2085,13 @@
           "target": "com.azure.deviceprovisioningservices#CertificatePropertiesInput",
           "traits": {
             "smithy.api#documentation": "properties of a certificate"
+          }
+        },
+        "ifMatch": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "If-Match",
+            "smithy.api#documentation": "ETag of the certificate. Do not specify for creating a brand new certificate. Required to update an existing certificate."
           }
         }
       },
@@ -2303,7 +2346,7 @@
         "target": "com.azure.deviceprovisioningservices#DeleteIotDpsResourceRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.deviceprovisioningservices#DeleteIotDpsResourceResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -2314,6 +2357,28 @@
         },
         "smithy.api#documentation": "Deletes the Provisioning Service.",
         "com.distilled.openapi#apiVersion": "2026-08-31"
+      }
+    },
+    "com.azure.deviceprovisioningservices#DeleteIotDpsResourceResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.deviceprovisioningservices#DeleteIotDpsResourceRequest": {
@@ -2443,6 +2508,13 @@
           "target": "com.azure.deviceprovisioningservices#UpdateIotDpsResourceResponseIdentity",
           "traits": {
             "smithy.api#documentation": "Managed service identity (system assigned and/or user assigned identities)"
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -3148,6 +3220,20 @@
           "target": "com.azure.deviceprovisioningservices#IotDpsResourceCreateOrUpdateResponseIdentity",
           "traits": {
             "smithy.api#documentation": "Managed service identity (system assigned and/or user assigned identities)"
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },

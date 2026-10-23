@@ -24,7 +24,7 @@
         "target": "com.azure.cognitiveservices#DeleteCommitmentPlanAssociationRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteCommitmentPlanAssociationResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -35,6 +35,28 @@
         },
         "smithy.api#documentation": "Deletes the association of the Cognitive Services commitment plan.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteCommitmentPlanAssociationResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteCommitmentPlanAssociationRequest": {
@@ -139,6 +161,20 @@
           "target": "com.azure.cognitiveservices#CommitmentPlansCreateOrUpdateAssociationResponseTagsMap",
           "traits": {
             "smithy.api#documentation": "Resource tags."
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -613,7 +649,7 @@
         "target": "com.azure.cognitiveservices#DeleteCommitmentPlanPlanRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteCommitmentPlanPlanResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -624,6 +660,28 @@
         },
         "smithy.api#documentation": "Deletes a Cognitive Services commitment plan from the resource group.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteCommitmentPlanPlanResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteCommitmentPlanPlanRequest": {
@@ -738,6 +796,20 @@
           "target": "com.azure.cognitiveservices#Sku",
           "traits": {
             "smithy.api#documentation": "The resource model definition representing SKU"
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -1181,6 +1253,20 @@
           "target": "com.azure.cognitiveservices#Sku",
           "traits": {
             "smithy.api#documentation": "The resource model definition representing SKU"
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -2343,7 +2429,7 @@
         "target": "com.azure.cognitiveservices#DeleteRaiTopicRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteRaiTopicResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -2354,6 +2440,28 @@
         },
         "smithy.api#documentation": "Deletes the specified custom topic associated with the Azure OpenAI account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteRaiTopicResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteRaiTopicRequest": {
@@ -2866,7 +2974,7 @@
         "target": "com.azure.cognitiveservices#DeleteRaiToolLabelRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteRaiToolLabelResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -2877,6 +2985,28 @@
         },
         "smithy.api#documentation": "Deletes the specified RAI Tool Label associated with the Azure OpenAI account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteRaiToolLabelResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteRaiToolLabelRequest": {
@@ -3427,7 +3557,7 @@
         "target": "com.azure.cognitiveservices#DeleteRaiPolicyRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteRaiPolicyResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -3438,6 +3568,28 @@
         },
         "smithy.api#documentation": "Deletes the specified Content Filters associated with the Azure OpenAI account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteRaiPolicyResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteRaiPolicyRequest": {
@@ -4626,7 +4778,7 @@
         "target": "com.azure.cognitiveservices#DeleteRaiBlocklistItemRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteRaiBlocklistItemResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -4637,6 +4789,28 @@
         },
         "smithy.api#documentation": "Deletes the specified blocklist Item associated with the custom blocklist.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteRaiBlocklistItemResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteRaiBlocklistItemRequest": {
@@ -5388,7 +5562,7 @@
         "target": "com.azure.cognitiveservices#DeleteRaiBlocklistRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteRaiBlocklistResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -5399,6 +5573,28 @@
         },
         "smithy.api#documentation": "Deletes the specified custom blocklist associated with the Azure OpenAI account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteRaiBlocklistResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteRaiBlocklistRequest": {
@@ -7127,6 +7323,12 @@
         },
         "useWorkspaceManagedIdentity": {
           "target": "smithy.api#Boolean"
+        },
+        "credentials": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Auth-type-specific credentials (polymorphic on `authType`), e.g. `{ key }` for ApiKey or `{ keys: {...} }` for CustomKeys. Write-only."
+          }
         }
       },
       "traits": {
@@ -7515,7 +7717,7 @@
         "target": "com.azure.cognitiveservices#DeleteProjectCapabilityHostRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteProjectCapabilityHostResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -7526,6 +7728,21 @@
         },
         "smithy.api#documentation": "Delete project capabilityHost.\n\nDelete project capabilityHost.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteProjectCapabilityHostResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteProjectCapabilityHostRequest": {
@@ -7627,6 +7844,13 @@
           "traits": {
             "smithy.api#documentation": "[Required] Additional attributes of the entity.",
             "smithy.api#required": {}
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
           }
         }
       },
@@ -8126,7 +8350,7 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}/listAgents",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Lists agents for an Agent Application.\n\nLists agents for an Agent Application.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -8285,7 +8509,7 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}/enable",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Enables an Agent Application.\n\nEnables an Agent Application.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -8352,7 +8576,7 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}/disable",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Disables an Agent Application.\n\nDisables an Agent Application.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -8419,7 +8643,7 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}/stop",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Stops an Agent Deployment.\n\nStops an Agent Deployment.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -8494,7 +8718,7 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}/start",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Starts an Agent Deployment.\n\nStarts an Agent Deployment.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -8562,17 +8786,39 @@
         "target": "com.azure.cognitiveservices#DeleteAgentDeploymentRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteAgentDeploymentResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Delete Agent Deployment.\n\nDelete Agent Deployment.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteAgentDeploymentResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteAgentDeploymentRequest": {
@@ -8644,7 +8890,7 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Creates or updates an Agent Deployment (asynchronous).\n\nCreates or updates an Agent Deployment (asynchronous).",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -8682,6 +8928,20 @@
           "traits": {
             "smithy.api#documentation": "[Required] Additional attributes of the entity.",
             "smithy.api#required": {}
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "URI to poll for asynchronous operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -9161,7 +9421,7 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Gets an Agent Deployment by name.\n\nGets an Agent Deployment by name.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -9275,7 +9535,7 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Lists Agent Deployments in the application.\n\nLists Agent Deployments in the application.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -9446,17 +9706,39 @@
         "target": "com.azure.cognitiveservices#DeleteAgentApplicationRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteAgentApplicationResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Delete Agent Application.\n\nDelete Agent Application.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteAgentApplicationResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteAgentApplicationRequest": {
@@ -9520,7 +9802,7 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Creates or updates an Agent Application (asynchronous).\n\nCreates or updates an Agent Application (asynchronous).",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -9558,6 +9840,20 @@
           "traits": {
             "smithy.api#documentation": "[Required] Additional attributes of the entity.",
             "smithy.api#required": {}
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "URI to poll for asynchronous operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -10213,7 +10509,7 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{name}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Gets an Agent Application by name.\n\nGets an Agent Application by name.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -10319,7 +10615,7 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Lists Agent Applications in the project.\n\nLists Agent Applications in the project.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -10496,7 +10792,7 @@
         "target": "com.azure.cognitiveservices#DeleteProjectRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteProjectResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -10507,6 +10803,28 @@
         },
         "smithy.api#documentation": "Deletes a Cognitive Services project from the resource group.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteProjectResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteProjectRequest": {
@@ -10623,6 +10941,13 @@
           "target": "com.azure.cognitiveservices#Identity",
           "traits": {
             "smithy.api#documentation": "Identity for the resource."
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -11053,6 +11378,20 @@
           "target": "com.azure.cognitiveservices#Identity",
           "traits": {
             "smithy.api#documentation": "Identity for the resource."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -11603,7 +11942,7 @@
         "target": "com.azure.cognitiveservices#DeletePrivateEndpointConnectionRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeletePrivateEndpointConnectionResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -11614,6 +11953,28 @@
         },
         "smithy.api#documentation": "Deletes the specified private endpoint connection associated with the Cognitive Services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeletePrivateEndpointConnectionResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeletePrivateEndpointConnectionRequest": {
@@ -11718,6 +12079,20 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "The location of the private endpoint connection"
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -12269,6 +12644,20 @@
           "target": "com.azure.cognitiveservices#NetworkSecurityPerimeterConfigurationProperties",
           "traits": {
             "smithy.api#documentation": "NSP Configuration properties."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -13583,20 +13972,20 @@
         "target": "com.azure.cognitiveservices#ProvisionManagedNetworkProvisionManagedNetworkRequest"
       },
       "output": {
-        "target": "com.azure.cognitiveservices#ManagedNetworkProvisionStatus"
+        "target": "com.azure.cognitiveservices#ProvisionManagedNetworkProvisionManagedNetworkResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/provision",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Provisions the managed network of a cognitive services account.\n\nProvisions the managed network of a cognitive services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
       }
     },
-    "com.azure.cognitiveservices#ManagedNetworkProvisionStatus": {
+    "com.azure.cognitiveservices#ProvisionManagedNetworkProvisionManagedNetworkResponse": {
       "type": "structure",
       "members": {
         "status": {
@@ -13604,10 +13993,25 @@
           "traits": {
             "smithy.api#documentation": "Status for the managed network of a cognitive services account."
           }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
         }
       },
       "traits": {
-        "smithy.api#documentation": "Status of the Provisioning for the managed network of a cognitive services account."
+        "smithy.api#documentation": "Status of the Provisioning for the managed network of a cognitive services account.",
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#ManagedNetworkStatus": {
@@ -13676,17 +14080,39 @@
         "target": "com.azure.cognitiveservices#DeleteOutboundRuleRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteOutboundRuleResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "The DELETE API for deleting a single outbound rule of the managed network associated with the cognitive services account.\n\nThe DELETE API for deleting a single outbound rule of the managed network associated with the cognitive services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteOutboundRuleResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteOutboundRuleRequest": {
@@ -13750,7 +14176,7 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "The PUT API for creating or updating a single outbound rule of the managed network associated with the cognitive services account.\n\nThe PUT API for creating or updating a single outbound rule of the managed network associated with the cognitive services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -13789,6 +14215,20 @@
             "smithy.api#documentation": "Outbound Rule for the managed network of a cognitive services account.",
             "smithy.api#required": {}
           }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
         }
       },
       "traits": {
@@ -13825,6 +14265,12 @@
         },
         "parentRuleNames": {
           "target": "com.azure.cognitiveservices#OutboundRuleParentRuleNamesList"
+        },
+        "destination": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Rule destination (polymorphic on `type`)."
+          }
         }
       },
       "traits": {
@@ -14010,6 +14456,12 @@
             "smithy.api#documentation": "Type of a managed network Outbound Rule of a cognitive services account.",
             "smithy.api#required": {}
           }
+        },
+        "destination": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Rule destination (polymorphic on `type`): an FQDN string, a `{ serviceResourceId, subresourceTarget }` private endpoint target, or a `{ serviceTag, protocol, portRanges, action }` service tag."
+          }
         }
       },
       "traits": {
@@ -14029,7 +14481,7 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "The GET API for retrieving a single outbound rule of the managed network associated with the cognitive services account.\n\nThe GET API for retrieving a single outbound rule of the managed network associated with the cognitive services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -14135,7 +14587,7 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "The GET API for retrieving the list of outbound rules of the managed network associated with the cognitive services account.\n\nThe GET API for retrieving the list of outbound rules of the managed network associated with the cognitive services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -14255,17 +14707,52 @@
         "target": "com.azure.cognitiveservices#PostOutboundRuleRequest"
       },
       "output": {
-        "target": "com.azure.cognitiveservices#OutboundRuleListResult"
+        "target": "com.azure.cognitiveservices#PostOutboundRuleResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/batchOutboundRules",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "The POST API for updating the outbound rules of the managed network associated with the cognitive services account.\n\nThe POST API for updating the outbound rules of the managed network associated with the cognitive services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#PostOutboundRuleResponse": {
+      "type": "structure",
+      "members": {
+        "nextLink": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "The link to the next page constructed using the continuationToken.  If null, there are no additional pages."
+          }
+        },
+        "value": {
+          "target": "com.azure.cognitiveservices#OutboundRuleListResultValueList",
+          "traits": {
+            "smithy.api#documentation": "The list of cognitive services accounts. Since this list may be incomplete, the nextLink field should be used to request the next list of cognitive services accounts."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#documentation": "List of outbound rules for the managed network of a cognitive services account.",
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#PostOutboundRuleRequest": {
@@ -14393,6 +14880,20 @@
         "smithy.api#documentation": "Firewall Sku used for FQDN Rules"
       }
     },
+    "com.azure.cognitiveservices#ManagedNetworkProvisionStatus": {
+      "type": "structure",
+      "members": {
+        "status": {
+          "target": "com.azure.cognitiveservices#ManagedNetworkStatus",
+          "traits": {
+            "smithy.api#documentation": "Status for the managed network of a cognitive services account."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#documentation": "Status of the Provisioning for the managed network of a cognitive services account."
+      }
+    },
     "com.azure.cognitiveservices#ManagedNetworkSettingsInputOutboundRulesMap": {
       "type": "map",
       "key": {
@@ -14437,17 +14938,39 @@
         "target": "com.azure.cognitiveservices#DeleteManagedNetworkSettingsRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteManagedNetworkSettingsResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Delete API for managed network settings of a cognitive services account.\n\nDelete API for managed network settings of a cognitive services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteManagedNetworkSettingsResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteManagedNetworkSettingsRequest": {
@@ -14503,7 +15026,7 @@
           "method": "PATCH",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Patch API for managed network settings of a cognitive services account.\n\nPatch API for managed network settings of a cognitive services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -14540,6 +15063,20 @@
           "target": "com.azure.cognitiveservices#ManagedNetworkSettingsProperties",
           "traits": {
             "smithy.api#documentation": "The properties of the managed network settings of a cognitive services account."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -14806,7 +15343,7 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "PUT API for managed network settings of a cognitive services account.\n\nPUT API for managed network settings of a cognitive services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -14843,6 +15380,20 @@
           "target": "com.azure.cognitiveservices#ManagedNetworkSettingsProperties",
           "traits": {
             "smithy.api#documentation": "The properties of the managed network settings of a cognitive services account."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -14909,7 +15460,7 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Get API for managed network settings of a cognitive services account.\n\nGet API for managed network settings of a cognitive services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -15006,7 +15557,7 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "List API for managed network settings of a cognitive services account.\n\nList API for managed network settings of a cognitive services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -15168,7 +15719,7 @@
         "target": "com.azure.cognitiveservices#DeleteEncryptionScopeRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteEncryptionScopeResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -15179,6 +15730,28 @@
         },
         "smithy.api#documentation": "Deletes the specified encryptionScope associated with the Cognitive Services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteEncryptionScopeResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteEncryptionScopeRequest": {
@@ -16571,7 +17144,7 @@
         "target": "com.azure.cognitiveservices#DeleteDeploymentRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteDeploymentResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -16582,6 +17155,28 @@
         },
         "smithy.api#documentation": "Deletes the specified deployment associated with the Cognitive Services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteDeploymentResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteDeploymentRequest": {
@@ -16692,6 +17287,20 @@
           "target": "com.azure.cognitiveservices#UpdateDeploymentResponseTagsMap",
           "traits": {
             "smithy.api#documentation": "Resource tags."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -16843,6 +17452,20 @@
           "target": "com.azure.cognitiveservices#DeploymentsCreateOrUpdateResponseTagsMap",
           "traits": {
             "smithy.api#documentation": "Resource tags."
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -18340,7 +18963,7 @@
         "target": "com.azure.cognitiveservices#DeleteCommitmentPlanRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteCommitmentPlanResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -18351,6 +18974,28 @@
         },
         "smithy.api#documentation": "Deletes the specified commitmentPlan associated with the Cognitive Services account.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteCommitmentPlanResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteCommitmentPlanRequest": {
@@ -18770,7 +19415,7 @@
         "target": "com.azure.cognitiveservices#DeleteAccountCapabilityHostRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteAccountCapabilityHostResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -18781,6 +19426,21 @@
         },
         "smithy.api#documentation": "Delete account capabilityHost.\n\nDelete account capabilityHost.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteAccountCapabilityHostResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteAccountCapabilityHostRequest": {
@@ -18874,6 +19534,13 @@
           "traits": {
             "smithy.api#documentation": "[Required] Additional attributes of the entity.",
             "smithy.api#required": {}
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
           }
         }
       },
@@ -19400,7 +20067,7 @@
         "target": "com.azure.cognitiveservices#DeleteAccountRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteAccountResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -19411,6 +20078,28 @@
         },
         "smithy.api#documentation": "Deletes a Cognitive Services account from the resource group.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteAccountResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteAccountRequest": {
@@ -19531,6 +20220,20 @@
           "target": "com.azure.cognitiveservices#Identity",
           "traits": {
             "smithy.api#documentation": "Identity for the resource."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -20095,7 +20798,8 @@
         }
       },
       "traits": {
-        "smithy.api#documentation": "The api properties for special APIs."
+        "smithy.api#documentation": "The api properties for special APIs.",
+        "com.distilled.openapi#additionalProperties": {}
       }
     },
     "com.azure.cognitiveservices#PublicNetworkAccess": {
@@ -20717,6 +21421,20 @@
           "target": "com.azure.cognitiveservices#Identity",
           "traits": {
             "smithy.api#documentation": "Identity for the resource."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -21361,17 +22079,39 @@
         "target": "com.azure.cognitiveservices#DeleteSubscriptionRaiPolicyRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteSubscriptionRaiPolicyResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiPolicy/{raiPolicyName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Deletes the specified Content Filters associated with the subscription.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteSubscriptionRaiPolicyResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteSubscriptionRaiPolicyRequest": {
@@ -21411,7 +22151,7 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiPolicy/{raiPolicyName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Update the state of specified Content Filters associated with the subscription.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -21540,7 +22280,7 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiPolicy/{raiPolicyName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Gets the specified Content Filters associated with the Subscription.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -21638,17 +22378,39 @@
         "target": "com.azure.cognitiveservices#DeleteRaiExternalSafetyProviderRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#DeleteRaiExternalSafetyProviderResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders/{safetyProviderName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Deletes the specified custom topic associated with the subscription.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#DeleteRaiExternalSafetyProviderResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#DeleteRaiExternalSafetyProviderRequest": {
@@ -21688,7 +22450,7 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders/{safetyProviderName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Create the rai safety provider associated with the subscription.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -21799,7 +22561,7 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders/{safetyProviderName}",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Gets the specified external safety provider associated with the Subscription",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -21904,7 +22666,7 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders",
           "code": 200,
-          "apiVersion": "2026-09-01"
+          "apiVersion": "2026-07-15-preview"
         },
         "smithy.api#documentation": "Gets the safety providers associated with the subscription",
         "com.distilled.openapi#apiVersion": "2026-09-01"
@@ -22725,7 +23487,7 @@
         "target": "com.azure.cognitiveservices#PurgeDeletedAccountRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.cognitiveservices#PurgeDeletedAccountResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -22736,6 +23498,28 @@
         },
         "smithy.api#documentation": "Deletes a Cognitive Services account from the resource group.",
         "com.distilled.openapi#apiVersion": "2026-09-01"
+      }
+    },
+    "com.azure.cognitiveservices#PurgeDeletedAccountResponse": {
+      "type": "structure",
+      "members": {
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.cognitiveservices#PurgeDeletedAccountRequest": {

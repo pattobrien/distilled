@@ -214,7 +214,7 @@
         "target": "com.azure.recoveryservicesbackup#DeletePrivateEndpointConnectionRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.recoveryservicesbackup#DeletePrivateEndpointConnectionResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -225,6 +225,28 @@
         },
         "smithy.api#documentation": "Delete Private Endpoint requests. This call is made by Backup Admin.",
         "com.distilled.openapi#apiVersion": "2026-08-01"
+      }
+    },
+    "com.azure.recoveryservicesbackup#DeletePrivateEndpointConnectionResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.recoveryservicesbackup#DeletePrivateEndpointConnectionRequest": {
@@ -335,6 +357,20 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Optional ETag."
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -842,7 +878,7 @@
         "target": "com.azure.recoveryservicesbackup#BMSTriggerDataMoveRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.recoveryservicesbackup#BMSTriggerDataMoveResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -853,6 +889,28 @@
         },
         "smithy.api#documentation": "Triggers Data Move Operation on target vault",
         "com.distilled.openapi#apiVersion": "2026-08-01"
+      }
+    },
+    "com.azure.recoveryservicesbackup#BMSTriggerDataMoveResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.recoveryservicesbackup#BMSTriggerDataMoveRequest": {
@@ -968,7 +1026,7 @@
         "target": "com.azure.recoveryservicesbackup#MoveBMSPrepareDataRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.recoveryservicesbackup#MoveBMSPrepareDataResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -979,6 +1037,28 @@
         },
         "smithy.api#documentation": "Prepares source vault for Data Move operation",
         "com.distilled.openapi#apiVersion": "2026-08-01"
+      }
+    },
+    "com.azure.recoveryservicesbackup#MoveBMSPrepareDataResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.recoveryservicesbackup#MoveBMSPrepareDataRequest": {
@@ -2737,7 +2817,7 @@
         "target": "com.azure.recoveryservicesbackup#TriggerValidateOperationRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.recoveryservicesbackup#TriggerValidateOperationResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -2748,6 +2828,28 @@
         },
         "smithy.api#documentation": "Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking headers which can be tracked using GetValidateOperationResult API.",
         "com.distilled.openapi#apiVersion": "2026-08-01"
+      }
+    },
+    "com.azure.recoveryservicesbackup#TriggerValidateOperationResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.recoveryservicesbackup#TriggerValidateOperationRequest": {
@@ -2933,7 +3035,7 @@
         "target": "com.azure.recoveryservicesbackup#PostFetchTieringCostRequest"
       },
       "output": {
-        "target": "com.azure.recoveryservicesbackup#TieringCostInfo"
+        "target": "com.azure.recoveryservicesbackup#PostFetchTieringCostResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -2944,6 +3046,36 @@
         },
         "smithy.api#documentation": "Provides the details of the tiering related sizes and cost.\nStatus of the operation can be fetched using GetTieringCostOperationStatus API and result using GetTieringCostOperationResult API.",
         "com.distilled.openapi#apiVersion": "2026-08-01"
+      }
+    },
+    "com.azure.recoveryservicesbackup#PostFetchTieringCostResponse": {
+      "type": "structure",
+      "members": {
+        "objectType": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.",
+            "smithy.api#required": {}
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#documentation": "Base class for tiering cost response",
+        "smithy.api#output": {}
       }
     },
     "com.azure.recoveryservicesbackup#PostFetchTieringCostRequest": {
@@ -3895,6 +4027,12 @@
           "traits": {
             "smithy.api#documentation": "Backup state of this backup item."
           }
+        },
+        "workloadItemType": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Workload item type to auto-protect, e.g. `SQLInstance` (AzureWorkloadSQLAutoProtectionIntent)."
+          }
         }
       },
       "traits": {
@@ -4251,6 +4389,60 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Source location of the container"
+          }
+        },
+        "sourceResourceId": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "ARM ID of the registered resource (storage account for StorageContainer, VM for VMAppContainer)."
+          }
+        },
+        "acquireStorageAccountLock": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Whether to place an `AzureBackupProtectionLock` delete lock on the storage account: `Acquire` or `NotAcquire` (StorageContainer)."
+          }
+        },
+        "protectedItemCount": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#documentation": "Number of items backed up in this container (StorageContainer)."
+          }
+        },
+        "storageAccountVersion": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Storage account version (StorageContainer)."
+          }
+        },
+        "resourceGroup": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Resource group of the registered resource (StorageContainer)."
+          }
+        },
+        "workloadType": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Workload type for the container (VMAppContainer)."
+          }
+        },
+        "operationType": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Operation type, e.g. `Register` or `Reregister` (VMAppContainer)."
+          }
+        },
+        "extendedInfo": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Additional container information (VMAppContainer)."
+          }
+        },
+        "lastUpdatedTime": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Time the container was last refreshed (VMAppContainer)."
           }
         }
       },
@@ -4657,6 +4849,54 @@
           "target": "com.azure.recoveryservicesbackup#SourceSideScanInfo",
           "traits": {
             "smithy.api#documentation": "Source side threat information"
+          }
+        },
+        "friendlyName": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Friendly name of the protected datasource (AzureFileShare / IaaS VM items)."
+          }
+        },
+        "protectionState": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Protection state: `Protected`, `ProtectionStopped`, `IRPending`, `ProtectionError`, `ProtectionPaused`, `BackupsSuspended`."
+          }
+        },
+        "extendedProperties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Subtype-specific extended properties (e.g. disk exclusion for IaaS VMs)."
+          }
+        },
+        "protectionStatus": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Backup status of the item (read-only)."
+          }
+        },
+        "lastBackupStatus": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Status of the last backup (read-only)."
+          }
+        },
+        "lastBackupTime": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Timestamp of the last backup (read-only)."
+          }
+        },
+        "healthStatus": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Health status of the item (read-only)."
+          }
+        },
+        "virtualMachineId": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "ARM ID of the protected VM (IaaS VM items, read-only)."
           }
         }
       },
@@ -5315,6 +5555,84 @@
           "traits": {
             "smithy.api#documentation": "ResourceGuard Operation Requests"
           }
+        },
+        "workLoadType": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Workload type (AzureFileShare / AzureStorage and AzureWorkload policies)."
+          }
+        },
+        "schedulePolicy": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Backup schedule (polymorphic on `schedulePolicyType`: SimpleSchedulePolicy, SimpleSchedulePolicyV2, LongTermSchedulePolicy, LogSchedulePolicy)."
+          }
+        },
+        "retentionPolicy": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Retention policy (polymorphic on `retentionPolicyType`: LongTermRetentionPolicy, SimpleRetentionPolicy)."
+          }
+        },
+        "vaultRetentionPolicy": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Vaulted backup retention (AzureFileShare vault-tier policies)."
+          }
+        },
+        "timeZone": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Time zone of the schedule, e.g. `UTC`."
+          }
+        },
+        "instantRpRetentionRangeInDays": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#documentation": "Instant recovery point retention in days (AzureIaasVM)."
+          }
+        },
+        "instantRPDetails": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Instant recovery point resource group settings (AzureIaasVM)."
+          }
+        },
+        "policyType": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "IaaS VM policy type: `V1` (standard) or `V2` (enhanced)."
+          }
+        },
+        "tieringPolicy": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Archive tiering policy keyed by tier (AzureIaasVM)."
+          }
+        },
+        "snapshotConsistencyType": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Snapshot consistency type (AzureIaasVM)."
+          }
+        },
+        "settings": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Workload settings such as time zone and compression (AzureWorkload)."
+          }
+        },
+        "subProtectionPolicy": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Sub-policies per backup type (AzureWorkload)."
+          }
+        },
+        "makePolicyConsistent": {
+          "target": "smithy.api#Boolean",
+          "traits": {
+            "smithy.api#documentation": "Fix a policy that is inconsistent with its sub-policies (AzureWorkload)."
+          }
         }
       },
       "traits": {
@@ -5384,7 +5702,7 @@
         "target": "com.azure.recoveryservicesbackup#DeleteProtectionPolicyRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.recoveryservicesbackup#DeleteProtectionPolicyResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -5395,6 +5713,28 @@
         },
         "smithy.api#documentation": "Deletes specified backup policy from your Recovery Services Vault. This is an asynchronous operation. Status of the\noperation can be fetched using GetProtectionPolicyOperationResult API.",
         "com.distilled.openapi#apiVersion": "2026-08-01"
+      }
+    },
+    "com.azure.recoveryservicesbackup#DeleteProtectionPolicyResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.recoveryservicesbackup#DeleteProtectionPolicyRequest": {
@@ -7481,7 +7821,7 @@
         "target": "com.azure.recoveryservicesbackup#TriggerRestoreRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.recoveryservicesbackup#TriggerRestoreResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -7492,6 +7832,28 @@
         },
         "smithy.api#documentation": "Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call, use\nGetProtectedItemOperationResult API.",
         "com.distilled.openapi#apiVersion": "2026-08-01"
+      }
+    },
+    "com.azure.recoveryservicesbackup#TriggerRestoreResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.recoveryservicesbackup#TriggerRestoreRequest": {
@@ -7764,7 +8126,7 @@
         "target": "com.azure.recoveryservicesbackup#MoveRecoveryPointRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.recoveryservicesbackup#MoveRecoveryPointResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -7775,6 +8137,28 @@
         },
         "smithy.api#documentation": "Move recovery point from one datastore to another store.",
         "com.distilled.openapi#apiVersion": "2026-08-01"
+      }
+    },
+    "com.azure.recoveryservicesbackup#MoveRecoveryPointResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.recoveryservicesbackup#MoveRecoveryPointRequest": {
@@ -8512,7 +8896,7 @@
         "target": "com.azure.recoveryservicesbackup#ExecuteConfigureSourceScanRequest"
       },
       "output": {
-        "target": "com.azure.recoveryservicesbackup#OperationStatus"
+        "target": "com.azure.recoveryservicesbackup#ExecuteConfigureSourceScanResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -8523,6 +8907,78 @@
         },
         "smithy.api#documentation": "Configures source scan for a protected item. This is an asynchronous operation. To know the status of the\noperation, call GetProtectedItemOperationResult API.",
         "com.distilled.openapi#apiVersion": "2026-08-01"
+      }
+    },
+    "com.azure.recoveryservicesbackup#ExecuteConfigureSourceScanResponse": {
+      "type": "structure",
+      "members": {
+        "id": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "ID of the operation."
+          }
+        },
+        "name": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Name of the operation."
+          }
+        },
+        "status": {
+          "target": "com.azure.recoveryservicesbackup#OperationStatusValues",
+          "traits": {
+            "smithy.api#documentation": "Operation status."
+          }
+        },
+        "startTime": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Operation start time. Format: ISO-8601."
+          }
+        },
+        "endTime": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Operation end time. Format: ISO-8601."
+          }
+        },
+        "error": {
+          "target": "com.azure.recoveryservicesbackup#OperationStatusError",
+          "traits": {
+            "smithy.api#documentation": "Error information related to this operation."
+          }
+        },
+        "properties": {
+          "target": "com.azure.recoveryservicesbackup#OperationStatusExtendedInfo",
+          "traits": {
+            "smithy.api#documentation": "Additional information associated with this operation."
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#documentation": "Operation status.",
+        "smithy.api#output": {}
       }
     },
     "com.azure.recoveryservicesbackup#ExecuteConfigureSourceScanRequest": {
@@ -8877,6 +9333,20 @@
           "traits": {
             "smithy.api#documentation": "Optional ETag."
           }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
         }
       },
       "traits": {
@@ -9091,6 +9561,24 @@
           "target": "com.azure.recoveryservicesbackup#SourceSideScanInfo",
           "traits": {
             "smithy.api#documentation": "Source side threat information"
+          }
+        },
+        "friendlyName": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Friendly name of the protected datasource (AzureFileShare / IaaS VM items)."
+          }
+        },
+        "protectionState": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Protection state: `Protected`, `ProtectionStopped`, `IRPending`, `ProtectionError`, `ProtectionPaused`, `BackupsSuspended`."
+          }
+        },
+        "extendedProperties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Subtype-specific extended properties (e.g. disk exclusion for IaaS VMs)."
           }
         }
       },
@@ -9827,6 +10315,20 @@
           "traits": {
             "smithy.api#documentation": "Optional ETag."
           }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
         }
       },
       "traits": {
@@ -9967,6 +10469,60 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Type of the protectable object associated with this container"
+          }
+        },
+        "sourceResourceId": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "ARM ID of the registered resource (storage account for StorageContainer, VM for VMAppContainer)."
+          }
+        },
+        "acquireStorageAccountLock": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Whether to place an `AzureBackupProtectionLock` delete lock on the storage account: `Acquire` or `NotAcquire` (StorageContainer)."
+          }
+        },
+        "protectedItemCount": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#documentation": "Number of items backed up in this container (StorageContainer)."
+          }
+        },
+        "storageAccountVersion": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Storage account version (StorageContainer)."
+          }
+        },
+        "resourceGroup": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Resource group of the registered resource (StorageContainer)."
+          }
+        },
+        "workloadType": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Workload type for the container (VMAppContainer)."
+          }
+        },
+        "operationType": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Operation type, e.g. `Register` or `Reregister` (VMAppContainer)."
+          }
+        },
+        "extendedInfo": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Additional container information (VMAppContainer)."
+          }
+        },
+        "lastUpdatedTime": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Time the container was last refreshed (VMAppContainer)."
           }
         }
       },

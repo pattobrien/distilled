@@ -753,7 +753,7 @@
         "target": "com.azure.securityinsights#DeleteWatchlistRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.securityinsights#DeleteWatchlistResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -764,6 +764,28 @@
         },
         "smithy.api#documentation": "Delete a watchlist.",
         "com.distilled.openapi#apiVersion": "2025-09-01"
+      }
+    },
+    "com.azure.securityinsights#DeleteWatchlistResponse": {
+      "type": "structure",
+      "members": {
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.securityinsights#DeleteWatchlistRequest": {
@@ -862,6 +884,13 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Etag of the azure resource"
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
           }
         }
       },
@@ -4514,6 +4543,12 @@
           "traits": {
             "smithy.api#documentation": "Etag of the azure resource"
           }
+        },
+        "properties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Security ML analytics settings properties (polymorphic on `kind`, e.g. Anomaly)."
+          }
         }
       },
       "traits": {
@@ -4581,6 +4616,12 @@
           "traits": {
             "smithy.api#documentation": "Etag of the azure resource"
           }
+        },
+        "properties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Security ML analytics settings properties (polymorphic on `kind`, e.g. Anomaly)."
+          }
         }
       },
       "traits": {
@@ -4644,6 +4685,12 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Etag of the azure resource"
+          }
+        },
+        "properties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Security ML analytics settings properties (polymorphic on `kind`, e.g. Anomaly)."
           }
         }
       },
@@ -4778,6 +4825,12 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Etag of the azure resource"
+          }
+        },
+        "properties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Security ML analytics settings properties (polymorphic on `kind`, e.g. Anomaly)."
           }
         }
       },
@@ -10696,6 +10749,12 @@
           "traits": {
             "smithy.api#documentation": "Etag of the azure resource"
           }
+        },
+        "properties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Data connector properties (polymorphic on `kind`)."
+          }
         }
       },
       "traits": {
@@ -10823,6 +10882,12 @@
           "traits": {
             "smithy.api#documentation": "Etag of the azure resource"
           }
+        },
+        "properties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Data connector properties (polymorphic on `kind`)."
+          }
         }
       },
       "traits": {
@@ -10886,6 +10951,12 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Etag of the azure resource"
+          }
+        },
+        "properties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Data connector properties (polymorphic on `kind`)."
           }
         }
       },
@@ -11176,6 +11247,12 @@
           "traits": {
             "smithy.api#documentation": "Etag of the azure resource"
           }
+        },
+        "properties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Data connector definition properties (polymorphic on `kind`, e.g. Customizable)."
+          }
         }
       },
       "traits": {
@@ -11243,6 +11320,12 @@
           "traits": {
             "smithy.api#documentation": "Etag of the azure resource"
           }
+        },
+        "properties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Data connector definition properties (polymorphic on `kind`, e.g. Customizable)."
+          }
         }
       },
       "traits": {
@@ -11306,6 +11389,12 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Etag of the azure resource"
+          }
+        },
+        "properties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Data connector definition properties (polymorphic on `kind`, e.g. Customizable)."
           }
         }
       },
@@ -14785,6 +14874,12 @@
             "smithy.api#documentation": "The type of the automation rule action.",
             "smithy.api#required": {}
           }
+        },
+        "actionConfiguration": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Action configuration (shape depends on `actionType`)."
+          }
         }
       },
       "traits": {
@@ -14872,6 +14967,12 @@
           "target": "com.azure.securityinsights#ConditionType",
           "traits": {
             "smithy.api#required": {}
+          }
+        },
+        "conditionProperties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Condition properties (shape depends on `conditionType`)."
           }
         }
       },
@@ -15870,6 +15971,12 @@
           "traits": {
             "smithy.api#documentation": "Etag of the azure resource"
           }
+        },
+        "properties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Alert rule properties (polymorphic on `kind`: Scheduled, Fusion, MicrosoftSecurityIncidentCreation, NRT, ...)."
+          }
         }
       },
       "traits": {
@@ -15949,6 +16056,12 @@
           "traits": {
             "smithy.api#documentation": "Etag of the azure resource"
           }
+        },
+        "properties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Alert rule properties (polymorphic on `kind`: Scheduled, Fusion, MicrosoftSecurityIncidentCreation, NRT, ...)."
+          }
         }
       },
       "traits": {
@@ -16012,6 +16125,12 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Etag of the azure resource"
+          }
+        },
+        "properties": {
+          "target": "smithy.api#Document",
+          "traits": {
+            "smithy.api#documentation": "Alert rule properties (polymorphic on `kind`: Scheduled, Fusion, MicrosoftSecurityIncidentCreation, NRT, ...)."
           }
         }
       },

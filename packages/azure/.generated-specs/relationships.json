@@ -620,7 +620,7 @@
         "target": "com.azure.relationships#DeleteDependencyOfRelationshipsByServiceGroupRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.relationships#DeleteDependencyOfRelationshipsByServiceGroupResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -631,6 +631,28 @@
         },
         "smithy.api#documentation": "Delete a DependencyOfRelationship",
         "com.distilled.openapi#apiVersion": "2026-08-01"
+      }
+    },
+    "com.azure.relationships#DeleteDependencyOfRelationshipsByServiceGroupResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.relationships#DeleteDependencyOfRelationshipsByServiceGroupRequest": {
@@ -707,6 +729,20 @@
           "target": "com.azure.relationships#DependencyOfRelationshipProperties",
           "traits": {
             "smithy.api#documentation": "The resource-specific properties for this resource."
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -1000,17 +1036,39 @@
         "target": "com.azure.relationships#DeleteServiceGroupMemberRelationshipRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.relationships#DeleteServiceGroupMemberRelationshipResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "DELETE",
           "uri": "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}",
           "code": 200,
-          "apiVersion": "2026-08-01"
+          "apiVersion": "2023-09-01-preview"
         },
         "smithy.api#documentation": "Delete a ServiceGroupMemberRelationship",
-        "com.distilled.openapi#apiVersion": "2026-08-01"
+        "com.distilled.openapi#apiVersion": "2023-09-01-preview"
+      }
+    },
+    "com.azure.relationships#DeleteServiceGroupMemberRelationshipResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.relationships#DeleteServiceGroupMemberRelationshipRequest": {
@@ -1050,10 +1108,10 @@
           "method": "PUT",
           "uri": "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}",
           "code": 200,
-          "apiVersion": "2026-08-01"
+          "apiVersion": "2023-09-01-preview"
         },
         "smithy.api#documentation": "Create a ServiceGroupMemberRelationship",
-        "com.distilled.openapi#apiVersion": "2026-08-01"
+        "com.distilled.openapi#apiVersion": "2023-09-01-preview"
       }
     },
     "com.azure.relationships#ServiceGroupMemberRelationshipsCreateOrUpdateResponse": {
@@ -1084,9 +1142,23 @@
           }
         },
         "properties": {
-          "target": "com.azure.relationships#ServiceGroupMemberRelationshipPropertiesV2",
+          "target": "com.azure.relationships#ServiceGroupMemberRelationshipPropertiesPreview",
           "traits": {
             "smithy.api#documentation": "The resource-specific properties for this resource."
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -1159,7 +1231,7 @@
           }
         },
         "properties": {
-          "target": "com.azure.relationships#ServiceGroupMemberRelationshipPropertiesV2Input",
+          "target": "com.azure.relationships#ServiceGroupMemberRelationshipPropertiesPreviewInput",
           "traits": {
             "smithy.api#documentation": "The resource-specific properties for this resource."
           }
@@ -1380,7 +1452,7 @@
         "target": "com.azure.relationships#DeleteDependencyOfRelationshipRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.relationships#DeleteDependencyOfRelationshipResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -1391,6 +1463,28 @@
         },
         "smithy.api#documentation": "Delete a DependencyOfRelationship",
         "com.distilled.openapi#apiVersion": "2026-08-01"
+      }
+    },
+    "com.azure.relationships#DeleteDependencyOfRelationshipResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.relationships#DeleteDependencyOfRelationshipRequest": {
@@ -1467,6 +1561,20 @@
           "target": "com.azure.relationships#DependencyOfRelationshipProperties",
           "traits": {
             "smithy.api#documentation": "The resource-specific properties for this resource."
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -1673,6 +1781,71 @@
       "traits": {
         "smithy.api#title": "Azure Relationships",
         "smithy.api#documentation": "Azure Relationships API — merged from the relationships resource-manager specs (latest stable api-version per resource provider)."
+      }
+    },
+    "com.azure.relationships#ServiceGroupMemberRelationshipPropertiesPreviewInput": {
+      "type": "structure",
+      "members": {
+        "targetId": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "The service group the scoped resource joins, e.g. `/providers/Microsoft.Management/serviceGroups/{name}`.",
+            "smithy.api#required": {}
+          }
+        },
+        "targetTenant": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "The tenant of the target service group."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#documentation": "ServiceGroupMember relationship properties (2023-09-01-preview request shape)."
+      }
+    },
+    "com.azure.relationships#ServiceGroupMemberRelationshipPropertiesPreview": {
+      "type": "structure",
+      "members": {
+        "targetId": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "The service group the scoped resource joins."
+          }
+        },
+        "sourceId": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "The scoped (member) resource id."
+          }
+        },
+        "targetTenant": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "The tenant of the target service group."
+          }
+        },
+        "originInformation": {
+          "target": "com.azure.relationships#RelationshipOriginInformation",
+          "traits": {
+            "smithy.api#documentation": "Information about the origin of the relationship."
+          }
+        },
+        "metadata": {
+          "target": "com.azure.relationships#RelationshipMetadata",
+          "traits": {
+            "smithy.api#documentation": "Metadata about the relationship."
+          }
+        },
+        "provisioningState": {
+          "target": "com.azure.relationships#ProvisioningState",
+          "traits": {
+            "smithy.api#documentation": "The provisioning state of the relationship."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#documentation": "ServiceGroupMember relationship properties (2023-09-01-preview response shape)."
       }
     }
   }
