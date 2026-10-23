@@ -618,17 +618,39 @@
         "target": "com.azure.web#CreateStaticSiteZipDeploymentForStaticSiteRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#CreateStaticSiteZipDeploymentForStaticSiteResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/zipdeploy",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Deploys zipped content to a static site.\n\nDescription for Deploys zipped content to a static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
+      }
+    },
+    "com.azure.web#CreateStaticSiteZipDeploymentForStaticSiteResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#CreateStaticSiteZipDeploymentForStaticSiteRequest": {
@@ -726,10 +748,10 @@
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps/{functionAppName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Detach the user provided function app from the static site\n\nDescription for Detach the user provided function app from the static site",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#DetachStaticSiteUserProvidedFunctionAppFromStaticSiteRequest": {
@@ -785,10 +807,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps/{functionAppName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Register a user provided function app with a static site\n\nDescription for Register a user provided function app with a static site",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#RegisterStaticSiteUserProvidedFunctionAppWithStaticSiteResponse": {
@@ -828,6 +850,13 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -1061,10 +1090,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps/{functionAppName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the details of the user provided function app registered with a static site\n\nDescription for Gets the details of the user provided function app registered with a static site",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteUserProvidedFunctionAppForStaticSiteResponse": {
@@ -1164,10 +1193,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the details of the user provided function apps registered with a static site\n\nDescription for Gets the details of the user provided function apps registered with a static site",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSiteUserProvidedFunctionAppsCollection": {
@@ -1289,10 +1318,10 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/showDatabaseConnections",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Returns details of database connections for a static site\n\nReturns details of database connections for a static site",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#DatabaseConnectionCollection": {
@@ -1490,10 +1519,10 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/resetapikey",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Resets the api key for an existing static site.\n\nDescription for Resets the api key for an existing static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#ResetStaticSiteStaticSiteApiKeyRequest": {
@@ -1573,10 +1602,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateLinkResources",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the private link resources\n\nDescription for Gets the private link resources",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#PrivateLinkResourcesWrapper": {
@@ -1723,10 +1752,10 @@
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections/{privateEndpointConnectionName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Deletes a private endpoint connection\n\nDescription for Deletes a private endpoint connection",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#DeleteStaticSitePrivateEndpointConnectionResponse": {
@@ -1797,10 +1826,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections/{privateEndpointConnectionName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Approves or rejects a private endpoint connection\n\nDescription for Approves or rejects a private endpoint connection",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSitesApproveOrRejectPrivateEndpointConnectionResponse": {
@@ -1840,6 +1869,13 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -2029,10 +2065,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections/{privateEndpointConnectionName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets a private endpoint connection\n\nDescription for Gets a private endpoint connection",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSitePrivateEndpointConnectionResponse": {
@@ -2132,10 +2168,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the list of private endpoint connections associated with a static site\n\nDescription for Gets the list of private endpoint connections associated with a static site",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#PrivateEndpointConnectionCollection": {
@@ -2257,10 +2293,10 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/listSecrets",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Lists the secrets for an existing static site.\n\nDescription for Lists the secrets for an existing static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#ListStaticSiteStaticSiteSecretsResponse": {
@@ -2358,10 +2394,10 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/listFunctionAppSettings",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the application settings of a static site.\n\nDescription for Gets the application settings of a static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#ListStaticSiteStaticSiteFunctionAppSettingsResponse": {
@@ -2459,10 +2495,10 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/listConfiguredRoles",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Lists the roles configured for the static site.\n\nDescription for Lists the roles configured for the static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#ListStaticSiteStaticSiteConfiguredRolesResponse": {
@@ -2557,10 +2593,10 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/listAppSettings",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the application settings of a static site.\n\nDescription for Gets the application settings of a static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#ListStaticSiteStaticSiteAppSettingsResponse": {
@@ -2651,17 +2687,39 @@
         "target": "com.azure.web#ValidateStaticSiteBackendRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#ValidateStaticSiteBackendResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/linkedBackends/{linkedBackendName}/validate",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Validates that a backend can be linked to a static site\n\nValidates that a backend can be linked to a static site",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
+      }
+    },
+    "com.azure.web#ValidateStaticSiteBackendResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#ValidateStaticSiteBackendRequest": {
@@ -2749,10 +2807,10 @@
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/linkedBackends/{linkedBackendName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Unlink a backend from a static site\n\nUnlink a backend from a static site",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#UnlinkStaticSiteBackendRequest": {
@@ -2815,10 +2873,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/linkedBackends/{linkedBackendName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Link backend to a static site\n\nLink backend to a static site",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSitesLinkBackendResponse": {
@@ -2858,6 +2916,13 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -2962,10 +3027,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/linkedBackends/{linkedBackendName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Returns the details of a linked backend linked to a static site by name\n\nReturns the details of a linked backend linked to a static site by name",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteLinkedBackendResponse": {
@@ -3065,10 +3130,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/linkedBackends",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Returns details of all backends linked to a static site\n\nReturns details of all backends linked to a static site",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSiteLinkedBackendsCollection": {
@@ -3190,10 +3255,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/functions",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the functions of a static site.\n\nDescription for Gets the functions of a static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSiteFunctionOverviewCollection": {
@@ -3342,17 +3407,39 @@
         "target": "com.azure.web#DetachStaticSiteStaticSiteRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#DetachStaticSiteStaticSiteResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/detach",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Detaches a static site.\n\nDescription for Detaches a static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
+      }
+    },
+    "com.azure.web#DetachStaticSiteStaticSiteResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#DetachStaticSiteStaticSiteRequest": {
@@ -3400,10 +3487,10 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections/{databaseConnectionName}/show",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Returns details of a database connection for a static site by name\n\nReturns details of a database connection for a static site by name",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteDatabaseConnectionWithDetailsResponse": {
@@ -3503,10 +3590,10 @@
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections/{databaseConnectionName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Delete a database connection for a static site\n\nDelete a database connection for a static site",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#DeleteStaticSiteDatabaseConnectionRequest": {
@@ -3562,10 +3649,10 @@
           "method": "PATCH",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections/{databaseConnectionName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Create or update a database connection for a static site\n\nDescription for Create or update a database connection for a static site",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#UpdateStaticSiteDatabaseConnectionResponse": {
@@ -3704,10 +3791,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections/{databaseConnectionName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Create or update a database connection for a static site\n\nDescription for Create or update a database connection for a static site",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSitesCreateOrUpdateDatabaseConnectionResponse": {
@@ -3854,10 +3941,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections/{databaseConnectionName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Returns overview of a database connection for a static site by name\n\nReturns overview of a database connection for a static site by name",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteDatabaseConnectionResponse": {
@@ -3957,10 +4044,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Returns overviews of database connections for a static site\n\nReturns overviews of database connections for a static site",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteDatabaseConnectionsRequest": {
@@ -4001,17 +4088,39 @@
         "target": "com.azure.web#ValidateStaticSiteCustomDomainCanBeAddedToStaticSiteRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#ValidateStaticSiteCustomDomainCanBeAddedToStaticSiteResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains/{domainName}/validate",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Validates a particular custom domain can be added to a static site.\n\nDescription for Validates a particular custom domain can be added to a static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
+      }
+    },
+    "com.azure.web#ValidateStaticSiteCustomDomainCanBeAddedToStaticSiteResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#ValidateStaticSiteCustomDomainCanBeAddedToStaticSiteRequest": {
@@ -4086,17 +4195,39 @@
         "target": "com.azure.web#DeleteStaticSiteStaticSiteCustomDomainRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#DeleteStaticSiteStaticSiteCustomDomainResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains/{domainName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Deletes a custom domain.\n\nDescription for Deletes a custom domain.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
+      }
+    },
+    "com.azure.web#DeleteStaticSiteStaticSiteCustomDomainResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#DeleteStaticSiteStaticSiteCustomDomainRequest": {
@@ -4152,10 +4283,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains/{domainName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Creates a new static site custom domain in an existing resource group and static site.\n\nDescription for Creates a new static site custom domain in an existing resource group and static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse": {
@@ -4195,6 +4326,13 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -4352,10 +4490,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains/{domainName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets an existing custom domain for a particular static site.\n\nDescription for Gets an existing custom domain for a particular static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteStaticSiteCustomDomainResponse": {
@@ -4455,10 +4593,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets all static site custom domains for a particular static site.\n\nDescription for Gets all static site custom domains for a particular static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSiteCustomDomainOverviewCollection": {
@@ -4580,10 +4718,10 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/createUserInvitation",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Creates an invitation link for a user with the role\n\nDescription for Creates an invitation link for a user with the role",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#CreateStaticSiteUserRolesInvitationLinkResponse": {
@@ -4739,10 +4877,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/config/functionappsettings",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Creates or updates the function app settings of a static site.\n\nDescription for Creates or updates the function app settings of a static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResponse": {
@@ -4864,10 +5002,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/config/appsettings",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Creates or updates the app settings of a static site.\n\nDescription for Creates or updates the app settings of a static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSitesCreateOrUpdateStaticSiteAppSettingsResponse": {
@@ -4982,17 +5120,39 @@
         "target": "com.azure.web#CreateStaticSiteZipDeploymentForStaticSiteBuildRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#CreateStaticSiteZipDeploymentForStaticSiteBuildResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/zipdeploy",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Deploys zipped content to a specific environment of a static site.\n\nDescription for Deploys zipped content to a specific environment of a static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
+      }
+    },
+    "com.azure.web#CreateStaticSiteZipDeploymentForStaticSiteBuildResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#CreateStaticSiteZipDeploymentForStaticSiteBuildRequest": {
@@ -5060,10 +5220,10 @@
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/userProvidedFunctionApps/{functionAppName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Detach the user provided function app from the static site build\n\nDescription for Detach the user provided function app from the static site build",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#DetachStaticSiteUserProvidedFunctionAppFromStaticSiteBuildRequest": {
@@ -5127,10 +5287,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/userProvidedFunctionApps/{functionAppName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Register a user provided function app with a static site build\n\nDescription for Register a user provided function app with a static site build",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#RegisterStaticSiteUserProvidedFunctionAppWithStaticSiteBuildResponse": {
@@ -5170,6 +5330,13 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -5257,10 +5424,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/userProvidedFunctionApps/{functionAppName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the details of the user provided function app registered with a static site build\n\nDescription for Gets the details of the user provided function app registered with a static site build",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteUserProvidedFunctionAppForStaticSiteBuildResponse": {
@@ -5368,10 +5535,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/userProvidedFunctionApps",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the details of the user provided function apps registered with a static site build\n\nDescription for Gets the details of the user provided function apps registered with a static site build",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteUserProvidedFunctionAppsForStaticSiteBuildRequest": {
@@ -5427,10 +5594,10 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/showDatabaseConnections",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Returns details of database connections for a static site build\n\nReturns details of database connections for a static site build",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteBuildDatabaseConnectionsWithDetailsRequest": {
@@ -5486,10 +5653,10 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/listFunctionAppSettings",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the application settings of a static site build.\n\nDescription for Gets the application settings of a static site build.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#ListStaticSiteStaticSiteBuildFunctionAppSettingsResponse": {
@@ -5595,10 +5762,10 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/listAppSettings",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the application settings of a static site build.\n\nDescription for Gets the application settings of a static site build.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#ListStaticSiteStaticSiteBuildAppSettingsResponse": {
@@ -5697,17 +5864,39 @@
         "target": "com.azure.web#ValidateStaticSiteBackendForBuildRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#ValidateStaticSiteBackendForBuildResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/linkedBackends/{linkedBackendName}/validate",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Validates that a backend can be linked to a static site build\n\nValidates that a backend can be linked to a static site build",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
+      }
+    },
+    "com.azure.web#ValidateStaticSiteBackendForBuildResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#ValidateStaticSiteBackendForBuildRequest": {
@@ -5783,10 +5972,10 @@
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/linkedBackends/{linkedBackendName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Unlink a backend from a static site build\n\nUnlink a backend from a static site build",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#UnlinkStaticSiteBackendFromBuildRequest": {
@@ -5857,10 +6046,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/linkedBackends/{linkedBackendName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Link backend to a static site build\n\nLink backend to a static site build",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSitesLinkBackendToBuildResponse": {
@@ -5900,6 +6089,13 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -5980,10 +6176,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/linkedBackends/{linkedBackendName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Returns the details of a linked backend linked to a static site build by name\n\nReturns the details of a linked backend linked to a static site build by name",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteLinkedBackendForBuildResponse": {
@@ -6091,10 +6287,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/linkedBackends",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Returns details of all backends linked to a static site build\n\nReturns details of all backends linked to a static site build",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteLinkedBackendsForBuildRequest": {
@@ -6150,10 +6346,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/functions",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the functions of a particular static site build.\n\nDescription for Gets the functions of a particular static site build.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#ListStaticSiteStaticSiteBuildFunctionsRequest": {
@@ -6209,10 +6405,10 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections/{databaseConnectionName}/show",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Returns details of a database connection for a static site build by name\n\nReturns details of a database connection for a static site build by name",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteBuildDatabaseConnectionWithDetailsResponse": {
@@ -6320,10 +6516,10 @@
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections/{databaseConnectionName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Delete a database connection for a static site build\n\nDelete a database connection for a static site build",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#DeleteStaticSiteBuildDatabaseConnectionRequest": {
@@ -6387,10 +6583,10 @@
           "method": "PATCH",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections/{databaseConnectionName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Create or update a database connection for a static site build\n\nDescription for Create or update a database connection for a static site build",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#UpdateStaticSiteBuildDatabaseConnectionResponse": {
@@ -6504,10 +6700,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections/{databaseConnectionName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Create or update a database connection for a static site build\n\nDescription for Create or update a database connection for a static site build",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSitesCreateOrUpdateBuildDatabaseConnectionResponse": {
@@ -6627,10 +6823,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections/{databaseConnectionName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Returns overview of a database connection for a static site build by name\n\nReturns overview of a database connection for a static site build by name",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteBuildDatabaseConnectionResponse": {
@@ -6738,10 +6934,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Returns overviews of database connections for a static site build\n\nReturns overviews of database connections for a static site build",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteBuildDatabaseConnectionsRequest": {
@@ -6797,10 +6993,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/config/functionappsettings",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Creates or updates the function app settings of a static site build.\n\nDescription for Creates or updates the function app settings of a static site build.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse": {
@@ -6930,10 +7126,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/config/appsettings",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Creates or updates the app settings of a static site build.\n\nDescription for Creates or updates the app settings of a static site build.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSitesCreateOrUpdateStaticSiteBuildAppSettingsResponse": {
@@ -7056,17 +7252,39 @@
         "target": "com.azure.web#DeleteStaticSiteStaticSiteBuildRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#DeleteStaticSiteStaticSiteBuildResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Deletes a static site build.\n\nDescription for Deletes a static site build.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
+      }
+    },
+    "com.azure.web#DeleteStaticSiteStaticSiteBuildResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#DeleteStaticSiteStaticSiteBuildRequest": {
@@ -7122,10 +7340,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the details of a static site build.\n\nDescription for Gets the details of a static site build.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteStaticSiteBuildResponse": {
@@ -7513,10 +7731,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets all static site builds for a particular static site.\n\nDescription for Gets all static site builds for a particular static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSiteBuildCollection": {
@@ -7638,10 +7856,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/basicAuth/{basicAuthName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Adds or updates basic auth for a static site.\n\nDescription for Adds or updates basic auth for a static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSitesCreateOrUpdateBasicAuthResponse": {
@@ -7857,10 +8075,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/basicAuth/{basicAuthName}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the basic auth properties for a static site.\n\nDescription for Gets the basic auth properties for a static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteBasicAuthResponse": {
@@ -7972,10 +8190,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/basicAuth",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the basic auth properties for a static site as a collection.\n\nDescription for Gets the basic auth properties for a static site as a collection.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSiteBasicAuthPropertiesCollection": {
@@ -8097,10 +8315,10 @@
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/authproviders/{authprovider}/users/{userid}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Deletes the user entry from the static site.\n\nDescription for Deletes the user entry from the static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#DeleteStaticSiteStaticSiteUserRequest": {
@@ -8161,10 +8379,10 @@
           "method": "PATCH",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/authproviders/{authprovider}/users/{userid}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Updates a user entry with the listed roles\n\nDescription for Updates a user entry with the listed roles",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#UpdateStaticSiteStaticSiteUserResponse": {
@@ -8321,10 +8539,10 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/authproviders/{authprovider}/listUsers",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the list of users of a static site.\n\nDescription for Gets the list of users of a static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSiteUserCollection": {
@@ -8440,17 +8658,39 @@
         "target": "com.azure.web#DeleteStaticSiteStaticSiteRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#DeleteStaticSiteStaticSiteResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Deletes a static site.\n\nDescription for Deletes a static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
+      }
+    },
+    "com.azure.web#DeleteStaticSiteStaticSiteResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#DeleteStaticSiteStaticSiteRequest": {
@@ -8498,10 +8738,10 @@
           "method": "PATCH",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Creates a new static site in an existing resource group, or updates an existing static site.\n\nDescription for Creates a new static site in an existing resource group, or updates an existing static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#UpdateStaticSiteStaticSiteResponse": {
@@ -9549,10 +9789,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Creates a new static site in an existing resource group, or updates an existing static site.\n\nDescription for Creates a new static site in an existing resource group, or updates an existing static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSitesCreateOrUpdateStaticSiteResponse": {
@@ -9617,6 +9857,13 @@
           "target": "com.azure.web#ManagedServiceIdentity",
           "traits": {
             "smithy.api#documentation": "Managed service identity."
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -9769,10 +10016,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the details of a static site.\n\nDescription for Gets the details of a static site.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSiteStaticSiteResponse": {
@@ -9901,10 +10148,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets all static sites in the specified resource group.\n\nDescription for Gets all static sites in the specified resource group.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSiteCollection": {
@@ -13561,6 +13808,20 @@
           "traits": {
             "smithy.api#documentation": "Kind of resource."
           }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
         }
       },
       "traits": {
@@ -13896,7 +14157,7 @@
         "target": "com.azure.web#SwapWebAppSlotWithProductionRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#SwapWebAppSlotWithProductionResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -13907,6 +14168,28 @@
         },
         "smithy.api#documentation": "Swaps two deployment slots of an app.\n\nDescription for Swaps two deployment slots of an app.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#SwapWebAppSlotWithProductionResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#SwapWebAppSlotWithProductionRequest": {
@@ -16560,6 +16843,20 @@
           "traits": {
             "smithy.api#documentation": "Kind of resource."
           }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
         }
       },
       "traits": {
@@ -16845,7 +17142,7 @@
         "target": "com.azure.web#SwapWebAppSlotSlotRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#SwapWebAppSlotSlotResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -16856,6 +17153,28 @@
         },
         "smithy.api#documentation": "Swaps two deployment slots of an app.\n\nDescription for Swaps two deployment slots of an app.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#SwapWebAppSlotSlotResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#SwapWebAppSlotSlotRequest": {
@@ -17109,6 +17428,20 @@
           "traits": {
             "smithy.api#documentation": "Kind of resource."
           }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
         }
       },
       "traits": {
@@ -17118,20 +17451,8 @@
     "com.azure.web#SiteExtensionInfoProperties": {
       "type": "structure",
       "members": {
-        "extension_id": {
-          "target": "smithy.api#String",
-          "traits": {
-            "smithy.api#documentation": "Site extension ID."
-          }
-        },
         "title": {
           "target": "smithy.api#String"
-        },
-        "extension_type": {
-          "target": "com.azure.web#SiteExtensionType",
-          "traits": {
-            "smithy.api#documentation": "Site extension type."
-          }
         },
         "summary": {
           "target": "smithy.api#String",
@@ -17234,6 +17555,18 @@
           "traits": {
             "smithy.api#documentation": "Site Extension comment."
           }
+        },
+        "id": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Site extension ID."
+          }
+        },
+        "type": {
+          "target": "com.azure.web#SiteExtensionType",
+          "traits": {
+            "smithy.api#documentation": "Site extension type."
+          }
         }
       },
       "traits": {
@@ -17310,6 +17643,12 @@
             "smithy.api#httpLabel": {},
             "smithy.api#required": {},
             "smithy.api#documentation": "Site extension name."
+          }
+        },
+        "properties": {
+          "target": "com.azure.web#SiteExtensionInstallProperties",
+          "traits": {
+            "smithy.api#documentation": "Install properties; the request body must be present even when empty."
           }
         }
       },
@@ -18287,7 +18626,7 @@
         "target": "com.azure.web#RestoreWebAppSnapshotSlotRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#RestoreWebAppSnapshotSlotResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -18298,6 +18637,28 @@
         },
         "smithy.api#documentation": "Restores a web app from a snapshot.\n\nDescription for Restores a web app from a snapshot.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#RestoreWebAppSnapshotSlotResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#RestoreWebAppSnapshotSlotRequest": {
@@ -18423,7 +18784,7 @@
         "target": "com.azure.web#RestoreWebAppFromDeletedAppSlotRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#RestoreWebAppFromDeletedAppSlotResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -18434,6 +18795,28 @@
         },
         "smithy.api#documentation": "Restores a deleted web app to this web app.\n\nDescription for Restores a deleted web app to this web app.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#RestoreWebAppFromDeletedAppSlotResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#RestoreWebAppFromDeletedAppSlotRequest": {
@@ -18526,7 +18909,7 @@
         "target": "com.azure.web#RestoreWebAppFromBackupBlobSlotRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#RestoreWebAppFromBackupBlobSlotResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -18537,6 +18920,28 @@
         },
         "smithy.api#documentation": "Restores an app from a backup blob in Azure Storage.\n\nDescription for Restores an app from a backup blob in Azure Storage.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#RestoreWebAppFromBackupBlobSlotResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#RestoreWebAppFromBackupBlobSlotRequest": {
@@ -21194,6 +21599,13 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -25894,6 +26306,20 @@
           "traits": {
             "smithy.api#documentation": "Kind of resource."
           }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
         }
       },
       "traits": {
@@ -28863,10 +29289,10 @@
             "smithy.api#documentation": "The name of the key."
           }
         },
-        "value": {
-          "target": "smithy.api#String",
+        "properties": {
+          "target": "com.azure.web#HostSecretProperties",
           "traits": {
-            "smithy.api#documentation": "Key value"
+            "smithy.api#documentation": "The key to create or update."
           }
         }
       },
@@ -29266,10 +29692,10 @@
             "smithy.api#required": {}
           }
         },
-        "value": {
-          "target": "smithy.api#String",
+        "properties": {
+          "target": "com.azure.web#FunctionSecretProperties",
           "traits": {
-            "smithy.api#documentation": "Key value"
+            "smithy.api#documentation": "The key to create or update."
           }
         }
       },
@@ -29400,6 +29826,20 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -29963,6 +30403,20 @@
           "traits": {
             "smithy.api#documentation": "Kind of resource."
           }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
         }
       },
       "traits": {
@@ -30257,7 +30711,7 @@
     "com.azure.web#IdentifierProperties": {
       "type": "structure",
       "members": {
-        "id": {
+        "value": {
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "String representation of the identity."
@@ -34130,6 +34584,13 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -38613,6 +39074,13 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -45095,7 +45563,7 @@
         "target": "com.azure.web#RestoreWebAppSlotRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#RestoreWebAppSlotResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -45106,6 +45574,28 @@
         },
         "smithy.api#documentation": "Restores a specific backup to another app (or deployment slot, if specified).\n\nDescription for Restores a specific backup to another app (or deployment slot, if specified).",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#RestoreWebAppSlotResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#RestoreWebAppSlotRequest": {
@@ -47989,6 +48479,13 @@
           "traits": {
             "smithy.api#documentation": "Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference for details supported values for kind."
           }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
         }
       },
       "traits": {
@@ -48791,6 +49288,20 @@
           "traits": {
             "smithy.api#documentation": "Kind of resource."
           }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
         }
       },
       "traits": {
@@ -48830,6 +49341,12 @@
             "smithy.api#httpLabel": {},
             "smithy.api#required": {},
             "smithy.api#documentation": "Site extension name."
+          }
+        },
+        "properties": {
+          "target": "com.azure.web#SiteExtensionInstallProperties",
+          "traits": {
+            "smithy.api#documentation": "Install properties; the request body must be present even when empty."
           }
         }
       },
@@ -49325,7 +49842,7 @@
         "target": "com.azure.web#RestoreWebAppSnapshotRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#RestoreWebAppSnapshotResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -49336,6 +49853,28 @@
         },
         "smithy.api#documentation": "Restores a web app from a snapshot.\n\nDescription for Restores a web app from a snapshot.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#RestoreWebAppSnapshotResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#RestoreWebAppSnapshotRequest": {
@@ -49388,7 +49927,7 @@
         "target": "com.azure.web#RestoreWebAppFromDeletedAppRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#RestoreWebAppFromDeletedAppResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -49399,6 +49938,28 @@
         },
         "smithy.api#documentation": "Restores a deleted web app to this web app.\n\nDescription for Restores a deleted web app to this web app.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#RestoreWebAppFromDeletedAppResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#RestoreWebAppFromDeletedAppRequest": {
@@ -49451,7 +50012,7 @@
         "target": "com.azure.web#RestoreWebAppFromBackupBlobRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#RestoreWebAppFromBackupBlobResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -49462,6 +50023,28 @@
         },
         "smithy.api#documentation": "Restores an app from a backup blob in Azure Storage.\n\nDescription for Restores an app from a backup blob in Azure Storage.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#RestoreWebAppFromBackupBlobResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#RestoreWebAppFromBackupBlobRequest": {
@@ -51704,6 +52287,13 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -54687,7 +55277,7 @@
         "target": "com.azure.web#MigrateWebAppMySqlRequest"
       },
       "output": {
-        "target": "com.azure.web#Operation"
+        "target": "com.azure.web#MigrateWebAppMySqlResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -54700,7 +55290,7 @@
         "com.distilled.openapi#apiVersion": "2026-07-15"
       }
     },
-    "com.azure.web#Operation": {
+    "com.azure.web#MigrateWebAppMySqlResponse": {
       "type": "structure",
       "members": {
         "id": {
@@ -54750,10 +55340,18 @@
           "traits": {
             "smithy.api#documentation": "Applicable only for stamp operation ids."
           }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
         }
       },
       "traits": {
-        "smithy.api#documentation": "An operation on a resource."
+        "smithy.api#documentation": "An operation on a resource.",
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#OperationErrorsList": {
@@ -54902,6 +55500,13 @@
           "target": "com.azure.web#StorageMigrationResponseProperties",
           "traits": {
             "smithy.api#documentation": "StorageMigrationResponse resource specific properties"
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -55988,6 +56593,20 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -58541,7 +59160,7 @@
         "target": "com.azure.web#TriggerRunWorkflowRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#TriggerRunWorkflowResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -58552,6 +59171,28 @@
         },
         "smithy.api#documentation": "Runs a workflow trigger.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#TriggerRunWorkflowResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#TriggerRunWorkflowRequest": {
@@ -58767,7 +59408,7 @@
         "target": "com.azure.web#WorkflowTriggerHistoriesResubmitRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#WorkflowTriggerHistoriesResubmitResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -58778,6 +59419,28 @@
         },
         "smithy.api#documentation": "Resubmits a workflow run based on the trigger history.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#WorkflowTriggerHistoriesResubmitResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#WorkflowTriggerHistoriesResubmitRequest": {
@@ -63151,10 +63814,10 @@
             "smithy.api#documentation": "The name of the key."
           }
         },
-        "value": {
-          "target": "smithy.api#String",
+        "properties": {
+          "target": "com.azure.web#HostSecretProperties",
           "traits": {
-            "smithy.api#documentation": "Key value"
+            "smithy.api#documentation": "The key to create or update."
           }
         }
       },
@@ -63519,10 +64182,10 @@
             "smithy.api#required": {}
           }
         },
-        "value": {
-          "target": "smithy.api#String",
+        "properties": {
+          "target": "com.azure.web#FunctionSecretProperties",
           "traits": {
-            "smithy.api#documentation": "Key value"
+            "smithy.api#documentation": "The key to create or update."
           }
         }
       },
@@ -63645,6 +64308,20 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -63918,6 +64595,12 @@
             "smithy.api#required": {},
             "smithy.api#documentation": "Name of the app."
           }
+        },
+        "properties": {
+          "target": "com.azure.web#OneDeployProperties",
+          "traits": {
+            "smithy.api#documentation": "The package to deploy."
+          }
         }
       },
       "traits": {
@@ -64135,6 +64818,20 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -66234,6 +66931,13 @@
           "traits": {
             "smithy.api#documentation": "Kind of resource."
           }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
         }
       },
       "traits": {
@@ -67907,6 +68611,13 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -71142,7 +71853,7 @@
         "target": "com.azure.web#RestoreWebAppRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#RestoreWebAppResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -71153,6 +71864,28 @@
         },
         "smithy.api#documentation": "Restores a specific backup to another app (or deployment slot, if specified).\n\nDescription for Restores a specific backup to another app (or deployment slot, if specified).",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#RestoreWebAppResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#RestoreWebAppRequest": {
@@ -72100,6 +72833,13 @@
           "traits": {
             "smithy.api#documentation": "Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference for details supported values for kind."
           }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
         }
       },
       "traits": {
@@ -72398,6 +73138,62 @@
         },
         "smithy.api#documentation": "Recycles a managed instance worker machine.\n\nDescription for Recycles a managed instance worker machine.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#Operation": {
+      "type": "structure",
+      "members": {
+        "id": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Operation ID."
+          }
+        },
+        "name": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Operation name."
+          }
+        },
+        "status": {
+          "target": "com.azure.web#OperationStatus",
+          "traits": {
+            "smithy.api#documentation": "The current status of the operation."
+          }
+        },
+        "errors": {
+          "target": "com.azure.web#OperationErrorsList",
+          "traits": {
+            "smithy.api#documentation": "Any errors associate with the operation."
+          }
+        },
+        "createdTime": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Time when operation has started."
+          }
+        },
+        "modifiedTime": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Time when operation has been updated."
+          }
+        },
+        "expirationTime": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Time when operation will expire."
+          }
+        },
+        "geoMasterOperationId": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Applicable only for stamp operation ids."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#documentation": "An operation on a resource."
       }
     },
     "com.azure.web#AppServicePlansRecycleManagedInstanceWorkerRequest": {
@@ -75560,6 +76356,13 @@
           "traits": {
             "smithy.api#documentation": "Managed service identity."
           }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
         }
       },
       "traits": {
@@ -76185,7 +76988,7 @@
         "target": "com.azure.web#DeleteKubeEnvironmentRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#DeleteKubeEnvironmentResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -76196,6 +76999,28 @@
         },
         "smithy.api#documentation": "Delete a Kubernetes Environment.\n\nDescription for Delete a Kubernetes Environment.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#DeleteKubeEnvironmentResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#DeleteKubeEnvironmentRequest": {
@@ -76755,6 +77580,20 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -78036,6 +78875,13 @@
           "traits": {
             "smithy.api#documentation": "Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference for details supported values for kind."
           }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
         }
       },
       "traits": {
@@ -78404,7 +79250,7 @@
         "target": "com.azure.web#AppServiceEnvironmentsUpgradeRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#AppServiceEnvironmentsUpgradeResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -78415,6 +79261,28 @@
         },
         "smithy.api#documentation": "Initiate an upgrade of an App Service Environment if one is available.\n\nDescription for Initiate an upgrade of an App Service Environment if one is available.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#AppServiceEnvironmentsUpgradeResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#AppServiceEnvironmentsUpgradeRequest": {
@@ -78506,7 +79374,7 @@
         "target": "com.azure.web#SuspendAppServiceEnvironmentRequest"
       },
       "output": {
-        "target": "com.azure.web#WebAppCollection"
+        "target": "com.azure.web#SuspendAppServiceEnvironmentResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -78517,6 +79385,35 @@
         },
         "smithy.api#documentation": "Suspend an App Service Environment.\n\nDescription for Suspend an App Service Environment.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#SuspendAppServiceEnvironmentResponse": {
+      "type": "structure",
+      "members": {
+        "value": {
+          "target": "com.azure.web#WebAppCollectionValueList",
+          "traits": {
+            "smithy.api#documentation": "The Site items on this page",
+            "smithy.api#required": {}
+          }
+        },
+        "nextLink": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "The link to the next page of items"
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#documentation": "Collection of App Service apps.",
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#SuspendAppServiceEnvironmentRequest": {
@@ -78666,7 +79563,7 @@
         "target": "com.azure.web#ResumeAppServiceEnvironmentRequest"
       },
       "output": {
-        "target": "com.azure.web#WebAppCollection"
+        "target": "com.azure.web#ResumeAppServiceEnvironmentResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -78677,6 +79574,35 @@
         },
         "smithy.api#documentation": "Resume an App Service Environment.\n\nDescription for Resume an App Service Environment.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#ResumeAppServiceEnvironmentResponse": {
+      "type": "structure",
+      "members": {
+        "value": {
+          "target": "com.azure.web#WebAppCollectionValueList",
+          "traits": {
+            "smithy.api#documentation": "The Site items on this page",
+            "smithy.api#required": {}
+          }
+        },
+        "nextLink": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "The link to the next page of items"
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#documentation": "Collection of App Service apps.",
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#ResumeAppServiceEnvironmentRequest": {
@@ -79375,6 +80301,13 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -80225,6 +81158,13 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference for details supported values for kind."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
           }
         }
       },
@@ -81495,7 +82435,7 @@
         "target": "com.azure.web#AppServiceEnvironmentsChangeVnetRequest"
       },
       "output": {
-        "target": "com.azure.web#WebAppCollection"
+        "target": "com.azure.web#AppServiceEnvironmentsChangeVnetResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -81506,6 +82446,35 @@
         },
         "smithy.api#documentation": "Move an App Service Environment to a different VNET.\n\nDescription for Move an App Service Environment to a different VNET.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#AppServiceEnvironmentsChangeVnetResponse": {
+      "type": "structure",
+      "members": {
+        "value": {
+          "target": "com.azure.web#WebAppCollectionValueList",
+          "traits": {
+            "smithy.api#documentation": "The Site items on this page",
+            "smithy.api#required": {}
+          }
+        },
+        "nextLink": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "The link to the next page of items"
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#documentation": "Collection of App Service apps.",
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#AppServiceEnvironmentsChangeVnetRequest": {
@@ -81977,7 +82946,7 @@
         "target": "com.azure.web#DeleteAppServiceEnvironmentRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.web#DeleteAppServiceEnvironmentResponse"
       },
       "traits": {
         "smithy.api#http": {
@@ -81988,6 +82957,28 @@
         },
         "smithy.api#documentation": "Delete an App Service Environment.\n\nDescription for Delete an App Service Environment.",
         "com.distilled.openapi#apiVersion": "2026-07-15"
+      }
+    },
+    "com.azure.web#DeleteAppServiceEnvironmentResponse": {
+      "type": "structure",
+      "members": {
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.web#DeleteAppServiceEnvironmentRequest": {
@@ -82582,6 +83573,20 @@
           "target": "smithy.api#String",
           "traits": {
             "smithy.api#documentation": "Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference for details supported values for kind."
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -84398,10 +85403,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/providers/Microsoft.Web/staticSites",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Get all Static Sites for a subscription.\n\nDescription for Get all Static Sites for a subscription.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#ListStaticSitesRequest": {
@@ -85062,10 +86067,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/staticSitesOperationStatuses/{operationId}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the status of a static site async operation.\n\nGets the status of a static site async operation.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#StaticSitesOperationStatus": {
@@ -85183,10 +86188,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/staticSitesOperationResults/{operationId}",
           "code": 200,
-          "apiVersion": "2026-07-15"
+          "apiVersion": "2025-05-01"
         },
         "smithy.api#documentation": "Gets the result of a static site async operation.\n\nGets the result of a static site async operation.",
-        "com.distilled.openapi#apiVersion": "2026-07-15"
+        "com.distilled.openapi#apiVersion": "2025-05-01"
       }
     },
     "com.azure.web#GetStaticSitesAsyncOperationOperationResultResponse": {
@@ -85214,6 +86219,20 @@
           "target": "com.azure.web#SystemData",
           "traits": {
             "smithy.api#documentation": "Azure Resource Manager metadata containing createdBy and modifiedBy information."
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -91473,6 +92492,97 @@
       "traits": {
         "smithy.api#title": "Azure Web",
         "smithy.api#documentation": "Azure Web API — merged from the web resource-manager specs (latest stable api-version per resource provider)."
+      }
+    },
+    "com.azure.web#OneDeployProperties": {
+      "type": "structure",
+      "members": {
+        "packageUri": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "URL (typically a SAS URL) of the package to deploy."
+          }
+        },
+        "type": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Package type, e.g. `zip`."
+          }
+        },
+        "path": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Target path of the package on the app."
+          }
+        },
+        "remoteBuild": {
+          "target": "smithy.api#Boolean",
+          "traits": {
+            "smithy.api#documentation": "Whether the platform builds the package."
+          }
+        },
+        "restart": {
+          "target": "smithy.api#Boolean",
+          "traits": {
+            "smithy.api#documentation": "Whether the app restarts after the deployment."
+          }
+        },
+        "clean": {
+          "target": "smithy.api#Boolean",
+          "traits": {
+            "smithy.api#documentation": "Whether files not in the package are removed."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#documentation": "OneDeploy request."
+      }
+    },
+    "com.azure.web#FunctionSecretProperties": {
+      "type": "structure",
+      "members": {
+        "name": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Key name"
+          }
+        },
+        "value": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Key value; omit it to have Azure generate one."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#documentation": "Function key to create or update."
+      }
+    },
+    "com.azure.web#HostSecretProperties": {
+      "type": "structure",
+      "members": {
+        "name": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Key name"
+          }
+        },
+        "value": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#documentation": "Key value; omit it to have Azure generate one."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#documentation": "Host key to create or update."
+      }
+    },
+    "com.azure.web#SiteExtensionInstallProperties": {
+      "type": "structure",
+      "members": {},
+      "traits": {
+        "smithy.api#documentation": "Site extension install request properties (none are required)."
       }
     }
   }

@@ -31,10 +31,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}/storageTaskAssignments",
           "code": 200,
-          "apiVersion": "2026-03-01"
+          "apiVersion": "2023-01-01"
         },
         "smithy.api#documentation": "Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.",
-        "com.distilled.openapi#apiVersion": "2026-03-01"
+        "com.distilled.openapi#apiVersion": "2023-01-01"
       }
     },
     "com.azure.storageactions#StorageTaskAssignmentsListResult": {
@@ -126,17 +126,46 @@
         "target": "com.azure.storageactions#StopStorageTaskAllAssignmentsRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.storageactions#StopStorageTaskAllAssignmentsResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}/stopAllAssignments",
           "code": 200,
-          "apiVersion": "2026-03-01"
+          "apiVersion": "2023-01-01"
         },
         "smithy.api#documentation": "Stops all active running assignments for the storage task",
-        "com.distilled.openapi#apiVersion": "2026-03-01"
+        "com.distilled.openapi#apiVersion": "2023-01-01"
+      }
+    },
+    "com.azure.storageactions#StopStorageTaskAllAssignmentsResponse": {
+      "type": "structure",
+      "members": {
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.storageactions#StopStorageTaskAllAssignmentsRequest": {
@@ -184,10 +213,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}/reports",
           "code": 200,
-          "apiVersion": "2026-03-01"
+          "apiVersion": "2023-01-01"
         },
         "smithy.api#documentation": "Fetch the storage tasks run report summary for each assignment.",
-        "com.distilled.openapi#apiVersion": "2026-03-01"
+        "com.distilled.openapi#apiVersion": "2023-01-01"
       }
     },
     "com.azure.storageactions#StorageTaskReportSummary": {
@@ -550,17 +579,46 @@
         "target": "com.azure.storageactions#DeleteStorageTaskRequest"
       },
       "output": {
-        "target": "smithy.api#Unit"
+        "target": "com.azure.storageactions#DeleteStorageTaskResponse"
       },
       "traits": {
         "smithy.api#http": {
           "method": "DELETE",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}",
           "code": 200,
-          "apiVersion": "2026-03-01"
+          "apiVersion": "2023-01-01"
         },
         "smithy.api#documentation": "Delete the storage task resource.",
-        "com.distilled.openapi#apiVersion": "2026-03-01"
+        "com.distilled.openapi#apiVersion": "2023-01-01"
+      }
+    },
+    "com.azure.storageactions#DeleteStorageTaskResponse": {
+      "type": "structure",
+      "members": {
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
+          }
+        },
+        "location": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
+          }
+        }
+      },
+      "traits": {
+        "smithy.api#output": {}
       }
     },
     "com.azure.storageactions#DeleteStorageTaskRequest": {
@@ -608,10 +666,10 @@
           "method": "PATCH",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}",
           "code": 200,
-          "apiVersion": "2026-03-01"
+          "apiVersion": "2023-01-01"
         },
         "smithy.api#documentation": "Update storage task properties",
-        "com.distilled.openapi#apiVersion": "2026-03-01"
+        "com.distilled.openapi#apiVersion": "2023-01-01"
       }
     },
     "com.azure.storageactions#UpdateStorageTaskResponse": {
@@ -666,6 +724,27 @@
           "traits": {
             "smithy.api#documentation": "Managed service identity (system assigned and/or user assigned identities)",
             "smithy.api#required": {}
+          }
+        },
+        "azureAsyncOperation": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Azure-AsyncOperation",
+            "smithy.api#documentation": "A link to the status monitor"
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -1223,10 +1302,10 @@
           "method": "PUT",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}",
           "code": 200,
-          "apiVersion": "2026-03-01"
+          "apiVersion": "2023-01-01"
         },
         "smithy.api#documentation": "Asynchronously creates a new storage task resource with the specified parameters. If a storage task is already created and a subsequent create request is issued with different properties, the storage task properties will be updated. If a storage task is already created and a subsequent create or update request is issued with the exact same set of properties, the request will succeed.",
-        "com.distilled.openapi#apiVersion": "2026-03-01"
+        "com.distilled.openapi#apiVersion": "2023-01-01"
       }
     },
     "com.azure.storageactions#CreateStorageTaskResponse": {
@@ -1281,6 +1360,20 @@
           "traits": {
             "smithy.api#documentation": "Managed service identity (system assigned and/or user assigned identities)",
             "smithy.api#required": {}
+          }
+        },
+        "locationHeader": {
+          "target": "smithy.api#String",
+          "traits": {
+            "smithy.api#httpHeader": "Location",
+            "smithy.api#documentation": "The Location header contains the URL where the status of the long running operation can be checked."
+          }
+        },
+        "retryAfter": {
+          "target": "smithy.api#Integer",
+          "traits": {
+            "smithy.api#httpHeader": "Retry-After",
+            "smithy.api#documentation": "The Retry-After header can indicate how long the client should wait before polling the operation status."
           }
         }
       },
@@ -1459,10 +1552,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}",
           "code": 200,
-          "apiVersion": "2026-03-01"
+          "apiVersion": "2023-01-01"
         },
         "smithy.api#documentation": "Get the storage task properties",
-        "com.distilled.openapi#apiVersion": "2026-03-01"
+        "com.distilled.openapi#apiVersion": "2023-01-01"
       }
     },
     "com.azure.storageactions#GetStorageTaskResponse": {
@@ -1610,10 +1703,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks",
           "code": 200,
-          "apiVersion": "2026-03-01"
+          "apiVersion": "2023-01-01"
         },
         "smithy.api#documentation": "Lists all the storage tasks available under the given resource group.",
-        "com.distilled.openapi#apiVersion": "2026-03-01"
+        "com.distilled.openapi#apiVersion": "2023-01-01"
       }
     },
     "com.azure.storageactions#StorageTasksListResult": {
@@ -1783,10 +1876,10 @@
           "method": "GET",
           "uri": "/subscriptions/{subscriptionId}/providers/Microsoft.StorageActions/storageTasks",
           "code": 200,
-          "apiVersion": "2026-03-01"
+          "apiVersion": "2023-01-01"
         },
         "smithy.api#documentation": "Lists all the storage tasks available under the subscription.",
-        "com.distilled.openapi#apiVersion": "2026-03-01"
+        "com.distilled.openapi#apiVersion": "2023-01-01"
       }
     },
     "com.azure.storageactions#ListStorageTaskBySubscriptionRequest": {
@@ -1818,10 +1911,10 @@
           "method": "POST",
           "uri": "/subscriptions/{subscriptionId}/providers/Microsoft.StorageActions/locations/{location}/previewActions",
           "code": 200,
-          "apiVersion": "2026-03-01"
+          "apiVersion": "2023-01-01"
         },
         "smithy.api#documentation": "Runs the input conditions against input object metadata properties and designates matched objects in response.",
-        "com.distilled.openapi#apiVersion": "2026-03-01"
+        "com.distilled.openapi#apiVersion": "2023-01-01"
       }
     },
     "com.azure.storageactions#StorageTaskPreviewAction": {
@@ -2065,10 +2158,10 @@
           "method": "GET",
           "uri": "/providers/Microsoft.StorageActions/operations",
           "code": 200,
-          "apiVersion": "2026-03-01"
+          "apiVersion": "2023-01-01"
         },
         "smithy.api#documentation": "Lists all of the available Storage Actions Rest API operations.",
-        "com.distilled.openapi#apiVersion": "2026-03-01"
+        "com.distilled.openapi#apiVersion": "2023-01-01"
       }
     },
     "com.azure.storageactions#ListOperationsResponse": {

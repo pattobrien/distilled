@@ -12579,8 +12579,8 @@
         "claims": {
           "target": "com.doppler.api#PostV3workplaceserviceAccountsserviceAccountServiceAccountIdentitiesRequestConfigClaimsMap",
           "traits": {
-            "smithy.api#documentation": "Claim name, or a JSON Pointer to a nested claim, to the values it may take. `aud` and `sub` are required.",
-            "smithy.api#required": {}
+            "smithy.api#required": {},
+            "smithy.api#documentation": "Claim name, or a JSON Pointer to a nested claim, to the values it may take. `aud` and `sub` are required."
           }
         }
       },
@@ -12944,8 +12944,8 @@
         "claims": {
           "target": "com.doppler.api#PutV3workplaceserviceAccountsserviceAccountServiceAccountIdentitiesidentityIdentityRequestConfigClaimsMap",
           "traits": {
-            "smithy.api#documentation": "Claim name, or a JSON Pointer to a nested claim, to the values it may take. `aud` and `sub` are required.",
-            "smithy.api#required": {}
+            "smithy.api#required": {},
+            "smithy.api#documentation": "Claim name, or a JSON Pointer to a nested claim, to the values it may take. `aud` and `sub` are required."
           }
         }
       },
