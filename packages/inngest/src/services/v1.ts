@@ -12,6 +12,19 @@ const __s: any[] = [];
 
 export type { InngestOpError, InngestOpContext };
 
+/** Span facts shared by every operation (com.distilled.telemetry#service). */
+const TELEMETRY = {
+  system: "inngest-api",
+  responseHeaders: [
+    { header: "x-request-id", name: "http.response.header.x-request-id", transform: "list" },
+    { header: "request-id", name: "http.response.header.request-id", transform: "list" },
+  ],
+  prefix: "Inngest",
+  service: "InngestV1",
+  labels: "inngest",
+  propagate: "w3c",
+} as const;
+
 /** The webhook id is not a UUID (HTTP 400 "Invalid webhook ID"). */
 export class InvalidWebhookId
   extends /*@__PURE__*/ T.applyErrorMatchers(
@@ -307,6 +320,8 @@ export const cancelRun: API.OperationMethod<
   errors: [UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "CancelRun",
 }));
 
 export type CreateCancellationError = InngestOpError;
@@ -322,6 +337,8 @@ export const createCancellation: API.OperationMethod<
   errors: [UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "CreateCancellation",
 }));
 
 export type CreateWebhookError = InngestOpError;
@@ -337,6 +354,8 @@ export const createWebhook: API.OperationMethod<
   errors: [UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "CreateWebhook",
 }));
 
 export type DeleteCancellationError = InngestOpError;
@@ -352,6 +371,8 @@ export const deleteCancellation: API.OperationMethod<
   errors: [UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "DeleteCancellation",
 }));
 
 export type DeleteWebhookError = WebhookNotFound | InvalidWebhookId | InngestOpError;
@@ -367,6 +388,8 @@ export const deleteWebhook: API.OperationMethod<
   errors: [WebhookNotFound, InvalidWebhookId, UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "DeleteWebhook",
 }));
 
 export type GetEventError = NotFound | InngestOpError;
@@ -382,6 +405,8 @@ export const getEvent: API.OperationMethod<
   errors: [NotFound, UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "GetEvent",
 }));
 
 export type GetRunError = NotFound | InngestOpError;
@@ -397,6 +422,8 @@ export const getRun: API.OperationMethod<
   errors: [NotFound, UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "GetRun",
 }));
 
 export type GetRunJobsError = InngestOpError;
@@ -412,6 +439,8 @@ export const getRunJobs: API.OperationMethod<
   errors: [UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "GetRunJobs",
 }));
 
 export type GetWebhookError = WebhookNotFound | InvalidWebhookId | InngestOpError;
@@ -427,6 +456,8 @@ export const getWebhook: API.OperationMethod<
   errors: [WebhookNotFound, InvalidWebhookId, UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "GetWebhook",
 }));
 
 export type ListCancellationsError = InngestOpError;
@@ -442,6 +473,8 @@ export const listCancellations: API.OperationMethod<
   errors: [UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "ListCancellations",
 }));
 
 export type ListEventRunsError = NotFound | InngestOpError;
@@ -457,6 +490,8 @@ export const listEventRuns: API.OperationMethod<
   errors: [NotFound, UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "ListEventRuns",
 }));
 
 export type ListEventsError = InngestOpError;
@@ -472,6 +507,8 @@ export const listEvents: API.OperationMethod<
   errors: [UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "ListEvents",
 }));
 
 export type ListWebhooksError = InngestOpError;
@@ -487,6 +524,8 @@ export const listWebhooks: API.OperationMethod<
   errors: [UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "ListWebhooks",
 }));
 
 export type ResumeSignalError = InngestOpError;
@@ -502,6 +541,8 @@ export const resumeSignal: API.OperationMethod<
   errors: [UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "ResumeSignal",
 }));
 
 export type UpdateWebhookError = WebhookNotFound | InvalidWebhookId | InngestOpError;
@@ -517,6 +558,8 @@ export const updateWebhook: API.OperationMethod<
   errors: [WebhookNotFound, InvalidWebhookId, UnknownInngestError],
   protocol: InngestProtocol,
   retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "UpdateWebhook",
 }));
 
 // Schema builders: each runs one schema initializer, on that schema's first use.
