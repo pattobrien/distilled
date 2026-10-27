@@ -24,6 +24,8 @@ Every non-private `@distilled.cloud/<pkg>` publishes as `@pattobrien/distilled-<
 `https://npm.pkg.github.com`. For example, `@distilled.cloud/inngest` publishes as
 `@pattobrien/distilled-inngest`. Source `package.json` names never change. The release script
 rewrites names and internal `@distilled.cloud/*` dependencies to `npm:` aliases at publish time.
+It also rewrites each package's imports of itself in `lib` to the fork name, so they resolve
+through the package self-reference.
 
 A fork tag is `v<upstream>-fork.N`, and the published version drops the `v`. `<upstream>` is the
 shared `version` in `packages/*/package.json`. For example, tag `v1.0.0-rc.13-fork.2` publishes

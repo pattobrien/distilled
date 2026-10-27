@@ -21,6 +21,7 @@ const DEPENDENCY_FIELDS = [
   "peerDependencies",
   "optionalDependencies",
 ] as const;
+const BUILT_FILE = /\.(?:[cm]?js|d\.[cm]?ts)$/;
 
 export class InvalidForkVersion extends Data.TaggedError("InvalidForkVersion")<{
   readonly message: string;
@@ -32,6 +33,35 @@ const decodePackResult = Schema.decodeUnknownEffect(
 );
 
 const forkName = (name: string) => name.replace(UPSTREAM_SCOPE, FORK_SCOPE);
+
+const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const selfImport = (name: string) =>
+  new RegExp(
+    `(\\bfrom\\s*|\\bimport\\s*\\(\\s*|\\bimport\\s+|\\brequire\\s*\\(\\s*)(["'\`])${escapeRegExp(name)}(?=["'\`/])`,
+    "g",
+  );
+
+const forkSelfImports = Effect.fn(function* (dir: string, name: string) {
+  const fs = yield* FileSystem.FileSystem;
+  const path = yield* Path.Path;
+  const lib = path.join(dir, "lib");
+  const pattern = selfImport(name);
+  const files = (yield* fs.readDirectory(lib, { recursive: true })).filter((file) =>
+    BUILT_FILE.test(file),
+  );
+  const rewritten = yield* Effect.forEach(files, (file) =>
+    Effect.gen(function* () {
+      const filePath = path.join(lib, file);
+      const original = yield* fs.readFileString(filePath);
+      const forked = original.replace(pattern, `$1$2${forkName(name)}`);
+      if (forked === original) return undefined;
+      yield* fs.writeFileString(filePath, forked);
+      return { filePath, original };
+    }),
+  );
+  return rewritten.filter(Predicate.isNotUndefined);
+});
 
 const aliasDependencies = (dependencies: unknown, version: string) =>
   Predicate.isObject(dependencies)
@@ -71,8 +101,15 @@ const pack = Effect.fn(function* (
     path.join(dir, "package.json"),
     `${JSON.stringify(manifest, null, 2)}\n`,
   );
+  const rewritten = yield* forkSelfImports(dir, pkg.manifest.name);
   const packed = yield* Effect.try(() =>
     exec("pnpm", ["pack", "--json", "--pack-destination", destination], { cwd: dir, quiet: true }),
+  ).pipe(
+    Effect.ensuring(
+      Effect.forEach(rewritten, ({ filePath, original }) =>
+        fs.writeFileString(filePath, original),
+      ).pipe(Effect.orDie),
+    ),
   );
   const { filename } = yield* decodePackResult(packed.stdout);
   return { spec: `${manifest.name}@${version}`, tarball: filename };
