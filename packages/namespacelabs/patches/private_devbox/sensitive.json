@@ -1,0 +1,47 @@
+{
+  "description": "Mark the third-party agent credentials a devbox template or activation carries sensitive: Devin connect token, Cursor and Claude API keys.",
+  "patches": [
+    {
+      "op": "add",
+      "path": "/shapes/so.namespace.private.devbox#ActivateRequestExperimentalDevinOutposts/members/connectToken/traits",
+      "value": {
+        "smithy.api#sensitive": {}
+      }
+    },
+    {
+      "op": "add",
+      "path": "/shapes/so.namespace.private.devbox#CreateTemplateRequestExperimental/members/cursorApiKey/traits",
+      "value": {
+        "smithy.api#sensitive": {}
+      }
+    },
+    {
+      "op": "add",
+      "path": "/shapes/so.namespace.private.devbox#CreateTemplateRequestExperimental/members/claudeApiKey/traits",
+      "value": {
+        "smithy.api#sensitive": {}
+      }
+    },
+    {
+      "op": "add",
+      "path": "/shapes/so.namespace.private.devbox#UpdateTemplateRequestExperimental/members/cursorApiKey/traits",
+      "value": {
+        "smithy.api#sensitive": {}
+      }
+    },
+    {
+      "op": "add",
+      "path": "/shapes/so.namespace.private.devbox#UpdateTemplateRequestExperimental/members/claudeApiKey/traits",
+      "value": {
+        "smithy.api#sensitive": {}
+      }
+    },
+    {
+      "op": "add",
+      "path": "/shapes/so.namespace.private.devbox#ClaudeIntegrationSpec/members/claudeApiKey/traits",
+      "value": {
+        "smithy.api#sensitive": {}
+      }
+    }
+  ]
+}
