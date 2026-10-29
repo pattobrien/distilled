@@ -2,21 +2,27 @@ name: Release (fork)
 
 on:
   push:
+    branches:
+      - main
+    paths:
+      - "packages/**"
+      - "pnpm-lock.yaml"
+      - "scripts/release/fork-publish.ts"
     tags:
       - "v*-fork.*"
   workflow_dispatch:
     inputs:
       version:
-        description: The fork version to publish, e.g. 1.0.0-rc.13-fork.2; must equal the shared package.json version plus -fork.N
-        required: true
+        description: The fork version to publish, e.g. 1.0.0-rc.13-fork.2; must equal the shared package.json version plus -fork.N. Empty publishes the next fork.N.
+        required: false
         type: string
 
 concurrency:
-  group: release-fork-${{ inputs.version || github.ref_name }}
+  group: release-fork-${{ github.ref_type == 'branch' && github.ref_name || inputs.version || github.ref_name }}
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -34,6 +40,21 @@ jobs:
           install: true
           require-lockfile: true
 
+      - name: Resolve the fork version
+        id: version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          if [ -n "$INPUT_VERSION" ]; then
+            VERSION="${INPUT_VERSION#v}"
+          elif [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            VERSION="$(node scripts/release/fork-next-version.ts)"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Publishing $VERSION"
+
       - name: Build all packages
         run: pnpm build
 
@@ -46,7 +67,13 @@ jobs:
 
       - name: Publish to GitHub Packages
         env:
-          INPUT_VERSION: ${{ inputs.version }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: node scripts/release/fork-publish.ts "$VERSION"
+
+      - name: Tag the release
+        if: github.ref_type == 'branch'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
-          VERSION="${INPUT_VERSION:-$GITHUB_REF_NAME}"
-          node scripts/release/fork-publish.ts "${VERSION#v}"
+          git tag "v$VERSION" "$GITHUB_SHA"
+          git push origin "v$VERSION"

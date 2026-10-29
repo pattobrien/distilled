@@ -13,10 +13,12 @@ not merged yet.
   [alchemy-run/distilled#835](https://github.com/alchemy-run/distilled/pull/835).
 - The Linear SDK in `packages/linear`. Upstream PR:
   [alchemy-run/distilled#698](https://github.com/alchemy-run/distilled/pull/698).
+- The Tailscale SDK in `packages/tailscale`, based on upstream PR
+  [alchemy-run/distilled#956](https://github.com/alchemy-run/distilled/pull/956).
 - The Namespace SDK in `packages/namespacelabs`, with core's `emptyJsonBody` protocol option it
   needs for Connect-JSON. Not yet proposed upstream.
-- The fork release workflow `.github/workflows/release-fork.yml` and its script
-  `scripts/release/fork-publish.ts`.
+- The fork release workflow `.github/workflows/release-fork.yml` and its scripts
+  `scripts/release/fork-publish.ts` and `scripts/release/fork-next-version.ts`.
 
 Remove an item from this list once upstream merges its PR and a sync brings the change in.
 
@@ -34,28 +36,25 @@ shared `version` in `packages/*/package.json`. For example, tag `v1.0.0-rc.13-fo
 version `1.0.0-rc.13-fork.2`. N increases with every fork release and never reuses a number that
 has a tag.
 
-## Cutting a release
+## Releasing
 
-1. Type-check `main` with `pnpm typecheck:ci`.
-2. To preview the package map, run
-   `node scripts/release/fork-publish.ts --dry-run <upstream>-fork.N`. The dry run rewrites every
-   `packages/*/package.json` in place, so run `git checkout -- packages` afterwards.
-3. Tag the commit and push the tag:
+Every push to `main` that touches `packages/**`, `pnpm-lock.yaml` or the publish script runs
+`release-fork.yml`. The workflow computes the next version with
+`scripts/release/fork-next-version.ts`: the shared `version` plus `-fork.N`, where N is one more
+than the highest `v*-fork.*` tag on the remote. It builds, publishes every package, then tags the
+commit `v<version>`. Runs on `main` share one concurrency group and never cancel each other, so each
+gets its own N. The publish script skips any package version that is already on the registry.
 
-   ```sh
-   git tag v<upstream>-fork.N <sha>
-   git push origin v<upstream>-fork.N
-   ```
-
-The tag push starts `release-fork.yml`. The workflow builds, then publishes each package. The script
-skips any package version that is already on the registry.
-
-To publish an existing fork version again from `main`, run the workflow by hand with the `version`
-input:
+Pushing a `v<upstream>-fork.N` tag by hand publishes that exact version. To publish an existing
+fork version again from `main`, run the workflow by hand with the `version` input:
 
 ```sh
 gh workflow run release-fork.yml -R pattobrien/distilled -f version=1.0.0-rc.13-fork.2
 ```
+
+Leaving the input empty publishes the next fork.N. To preview the package map locally, run
+`node scripts/release/fork-publish.ts --dry-run <upstream>-fork.N`. The dry run rewrites every
+`packages/*/package.json` in place, so run `git checkout -- packages` afterwards.
 
 ## Syncing from upstream
 
