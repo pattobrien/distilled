@@ -35,12 +35,15 @@ program.pipe(Effect.provide(Live), Effect.runPromise);
 |---|---|
 | `TAILSCALE_API_KEY` | Bearer API access token via `fromApiKey` |
 | `TAILSCALE_OAUTH_CLIENT_ID` and `TAILSCALE_OAUTH_CLIENT_SECRET` | Client-credentials exchange at `{apiBaseUrl}/oauth/token`, cached until `expires_in` minus 60 seconds |
+| `TAILSCALE_OAUTH_CLIENT_ID` and `TAILSCALE_IDENTITY_TOKEN` | Workload identity federation: the OIDC ID token is exchanged at `{apiBaseUrl}/oauth/token-exchange`, cached the same way. An expired or malformed ID token fails with `ConfigError` |
 | `TAILSCALE_TAILNET` | Tailnet id on the credentials config. Default `-` |
 | `TAILSCALE_BASE_URL` | API origin. Default `https://api.tailscale.com`. The client calls `{origin}/api/v2` unless the value already ends in `/api/v2` |
 
-Setting both an API key and an OAuth client, or only half an OAuth pair, fails with `ConfigError`.
+Setting an API key together with any OAuth variable, a client secret together with an ID token, or a client id without either fails with `ConfigError`. `TAILSCALE_IDENTITY_TOKEN` matches the Terraform provider's variable.
 
-The explicit layers are `fromApiKey({ apiKey, apiBaseUrl? })` and `fromClientCredentials({ clientId, clientSecret, scope?, apiBaseUrl? })`. Their `apiBaseUrl` is the full API root (default `https://api.tailscale.com/api/v2`), used as given. The OAuth layers need an `HttpClient` for the token exchange and share one exchange across concurrent requests.
+The explicit layers are `fromApiKey({ apiKey, apiBaseUrl? })`, `fromClientCredentials({ clientId, clientSecret, scope?, tags?, apiBaseUrl? })` and `fromIdentityFederation({ clientId, idToken, apiBaseUrl? })`. Their `apiBaseUrl` is the full API root (default `https://api.tailscale.com/api/v2`), used as given. The OAuth layers need an `HttpClient` for the token exchange and share one exchange across concurrent requests.
+
+`idToken` is an `Effect` that returns the identity provider's ID token, such as a GitHub Actions OIDC token. It runs before every exchange, so a short-lived ID token is fetched fresh each time the access token is refreshed. A static `TAILSCALE_IDENTITY_TOKEN` cannot be refreshed; once it expires, resolution fails until the variable changes.
 
 Pass the tailnet to each operation (`"-"` is the token's default tailnet); operations do not read `TAILSCALE_TAILNET`.
 
