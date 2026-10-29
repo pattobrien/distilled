@@ -230,6 +230,7 @@ export interface LabelFilterEntry {
 export type LabelFilterEntryList = Array<LabelFilterEntry>;
 export type ListArtifactsRequestOrderBy = "ORDER_BY_UNKNOWN" | "CreatedAt_Desc";
 export interface Int64Range {
+  /** Inclusive. */
   low?: string;
   /** Inclusive. */
   high?: string;

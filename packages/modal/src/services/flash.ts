@@ -46,8 +46,8 @@ export interface ListFlashContainerResponse {
   containers?: ListFlashContainerResponseContainerList;
 }
 export interface RegisterFlashContainerRequest {
-  serviceName?: string;
   /** not used? */
+  serviceName?: string;
   priority?: number;
   weight?: number;
   host?: string;

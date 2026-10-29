@@ -27,8 +27,8 @@ export interface MapAwaitRequest {
   functionCallId?: string;
   mapToken?: string;
   lastEntryId?: string;
-  requestedAt?: number;
   /** Used for waypoints. */
+  requestedAt?: number;
   timeout?: number;
 }
 /** Used for both tasks and function outputs */
@@ -42,24 +42,24 @@ export type GenericResultGenericStatus =
   | "GENERIC_STATUS_INTERNAL_FAILURE"
   | "GENERIC_STATUS_IDLE_TIMEOUT"
   | "GENERIC_STATUS_MEMORY_MANAGER_EVICTION";
-/** sub-type for generic types like lists */
 export interface GenericResult {
-  status?: GenericResultGenericStatus;
   /** Status of the task or function output. */
-  exception?: string;
+  status?: GenericResultGenericStatus;
   /** Exception message for failures, if available. */
-  exitcode?: number;
+  exception?: string;
   /** Status code of the container entrypoint or builder process if it terminates unexpectedly. */
-  traceback?: string;
+  exitcode?: number;
   /** String value of the Python traceback. */
-  serializedTb?: string;
+  traceback?: string;
   /** Pickled traceback object. */
-  tbLineCache?: string;
+  serializedTb?: string;
   /** Pickled line cache for traceback object. */
-  data?: string;
+  tbLineCache?: string;
   /** Inline data of the result. */
-  dataBlobId?: string;
+  data?: string;
   /** Blob ID for large data. */
+  dataBlobId?: string;
+  /** (?) */
   propagationReason?: string;
 }
 /** Which data format a binary message is encoded with. */
@@ -69,17 +69,17 @@ export type DataFormat =
   | "DATA_FORMAT_ASGI"
   | "DATA_FORMAT_GENERATOR_DONE"
   | "DATA_FORMAT_CBOR";
-/** How long to sleep before requesting another input. */
 export interface FunctionGetOutputsItem {
   result?: GenericResult;
   idx?: number;
   inputId?: string;
-  dataFormat?: DataFormat;
   /** for result.data_oneof */
+  dataFormat?: DataFormat;
   taskId?: string;
   inputStartedAt?: number;
   outputCreatedAt?: number;
   retryCount?: number;
+  /** datadog function call trace tag */
   fcTraceTag?: string;
 }
 export type FunctionGetOutputsItemList = Array<FunctionGetOutputsItem>;
@@ -102,14 +102,15 @@ export interface FunctionInput {
   args?: string;
   argsBlobId?: string;
   finalInput?: boolean;
-  dataFormat?: DataFormat | (string & {});
   /** For args_oneof. */
+  dataFormat?: DataFormat | (string & {});
+  /** specifies which method to call when calling a class/object function */
   methodName?: string;
 }
 export type BlobUploadResultOutcome = "OUTCOME_UNSPECIFIED" | "OUTCOME_SUCCESS" | "OUTCOME_FAILURE";
 export interface BlobUploadResult {
-  blobId?: string;
   /** The blob id (from BlobCreateResponse) that this upload attempt targeted. */
+  blobId?: string;
   outcome?: BlobUploadResultOutcome | (string & {});
   throughputBytesS?: string;
 }
@@ -124,6 +125,7 @@ export interface FunctionPutInputsItem {
 }
 export interface MapStartOrContinueItem {
   input?: FunctionPutInputsItem;
+  /** None if this is a fresh input, otherwise it is the attempt token for a retry. */
   attemptToken?: string;
 }
 export type MapStartOrContinueItemList = Array<MapStartOrContinueItem>;

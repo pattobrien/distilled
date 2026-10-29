@@ -45,13 +45,14 @@ export type ParameterType =
 export type GenericPayloadTypeList = Array<GenericPayloadType>;
 export interface GenericPayloadType {
   baseType?: ParameterType | (string & {});
+  /** sub-type for generic types like lists */
   subTypes?: GenericPayloadTypeList;
 }
 export interface ClassParameterSpec {
   /** TODO: rename into NamedPayloadType or similar */
   name?: string;
-  type?: ParameterType | (string & {});
   /** TODO: deprecate - use full_type instead */
+  type?: ParameterType | (string & {});
   hasDefault?: boolean;
   /** Default *values* are only registered for class parameters */
   stringDefault?: string;
@@ -59,19 +60,20 @@ export interface ClassParameterSpec {
   pickleDefault?: string;
   bytesDefault?: string;
   boolDefault?: boolean;
+  /** supersedes `type` */
   fullType?: GenericPayloadType;
 }
 export type ClassParameterSpecList = Array<ClassParameterSpec>;
 export interface ClassParameterInfo {
-  /** new format using api.FunctionParameterSet */
   format?: ClassParameterInfoParameterSerializationFormat | (string & {});
+  /** only set for PARAM_SERIALIZATION_FORMAT_PROTO */
   schema?: ClassParameterSpecList;
 }
 export type FunctionHandleMetadataMap = { [key: string]: FunctionHandleMetadata | undefined };
 export type FunctionSchemaFunctionSchemaType = "FUNCTION_SCHEMA_UNSPECIFIED" | "FUNCTION_SCHEMA_V1";
 export interface FunctionSchema {
-  schemaType?: FunctionSchemaFunctionSchemaType | (string & {});
   /** allows easy disambiguation between empty schema and no schema collection etc. */
+  schemaType?: FunctionSchemaFunctionSchemaType | (string & {});
   arguments?: ClassParameterSpecList;
   returnType?: GenericPayloadType;
 }
@@ -92,7 +94,6 @@ export interface FunctionHandleMetadata {
   isMethod?: boolean;
   /** use_function_id, pre-0.67 class method placeholders */
   useMethodName?: string;
-  /** used for methods */
   definitionId?: string;
   classParameterInfo?: ClassParameterInfo;
   /** Mapping of method names to their metadata, only non-empty for class service functions */
@@ -103,8 +104,8 @@ export interface FunctionHandleMetadata {
   /** Use optional to ensure unset values default to None instead of 0 */
   maxObjectSizeBytes?: string;
   maxAsyncObjectSizeBytes?: string;
-  ExperimentalFlashUrls?: StringList;
   /** (Optional) urls for flash services */
+  ExperimentalFlashUrls?: StringList;
   supportedInputFormats?: DataFormatList;
   supportedOutputFormats?: DataFormatList;
   appId?: string;
@@ -141,7 +142,6 @@ export interface GetClassRequest {
   environmentName?: string;
   /** workspace_name */
   onlyClassFunction?: boolean;
-  /** True starting with 0.67.x clients, which don't create method placeholder functions */
   appVersion?: number;
 }
 export type WarningWarningType =

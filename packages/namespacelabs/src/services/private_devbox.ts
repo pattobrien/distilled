@@ -160,15 +160,15 @@ export type VersionControlSpecCheckoutMethod =
   | "CHECKOUT_METHOD_GIT_SNAPSHOT_UNPACK";
 export interface VersionControlSpecGitRepositorySpec {
   repository?: string;
-  ref?: string;
   /** Branch, tag, or commit SHA to check out. When empty, the repository's default branch is used. */
+  ref?: string;
   checkoutMethod?: VersionControlSpecCheckoutMethod | (string & {});
 }
 export type VersionControlSpecGitRepositorySpecList = Array<VersionControlSpecGitRepositorySpec>;
 export interface VersionControlSpec {
   gitRepository?: string;
-  ref?: string;
   /** Branch, tag, or commit SHA to check out. When empty, the repository's default branch is used. */
+  ref?: string;
   checkoutMethod?: VersionControlSpecCheckoutMethod | (string & {});
   /** WIP: multi-repo support that will deprecate fields above. Not yet ready! */
   repositories?: VersionControlSpecGitRepositorySpecList;
@@ -217,13 +217,13 @@ export interface NetworkPolicySpec {
   /** If set, apply the reusable workspace egress policy identified by tag. Mutually exclusive with egress_domains. */
   egressPolicy?: NetworkPolicySpecEgressPolicy;
 }
-/** KIND_UNSPECIFIED is invalid when persisted. */
 export type PortSpecKind = "KIND_UNSPECIFIED" | "KIND_PORT_FORWARD" | "KIND_HTTP_INGRESS";
 export interface PortSpec {
-  name?: string;
   /** Optional. */
-  number?: number;
+  name?: string;
   /** Must be 1-65535 and not use a Namespace-reserved port. */
+  number?: number;
+  /** KIND_UNSPECIFIED is invalid when persisted. */
   kind?: PortSpecKind | (string & {});
 }
 export type PortSpecList = Array<PortSpec>;
@@ -275,7 +275,6 @@ export interface ActivateRequestExperimentalCursorWorker {
   requestId?: string;
 }
 export interface ActivateRequestExperimentalClaudeAgent {}
-/** If set, lookup by id first, then by name if not found. */
 export interface ActivateRequestExperimental {
   agentImageref?: string;
   bakeImageref?: string;
@@ -326,8 +325,8 @@ export interface CreateRequest2 {
   labels?: LabelList;
   /** Script to run once when the devbox is first initialized. */
   initScript?: string;
-  instanceEventCallback?: HttpCallbackEndpoint;
   /** Receives lifecycle events for every compute instance backing this devbox. */
+  instanceEventCallback?: HttpCallbackEndpoint;
   persistenceMode?: PersistenceMode | (string & {});
   services?: ServiceSpecList;
   activate?: boolean;
@@ -422,20 +421,20 @@ export interface DevBox {
   imageRef?: string;
   instanceShape?: InstanceShape;
   site?: string;
-  creator?: string;
   /** E.g. user_... */
+  creator?: string;
   volumeName?: string;
   volumeSizeGb?: string;
   cacheVolumeSizeGb?: string;
-  repository?: string;
   /** Use version_control.repositories. */
+  repository?: string;
   blueprintRef?: BlueprintRef;
   workspaceDir?: string;
   defaultDir?: string;
   spec?: BlueprintSpec;
   mainUser?: string;
-  portForwards?: BlueprintSpecPortForwardList;
   /** Use AgentService.ListPorts. */
+  portForwards?: BlueprintSpecPortForwardList;
   privateFeatures?: StringList;
   enabledFeatures?: StringList;
   resolvedImage?: DevBoxResolvedImage;
@@ -461,10 +460,10 @@ export type AcquireLeaseResponseLeaseOutcome =
   | "LEASE_OUTCOME_REUSED";
 export interface AcquireLeaseResponse {
   devbox?: DevBox;
-  instanceId?: string;
   /** Set if activated. */
-  leaseId?: string;
+  instanceId?: string;
   /** Opaque handle for this lease. Pass to ReleaseLease. */
+  leaseId?: string;
   outcome?: AcquireLeaseResponseLeaseOutcome;
 }
 export interface ActivateRequest {
@@ -472,10 +471,11 @@ export interface ActivateRequest {
   experimental?: ActivateRequestExperimental;
   includeSshCredentials?: boolean;
   waitForReadiness?: boolean;
-  fromSnapshotId?: string;
   /** If not set, uses the latest snapshot. */
-  id?: string;
+  fromSnapshotId?: string;
   /** If set, lookup by id instead of name. */
+  id?: string;
+  /** If set, lookup by id first, then by name if not found. */
   idOrName?: string;
 }
 export interface ActivateResponseInstanceMetadataSummary {
@@ -488,8 +488,9 @@ export interface ActivateResponse {
   instanceMetadataSummary?: ActivateResponseInstanceMetadataSummary;
 }
 export interface ConnectBeginDevinOutpostRequest {
-  outpostName?: string;
   /** Suggested outpost name shown on the Devin connect page (admin can edit). */
+  outpostName?: string;
+  /** Allowed: "linux", "macos", or "windows". */
   platform?: string;
 }
 export interface ConnectBeginDevinOutpostResponse {
@@ -537,8 +538,8 @@ export interface CreateRequest {
   labels?: LabelList;
   /** Script to run once when the devbox is first initialized. */
   initScript?: string;
-  instanceEventCallback?: HttpCallbackEndpoint;
   /** Receives lifecycle events for every compute instance backing this devbox. */
+  instanceEventCallback?: HttpCallbackEndpoint;
   persistenceMode?: PersistenceMode | (string & {});
   services?: ServiceSpecList;
   activate?: boolean;
@@ -546,6 +547,7 @@ export interface CreateRequest {
 }
 export interface CreateResponse {
   devbox?: DevBox;
+  /** If activate is true. */
   instanceId?: string;
 }
 export interface CreateFromDevboxRequest {
@@ -564,6 +566,7 @@ export interface CreateFromDevboxRequest {
 }
 export interface CreateFromDevboxResponse {
   devbox?: DevBox;
+  /** If activate is true. */
   instanceId?: string;
 }
 export interface CreateFromTemplateRequestOverrides {
@@ -581,6 +584,7 @@ export interface CreateFromTemplateRequest {
 }
 export interface CreateFromTemplateResponse {
   devbox?: DevBox;
+  /** If activate is true. */
   instanceId?: string;
 }
 /** Depending on the situation, fields may not be returned. */
@@ -589,6 +593,7 @@ export interface ClaudeIntegrationSpec {
   claudeEnvironmentId?: string;
   claudeEnvironmentKey?: string | Redacted.Redacted<string>;
   claudeWebhookSigningKey?: string | Redacted.Redacted<string>;
+  /** unique id in the webhook endpoint to identifier the caller */
   nscWebhookId?: string;
 }
 export interface CreateIntegrationRequest {
@@ -632,8 +637,8 @@ export type DevboxTemplateSpecType =
   | "TYPE_MANAGED_BY_CURSOR"
   | "TYPE_MANAGED_BY_DEVIN";
 export interface DevboxTemplateSpec {
-  name?: string;
   /** Immutable; 1-63 letters, digits or hyphens; must not start or end with a hyphen. */
+  name?: string;
   instance?: DevboxTemplateSpecInstanceSpec;
   site?: string;
   ephemeral?: EphemeralSpec;
@@ -644,8 +649,8 @@ export interface DevboxTemplateSpec {
   networkPolicy?: NetworkPolicySpec;
   volumeSizeGb?: string;
   experimental?: DevboxTemplateSpecExperimental;
-  description?: string;
   /** Optional human-readable description. */
+  description?: string;
   accessMode?: AccessMode | (string & {});
   features?: Features;
   ports?: PortSpecList;
@@ -735,13 +740,15 @@ export interface FetchRequest {
   name?: string;
   includeSshCredentials?: boolean;
   returnActivatedInstance?: boolean;
-  id?: string;
   /** If set, fetch by id instead of name. */
+  id?: string;
+  /** If set, fetch by id first, then by name if not found. */
   idOrName?: string;
 }
 export interface FetchResponse {
   devbox?: DevBox;
   privateSshKey?: string | Redacted.Redacted<string>;
+  /** Set if `return_activated_instance` is true, and the devbox is currently running. */
   instanceId?: string;
 }
 export interface FetchDefaultsRequest {}
@@ -944,6 +951,7 @@ export interface MetadataRequest {}
 export interface MetadataResponseSite {
   site?: string;
   label?: string;
+  /** Canonical OS/architecture values, such as "linux/amd64" or "macos/arm64". */
   platforms?: StringList;
 }
 export type MetadataResponseSiteList = Array<MetadataResponseSite>;
@@ -987,8 +995,9 @@ export interface RegisterComposableFeatureRequest {
 }
 export interface RegisterComposableFeatureResponse {}
 export interface ReleaseLeaseRequest {
-  idOrName?: string;
   /** Required if lease_id is not supplied. When both are set, guards that the lease belongs to the named devbox. */
+  idOrName?: string;
+  /** Required if id_or_name is not supplied. Opaque handle returned by AcquireLease. */
   leaseId?: string;
 }
 export interface ReleaseLeaseResponse {}

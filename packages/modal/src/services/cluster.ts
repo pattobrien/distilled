@@ -31,6 +31,7 @@ export interface ClusterStats {
   appId?: string;
   taskIds?: StringList;
   clusterId?: string;
+  /** Defined as start time of the first task in the cluster */
   startedAt?: number;
 }
 export interface GetClusterResponse {

@@ -43,10 +43,11 @@ export type ObjectCreationType =
   | "OBJECT_CREATION_TYPE_EPHEMERAL";
 export interface MountFile {
   filename?: string;
-  sha256Hex?: string;
   /** SHA-256 checksum of the file. */
-  size?: string;
+  sha256Hex?: string;
   /** Size of the file in bytes -- ignored in MountBuild(). */
+  size?: string;
+  /** Unix file permission bits `st_mode`. */
   mode?: number;
 }
 export type MountFileList = Array<MountFile>;
@@ -56,6 +57,7 @@ export interface MountGetOrCreateRequest {
   environmentName?: string;
   objectCreationType?: ObjectCreationType | (string & {});
   files?: MountFileList;
+  /** only used with OBJECT_CREATION_TYPE_ANONYMOUS_OWNED_BY_APP */
   appId?: string;
 }
 export interface MountHandleMetadata {

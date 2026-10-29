@@ -57,8 +57,8 @@ export interface AppDeploymentHistoryRequest {
   appId?: string;
 }
 export interface CommitInfo {
-  vcs?: string;
   /** Only git is supported for now */
+  vcs?: string;
   branch?: string;
   commitHash?: string;
   commitTimestamp?: string;
@@ -146,11 +146,11 @@ export interface TaskLogsBatch {
   appDone?: boolean;
   functionId?: string;
   inputId?: string;
-  imageId?: string;
   /** Used for image logs */
+  imageId?: string;
   eof?: boolean;
-  ptyExecId?: string;
   /** Used for interactive functions */
+  ptyExecId?: string;
   rootFunctionId?: string;
   ttlDays?: number;
   sandboxId?: string;
@@ -176,29 +176,30 @@ export type AppState =
   | "APP_STATE_DISABLED"
   | "APP_STATE_DETACHED_DISCONNECTED"
   | "APP_STATE_DERIVED";
-/** tag -> class id */
 export interface AppLifecycle {
   appState?: AppState;
   createdAt?: number;
+  /** User or service user name */
   createdBy?: string;
-  /** User or service user name */
-  deployedAt?: number;
   /** Most recent deployment event */
-  deployedBy?: string;
+  deployedAt?: number;
   /** User or service user name */
-  version?: number;
+  deployedBy?: string;
   /** Only meaningful when App is deployed */
-  stoppedAt?: number;
+  version?: number;
   /** Unset when App is still running */
+  stoppedAt?: number;
+  /** User or service user name, null if running or ephemeral App that finished normally */
   stoppedBy?: string;
 }
 export interface AppGetByDeploymentNameResponse {
-  appId?: string;
   /** Null when App with requested name is not deployed */
-  previousAppId?: string;
+  appId?: string;
   /** Populated if App with requested name was recently stopped */
-  environmentName?: string;
+  previousAppId?: string;
   /** Populated because server may resolve default environment */
+  environmentName?: string;
+  /** Lifecycle of current App or recently stopped App */
   lifecycle?: AppLifecycle;
 }
 export interface AppGetInfoRequest {
@@ -210,6 +211,7 @@ export interface AppHandleMetadata {
   appId?: string;
   environmentName?: string;
   lifecycle?: AppLifecycle;
+  /** tag -> function id */
   functions?: StringMap;
   /** tag -> function id */
   servers?: StringMap;
@@ -226,8 +228,8 @@ export type GPUType =
   | "GPU_TYPE_L40S"
   | "GPU_TYPE_H200";
 export interface GPUConfig {
-  type?: GPUType;
   /** Deprecated, at some point */
+  type?: GPUType;
   count?: number;
   gpuType?: string;
 }
@@ -290,13 +292,14 @@ export type ParameterType =
 export type GenericPayloadTypeList = Array<GenericPayloadType>;
 export interface GenericPayloadType {
   baseType?: ParameterType;
+  /** sub-type for generic types like lists */
   subTypes?: GenericPayloadTypeList;
 }
 export interface ClassParameterSpec {
   /** TODO: rename into NamedPayloadType or similar */
   name?: string;
-  type?: ParameterType;
   /** TODO: deprecate - use full_type instead */
+  type?: ParameterType;
   hasDefault?: boolean;
   /** Default *values* are only registered for class parameters */
   stringDefault?: string;
@@ -304,19 +307,20 @@ export interface ClassParameterSpec {
   pickleDefault?: string;
   bytesDefault?: string;
   boolDefault?: boolean;
+  /** supersedes `type` */
   fullType?: GenericPayloadType;
 }
 export type ClassParameterSpecList = Array<ClassParameterSpec>;
 export interface ClassParameterInfo {
-  /** new format using api.FunctionParameterSet */
   format?: ClassParameterInfoParameterSerializationFormat;
+  /** only set for PARAM_SERIALIZATION_FORMAT_PROTO */
   schema?: ClassParameterSpecList;
 }
 export type FunctionHandleMetadataMap = { [key: string]: FunctionHandleMetadata | undefined };
 export type FunctionSchemaFunctionSchemaType = "FUNCTION_SCHEMA_UNSPECIFIED" | "FUNCTION_SCHEMA_V1";
 export interface FunctionSchema {
-  schemaType?: FunctionSchemaFunctionSchemaType;
   /** allows easy disambiguation between empty schema and no schema collection etc. */
+  schemaType?: FunctionSchemaFunctionSchemaType;
   arguments?: ClassParameterSpecList;
   returnType?: GenericPayloadType;
 }
@@ -337,7 +341,6 @@ export interface FunctionHandleMetadata {
   isMethod?: boolean;
   /** use_function_id, pre-0.67 class method placeholders */
   useMethodName?: string;
-  /** used for methods */
   definitionId?: string;
   classParameterInfo?: ClassParameterInfo;
   /** Mapping of method names to their metadata, only non-empty for class service functions */
@@ -348,8 +351,8 @@ export interface FunctionHandleMetadata {
   /** Use optional to ensure unset values default to None instead of 0 */
   maxObjectSizeBytes?: string;
   maxAsyncObjectSizeBytes?: string;
-  ExperimentalFlashUrls?: StringList;
   /** (Optional) urls for flash services */
+  ExperimentalFlashUrls?: StringList;
   supportedInputFormats?: DataFormatList;
   supportedOutputFormats?: DataFormatList;
   appId?: string;
@@ -382,31 +385,30 @@ export type GenericResultGenericStatus =
   | "GENERIC_STATUS_INTERNAL_FAILURE"
   | "GENERIC_STATUS_IDLE_TIMEOUT"
   | "GENERIC_STATUS_MEMORY_MANAGER_EVICTION";
-/** sub-type for generic types like lists */
 export interface GenericResult {
-  status?: GenericResultGenericStatus;
   /** Status of the task or function output. */
-  exception?: string;
+  status?: GenericResultGenericStatus;
   /** Exception message for failures, if available. */
-  exitcode?: number;
+  exception?: string;
   /** Status code of the container entrypoint or builder process if it terminates unexpectedly. */
-  traceback?: string;
+  exitcode?: number;
   /** String value of the Python traceback. */
-  serializedTb?: string;
+  traceback?: string;
   /** Pickled traceback object. */
-  tbLineCache?: string;
+  serializedTb?: string;
   /** Pickled line cache for traceback object. */
-  data?: string;
+  tbLineCache?: string;
   /** Inline data of the result. */
-  dataBlobId?: string;
+  data?: string;
   /** Blob ID for large data. */
+  dataBlobId?: string;
+  /** (?) */
   propagationReason?: string;
 }
 export interface SandboxHandleMetadata {
   result?: GenericResult;
   appId?: string;
 }
-/** HTTP/2 tunnel */
 export type VolumeFsVersion =
   | "VOLUME_FS_VERSION_UNSPECIFIED"
   | "VOLUME_FS_VERSION_V1"
@@ -414,7 +416,7 @@ export type VolumeFsVersion =
 export interface CreationInfo {
   /** This message is used in metadata for resource objects like Dict, Queue, Volume, etc. */
   createdAt?: number;
-  /** Timestamp of resource creation */
+  /** User name or service name */
   createdBy?: string;
 }
 export interface VolumeMetadata {
@@ -433,8 +435,9 @@ export interface Object {
 export type ObjectList = Array<Object>;
 export interface AppLayout {
   objects?: ObjectList;
-  functionIds?: StringMap;
   /** tag -> function id */
+  functionIds?: StringMap;
+  /** tag -> class id */
   classIds?: StringMap;
 }
 export interface AppGetLayoutResponse {
@@ -449,6 +452,7 @@ export interface AppGetLifecycleResponse {
 export interface AppGetObjectsRequest {
   appId?: string;
   includeUnindexed?: boolean;
+  /** True starting with 0.67.x clients, which don't create method placeholder functions */
   onlyClassFunction?: boolean;
 }
 export interface AppGetObjectsItem {
@@ -487,6 +491,7 @@ export interface AppHeartbeatRequest {
 export interface AppHeartbeatResponse {}
 export interface AppRollbackRequest {
   appId?: string;
+  /** signed as we support negative "roll back n versions" requests */
   version?: number;
 }
 export type WarningWarningType =
@@ -517,6 +522,7 @@ export interface AppSetObjectsRequest {
   indexedObjectIds?: StringMap;
   clientId?: string;
   unindexedObjectIds?: StringList;
+  /** promotes an app from initializing to this new state */
   newAppState?: AppState | (string & {});
 }
 export interface AppSetObjectsResponse {}
@@ -527,10 +533,11 @@ export interface AppSetTagsRequest {
 export interface AppSetTagsResponse {}
 export interface CreateAppRequest {
   clientId?: string;
-  description?: string;
   /** Human readable label for the app */
+  description?: string;
   environmentName?: string;
   appState?: AppState | (string & {});
+  /** Additional metadata to attach to the App */
   tags?: StringMap;
 }
 export interface CreateAppResponse {
@@ -603,24 +610,25 @@ export interface PromoteAppResponse {
 export interface PublishAppRequest {
   appId?: string;
   name?: string;
-  deploymentTag?: string;
   /** Additional metadata to identify a deployment */
-  appState?: AppState | (string & {});
+  deploymentTag?: string;
   /** Published app will be in this state */
-  functionIds?: StringMap;
+  appState?: AppState | (string & {});
   /** function_name -> function_id */
-  classIds?: StringMap;
+  functionIds?: StringMap;
   /** class_name -> class_id */
-  definitionIds?: StringMap;
+  classIds?: StringMap;
   /** function_id -> definition_id */
+  definitionIds?: StringMap;
+  /** Unused by client, but used internally */
   rollbackVersion?: number;
   /** Unused by client, but used internally */
   clientVersion?: string;
-  /** Unused by client, but used internally */
-  commitInfo?: CommitInfo;
   /** Git information for deployment tracking */
+  commitInfo?: CommitInfo;
+  /** Additional metadata to attach to the App */
   tags?: StringMap;
-  /** Additional metadata to attach to the App If true, create a version pinned deployment but don't update the production deployment definition on publish */
+  /** If true, create a version pinned deployment but don't update the production deployment definition on publish */
   staged?: boolean;
   deploymentType?: DeploymentType | (string & {});
 }

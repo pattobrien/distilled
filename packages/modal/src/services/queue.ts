@@ -49,14 +49,14 @@ export interface ListPagination {
 }
 export interface ListQueueRequest {
   environmentName?: string;
-  totalSizeLimit?: number;
   /** Limit on "number of partitions" reported, since checking them is costly */
+  totalSizeLimit?: number;
   pagination?: ListPagination;
 }
 export interface CreationInfo {
   /** This message is used in metadata for resource objects like Dict, Queue, Volume, etc. */
   createdAt?: number;
-  /** Timestamp of resource creation */
+  /** User name or service name */
   createdBy?: string;
 }
 export interface QueueMetadata {
@@ -65,8 +65,8 @@ export interface QueueMetadata {
 }
 export interface ListQueueResponseQueueInfo {
   name?: string;
-  createdAt?: number;
   /** Superseded by metadata, used by clients up to 1.1.2 */
+  createdAt?: number;
   numPartitions?: number;
   totalSize?: number;
   queueId?: string;
@@ -124,6 +124,7 @@ export interface QueueNextItemsRequest {
   queueId?: string;
   partitionKey?: string;
   lastEntryId?: string;
+  /** seconds */
   itemPollTimeout?: number;
 }
 export interface QueueItem {

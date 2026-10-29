@@ -147,10 +147,10 @@ export interface TimestampRange {
 }
 export interface FetchInstanceEgressRequest {
   instanceId?: string;
-  timestampRange?: TimestampRange;
   /** Optional */
-  limit?: number;
+  timestampRange?: TimestampRange;
   /** default 20_000 */
+  limit?: number;
   paginationCursor?: string;
 }
 export type EgressAction = "ACTION_UNKNOWN" | "ALLOW" | "DENY" | "ADVISORY_DENY";
@@ -158,8 +158,8 @@ export type StringList = Array<string>;
 export interface EgressRecord {
   timestamp?: string;
   domain?: string;
-  ruleMatch?: string;
   /** What rule matcher (if any) lead to the action */
+  ruleMatch?: string;
   action?: EgressAction;
   answerIps?: StringList;
 }
@@ -190,9 +190,10 @@ export type StringMap = { [key: string]: string | undefined };
 export interface LogLine {
   timestamp?: string;
   content?: string;
-  stream?: string;
   /** E.g. stdout, stderr */
+  stream?: string;
   labels?: StringMap;
+  /** E.g. containers, kubernetes, kmsg. */
   source?: string;
 }
 export type LogLineList = Array<LogLine>;

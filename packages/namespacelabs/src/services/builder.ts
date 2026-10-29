@@ -219,10 +219,11 @@ export interface GetBuilderConfigurationResponse {
   credentials?: BuilderCredentials;
 }
 export interface Date {
-  year?: number;
   /** 2023 */
-  month?: number;
+  year?: number;
   /** 1-12 */
+  month?: number;
+  /** 1-31 */
   day?: number;
 }
 export interface GetBuilderUsageRequest {

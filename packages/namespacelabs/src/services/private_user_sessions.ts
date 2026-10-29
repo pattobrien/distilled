@@ -166,12 +166,12 @@ export interface RequestMetadata {
   ipCountryEn?: string;
 }
 export interface Session {
-  id?: string;
   /** sid_... */
-  ownerId?: string;
+  id?: string;
   /** user_... */
-  tenantId?: string;
+  ownerId?: string;
   /** tenant_... */
+  tenantId?: string;
   createdAt?: string;
   expiresAt?: string;
   invalidatedAt?: string;

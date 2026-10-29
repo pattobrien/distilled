@@ -93,8 +93,8 @@ export type GPUType =
   | "GPU_TYPE_L40S"
   | "GPU_TYPE_H200";
 export interface GPUConfig {
-  type?: GPUType | (string & {});
   /** Deprecated, at some point */
+  type?: GPUType | (string & {});
   count?: number;
   gpuType?: string;
 }
@@ -120,8 +120,9 @@ export interface FunctionInput {
   args?: string;
   argsBlobId?: string;
   finalInput?: boolean;
-  dataFormat?: DataFormat | (string & {});
   /** For args_oneof. */
+  dataFormat?: DataFormat | (string & {});
+  /** specifies which method to call when calling a class/object function */
   methodName?: string;
 }
 export interface BuildFunction {
@@ -149,10 +150,11 @@ export interface Image {
   contextMountId?: string;
   gpuConfig?: GPUConfig;
   imageRegistryConfig?: ImageRegistryConfig;
+  /** deprecated after 0.58.96 */
   buildFunctionDef?: string;
   /** deprecated after 0.58.96 */
   buildFunctionGlobals?: string;
-  /** deprecated after 0.58.96 If set, overrides the runtime used by the function. Specify either "runc" or "gvisor". */
+  /** If set, overrides the runtime used by the function. Specify either "runc" or "gvisor". */
   runtime?: string;
   /** Not included in image definition checksum as debug features do not affect built image. */
   runtimeDebug?: boolean;
@@ -171,8 +173,8 @@ export type DeploymentNamespace =
 export interface ImageGetOrCreateRequest {
   image?: Image;
   appId?: string;
-  existingImageId?: string;
   /** ignored */
+  existingImageId?: string;
   buildFunctionId?: string;
   forceBuild?: boolean;
   namespace?: DeploymentNamespace | (string & {});
@@ -193,24 +195,24 @@ export type GenericResultGenericStatus =
   | "GENERIC_STATUS_INTERNAL_FAILURE"
   | "GENERIC_STATUS_IDLE_TIMEOUT"
   | "GENERIC_STATUS_MEMORY_MANAGER_EVICTION";
-/** sub-type for generic types like lists */
 export interface GenericResult {
-  status?: GenericResultGenericStatus;
   /** Status of the task or function output. */
-  exception?: string;
+  status?: GenericResultGenericStatus;
   /** Exception message for failures, if available. */
-  exitcode?: number;
+  exception?: string;
   /** Status code of the container entrypoint or builder process if it terminates unexpectedly. */
-  traceback?: string;
+  exitcode?: number;
   /** String value of the Python traceback. */
-  serializedTb?: string;
+  traceback?: string;
   /** Pickled traceback object. */
-  tbLineCache?: string;
+  serializedTb?: string;
   /** Pickled line cache for traceback object. */
-  data?: string;
+  tbLineCache?: string;
   /** Inline data of the result. */
-  dataBlobId?: string;
+  data?: string;
   /** Blob ID for large data. */
+  dataBlobId?: string;
+  /** (?) */
   propagationReason?: string;
 }
 export interface ImageGetOrCreateResponse {
@@ -229,7 +231,6 @@ export interface ImageListTagsRequest {
   maxObjects?: number;
   pageToken?: string;
 }
-/** set on success */
 export interface ImageListTagsItem {
   tag?: string;
   imageId?: string;

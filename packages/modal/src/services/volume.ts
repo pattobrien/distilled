@@ -45,7 +45,6 @@ export interface ListVolumeRequest {
   environmentName?: string;
   pagination?: ListPagination;
 }
-/** HTTP/2 tunnel */
 export type VolumeFsVersion =
   | "VOLUME_FS_VERSION_UNSPECIFIED"
   | "VOLUME_FS_VERSION_V1"
@@ -53,7 +52,7 @@ export type VolumeFsVersion =
 export interface CreationInfo {
   /** This message is used in metadata for resource objects like Dict, Queue, Volume, etc. */
   createdAt?: number;
-  /** Timestamp of resource creation */
+  /** User name or service name */
   createdBy?: string;
 }
 export interface VolumeMetadata {
@@ -62,11 +61,11 @@ export interface VolumeMetadata {
   creationInfo?: CreationInfo;
 }
 export interface VolumeListItem {
-  label?: string;
   /** app name of object entity app */
+  label?: string;
   volumeId?: string;
-  createdAt?: number;
   /** Superseded by metadata, used by clients up to 1.1.2 */
+  createdAt?: number;
   metadata?: VolumeMetadata;
 }
 export type VolumeListItemList = Array<VolumeListItem>;
@@ -105,31 +104,35 @@ export interface VolumeGetFileRequest {
   volumeId?: string;
   path?: string;
   start?: string;
+  /** 0 is interpreted as 'read to end' */
   len?: string;
 }
 export interface VolumeGetFileResponse {
   data?: string;
   dataBlobId?: string;
-  size?: string;
   /** total file size */
-  start?: string;
+  size?: string;
   /** file position of first byte returned */
+  start?: string;
+  /** number of bytes returned */
   len?: string;
 }
 export interface VolumeGetFile2Request {
   volumeId?: string;
   path?: string;
   start?: string;
+  /** 0 is interpreted as 'read to end' */
   len?: string;
-  /** 0 is interpreted as 'read to end' The client extends each block body it downloads with zero bytes up to the block's expected length, so responses may omit trailing zero bytes. */
+  /** The client extends each block body it downloads with zero bytes up to the block's expected length, so responses may omit trailing zero bytes. */
   clientPadsBlocks?: boolean;
 }
 export interface VolumeGetFile2Response {
   getUrls?: StringList;
-  size?: string;
   /** total file size */
-  start?: string;
+  size?: string;
   /** file position of first byte returned */
+  start?: string;
+  /** number of bytes returned */
   len?: string;
 }
 export type ObjectCreationType =
@@ -148,15 +151,15 @@ export interface VolumeGetOrCreateRequest {
   /** removed namespace */
   environmentName?: string;
   objectCreationType?: ObjectCreationType | (string & {});
-  appId?: string;
   /** only used with OBJECT_CREATION_TYPE_ANONYMOUS_OWNED_BY_APP */
+  appId?: string;
   version?: VolumeFsVersion | (string & {});
   createOptions?: VolumeCreateOptions;
 }
 export interface VolumeGetOrCreateResponse {
   volumeId?: string;
-  version?: VolumeFsVersion;
   /** Not used directly; version is part of the metadata */
+  version?: VolumeFsVersion;
   metadata?: VolumeMetadata;
 }
 export interface VolumeHeartbeatRequest {
@@ -165,10 +168,11 @@ export interface VolumeHeartbeatRequest {
 export interface VolumeHeartbeatResponse {}
 export interface MountFile {
   filename?: string;
-  sha256Hex?: string;
   /** SHA-256 checksum of the file. */
-  size?: string;
+  sha256Hex?: string;
   /** Size of the file in bytes -- ignored in MountBuild(). */
+  size?: string;
+  /** Unix file permission bits `st_mode`. */
   mode?: number;
 }
 export type MountFileList = Array<MountFile>;

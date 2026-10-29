@@ -31,8 +31,8 @@ export interface CreateBlobRequest {
 }
 export type StringList = Array<string>;
 export interface MultiPartUpload {
-  partLength?: string;
   /** split upload based on this part length - all except the last part must have this length */
+  partLength?: string;
   uploadUrls?: StringList;
   completionUrl?: string;
 }
