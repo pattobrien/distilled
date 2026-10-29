@@ -13,6 +13,8 @@ not merged yet.
   [alchemy-run/distilled#835](https://github.com/alchemy-run/distilled/pull/835).
 - The Linear SDK in `packages/linear`. Upstream PR:
   [alchemy-run/distilled#698](https://github.com/alchemy-run/distilled/pull/698).
+- The Tailscale SDK in `packages/tailscale`, based on upstream PR
+  [alchemy-run/distilled#956](https://github.com/alchemy-run/distilled/pull/956).
 - The fork release workflow `.github/workflows/release-fork.yml` and its script
   `scripts/release/fork-publish.ts`.
 
