@@ -75,7 +75,7 @@ const hostsConfig = /*@__PURE__*/ EffectConfig.all({
   ),
   computeBaseUrl: /*@__PURE__*/ EffectConfig.String("NSC_COMPUTE_URL").pipe(
     /*@__PURE__*/ EffectConfig.orElse(() => EffectConfig.String("NSC_ENDPOINT")),
-    /*@__PURE__*/ EffectConfig.option,
+    EffectConfig.option,
     /*@__PURE__*/ EffectConfig.map(Option.getOrUndefined),
   ),
   storageBaseUrl: /*@__PURE__*/ optionalString("NSC_STORAGE_URL"),
