@@ -49,16 +49,41 @@ Pass the tailnet to each operation (`"-"` is the token's default tailnet); opera
 
 ## Policy file
 
-Policy files travel as HuJSON text on `body`, comments preserved. `getPolicyFile` and `setPolicyFile` return the `ETag` as `eTag`; pass it as `ifMatch` to guard a write (a mismatch is `PreconditionFailed`).
+Policy files travel as HuJSON text on `body`, comments preserved. `getPolicyFile` and `setPolicyFile` return the `ETag` as `eTag`; pass it as `ifMatch` to guard a write (a mismatch is `PreconditionFailed`). `previewRuleMatches` takes a candidate policy file on `body` and returns the rules that match a user or `ip:port`, without saving it.
 
 ```ts
 const current = yield* Tailscale.getPolicyFile({ tailnet: "-" });
 yield* Tailscale.validateAndTestPolicyFile({ tailnet: "-", body: current.body });
+const preview = yield* Tailscale.previewRuleMatches({
+  tailnet: "-",
+  type: "user",
+  previewFor: "user1@example.com",
+  body: current.body,
+});
 const updated = yield* Tailscale.setPolicyFile({
   tailnet: "-",
   ifMatch: current.eTag,
   body: current.body,
 });
+```
+
+A 400 from `setPolicyFile` or `previewRuleMatches` is `PolicyFileRejected`. Its `message` is Tailscale's summary, and `body.data` lists the failing tests and warnings per source as `{ user?, errors?, warnings? }`.
+
+```ts
+const saved = Tailscale.setPolicyFile({ tailnet: "-", body: current.body }).pipe(
+  Effect.catchTag("PolicyFileRejected", (rejected) =>
+    Effect.fail((rejected.body?.data ?? []).flatMap((finding) => finding.errors ?? [])),
+  ),
+);
+```
+
+`getPolicyFileDetails` returns the policy file with Tailscale's parse `errors` and `warnings`. `acl` is the HuJSON text, base64-encoded.
+
+```ts
+import { Base64 } from "effect/encoding";
+
+const details = yield* Tailscale.getPolicyFileDetails({ tailnet: "-" });
+const hujson = yield* Effect.fromResult(Base64.decodeString(details.acl));
 ```
 
 ## Auth keys

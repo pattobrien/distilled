@@ -2,8 +2,13 @@ import { inspect } from "node:util";
 import * as API from "@distilled.cloud/core/api";
 import * as Category from "@distilled.cloud/core/category";
 import * as ResponseValidation from "@distilled.cloud/core/response-validation";
-import { runValidationModes } from "@distilled.cloud/dev/testing";
+import {
+  mockHttpClient,
+  runValidationModes,
+  type MockResponse,
+} from "@distilled.cloud/dev/testing";
 import * as Effect from "effect/Effect";
+import { Base64 } from "effect/encoding";
 import * as HttpClientError from "effect/http/HttpClientError";
 import * as HttpClientRequest from "effect/http/HttpClientRequest";
 import * as HttpClientResponse from "effect/http/HttpClientResponse";
@@ -13,10 +18,16 @@ import * as Schema from "effect/Schema";
 import type * as AST from "effect/SchemaAST";
 import { describe, expect, test } from "vitest";
 import { fromApiKey } from "../src/credentials.ts";
-import { TailscaleParseError } from "../src/errors.ts";
-import { TailscaleProtocol } from "../src/protocol.ts";
+import { PolicyFileRejected, TailscaleParseError } from "../src/errors.ts";
+import { TailscaleProtocol, type TailscaleOpContext } from "../src/protocol.ts";
 import * as Retry from "../src/retry.ts";
-import { getPolicyFile, listUserInvites } from "../src/services/tailscale.ts";
+import {
+  getPolicyFile,
+  getPolicyFileDetails,
+  listUserInvites,
+  previewRuleMatches,
+  setPolicyFile,
+} from "../src/services/tailscale.ts";
 import { Header, RawResponse, RawResponseRoot, SensitiveValue } from "../src/traits.ts";
 
 describe("Null list bodies", () => {
@@ -148,6 +159,113 @@ describe("Raw-text response validation", () => {
       cause: { path: ["token"], actual: "[REDACTED]" },
     });
     expect(inspect(result, { depth: Infinity })).not.toContain(SECRET);
+  });
+});
+
+describe("Policy file operations", () => {
+  const HUJSON = `// candidate\n{\n  "acls": [],\n}\n`;
+  const seen: Array<HttpClientRequest.HttpClientRequest> = [];
+
+  const bodyOf = (request: HttpClientRequest.HttpClientRequest): string =>
+    request.body._tag === "Uint8Array" ? new TextDecoder().decode(request.body.body) : "";
+
+  const call = <A, E>(effect: Effect.Effect<A, E, TailscaleOpContext>, response: MockResponse) =>
+    Effect.runPromise(
+      effect.pipe(
+        Retry.none,
+        Effect.provide(fromApiKey({ apiKey: Redacted.make("test") })),
+        Effect.provide(
+          mockHttpClient((request) => {
+            seen.push(request);
+            return response;
+          }),
+        ),
+        Effect.result,
+      ),
+    );
+
+  const failureOf = <A, E>(result: Result.Result<A, E>) =>
+    Result.isFailure(result) ? result.failure : undefined;
+
+  test("previewRuleMatches sends the candidate policy as HuJSON text", async () => {
+    seen.length = 0;
+    const result = await call(
+      previewRuleMatches({
+        tailnet: "-",
+        type: "user",
+        previewFor: "user1@example.com",
+        body: HUJSON,
+      }),
+      { body: JSON.stringify({ matches: [], type: "user", previewFor: "user1@example.com" }) },
+    );
+    expect(result).toMatchObject({ _tag: "Success", success: { matches: [] } });
+    const [request] = seen;
+    expect(request!.method).toBe("POST");
+    expect(request!.url).toBe(
+      "https://api.tailscale.com/api/v2/tailnet/-/acl/preview?type=user&previewFor=user1%40example.com",
+    );
+    expect(request!.headers["content-type"]).toBe("application/hujson");
+    expect(bodyOf(request!)).toBe(HUJSON);
+  });
+
+  test("a 400 from setPolicyFile is PolicyFileRejected with the failing tests", async () => {
+    const data = [
+      { user: "user1@example.com", errors: ['address "2.2.2.2:22": want: Drop, got: Accept'] },
+      { user: "group:unknown@example.com", warnings: ["group is not syncing from SCIM"] },
+    ];
+    const result = await call(setPolicyFile({ tailnet: "-", body: HUJSON }), {
+      status: 400,
+      body: JSON.stringify({ message: "test(s) failed", data }),
+    });
+    const error = failureOf(result);
+    expect(error).toBeInstanceOf(PolicyFileRejected);
+    expect(error).toMatchObject({ message: "test(s) failed", body: { data } });
+    expect(Category.isBadRequestError(error)).toBe(true);
+  });
+
+  test("a 400 without findings is PolicyFileRejected with the message", async () => {
+    const result = await call(
+      previewRuleMatches({ tailnet: "-", type: "user", previewFor: "u@example.com", body: "{" }),
+      { status: 400, body: JSON.stringify({ message: "line 1, column 2: unexpected EOF" }) },
+    );
+    const error = failureOf(result);
+    expect(error).toBeInstanceOf(PolicyFileRejected);
+    expect(error).toMatchObject({ message: "line 1, column 2: unexpected EOF" });
+    expect(error instanceof PolicyFileRejected && error.body?.data).toBeUndefined();
+  });
+
+  test("getPolicyFileDetails asks for details and decodes the JSON in both modes", async () => {
+    const requests: Array<HttpClientRequest.HttpClientRequest> = [];
+    const { lenient, strict } = await runValidationModes(
+      getPolicyFileDetails({ tailnet: "-" }).pipe(
+        Retry.none,
+        Effect.provide(fromApiKey({ apiKey: Redacted.make("test") })),
+      ),
+      (request) => {
+        requests.push(request);
+        return {
+          headers: { "content-type": "application/json", etag: '"e1"' },
+          body: JSON.stringify({
+            acl: Base64.encode(HUJSON),
+            warnings: ['"group:example": user not found: "user1@example.com"'],
+            errors: null,
+          }),
+        };
+      },
+    );
+    const success = {
+      _tag: "Success",
+      success: {
+        acl: Base64.encode(HUJSON),
+        warnings: ['"group:example": user not found: "user1@example.com"'],
+        errors: null,
+        eTag: '"e1"',
+      },
+    };
+    expect(lenient).toMatchObject(success);
+    expect(strict).toMatchObject(success);
+    expect(requests[0]!.method).toBe("GET");
+    expect(requests[0]!.url).toBe("https://api.tailscale.com/api/v2/tailnet/-/acl?details=true");
   });
 });
 
