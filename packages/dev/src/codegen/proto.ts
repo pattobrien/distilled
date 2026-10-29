@@ -22,7 +22,7 @@
  * JSON at the gRPC method path — Connect-JSON / grpc-JSON transcoding shape.
  */
 
-import { SENSITIVE_FIELD_PATTERNS } from "./openapi.ts";
+import { ERROR_MATCHERS_TRAIT, SENSITIVE_FIELD_PATTERNS } from "./openapi.ts";
 
 // ============================================================================
 // Prelude
@@ -158,6 +158,17 @@ export interface ProtoConvertOptions {
   readonly rpcNames?: ReadonlySet<string>;
   readonly skipStreaming?: boolean;
   readonly skipDeprecated?: boolean;
+  /**
+   * Error shapes declared on every operation, matched by HTTP status and,
+   * when `code` is given, by the `code` member of the error body.
+   */
+  readonly errors?: ReadonlyArray<ProtoErrorSpec>;
+}
+
+export interface ProtoErrorSpec {
+  readonly name: string;
+  readonly status: number;
+  readonly code?: string;
 }
 
 export interface ProtoConvertResult {
@@ -1022,6 +1033,24 @@ export const convertProtoToSmithy = (options: ProtoConvertOptions): ProtoConvert
     ? options.serviceName
     : `${options.serviceName}Service`;
   bag.names.add(serviceShapeName);
+  const errorTargets = (options.errors ?? []).map((error) => ({
+    target: addExact(bag, error.name, {
+      type: "structure",
+      members: {
+        message: { target: "smithy.api#String" },
+        body: { target: "smithy.api#Document" },
+      },
+      traits: {
+        "smithy.api#error": error.status < 500 ? "client" : "server",
+        "smithy.api#httpError": error.status,
+        [ERROR_MATCHERS_TRAIT]: [
+          error.code === undefined
+            ? { status: error.status }
+            : { status: error.status, body: { "/code": error.code } },
+        ],
+      },
+    }),
+  }));
   for (const rpc of service.rpcs) {
     if (options.rpcNames && !options.rpcNames.has(rpc.name)) continue;
     bag.names.add(rpc.name);
@@ -1054,6 +1083,7 @@ export const convertProtoToSmithy = (options: ProtoConvertOptions): ProtoConvert
       type: "operation",
       input: { target: input },
       output: { target: output },
+      ...(errorTargets.length > 0 ? { errors: errorTargets } : {}),
       traits,
     });
     serviceOps.push({ target: opId });

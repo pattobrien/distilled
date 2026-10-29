@@ -14,12 +14,12 @@
  * const program = Effect.gen(function* () {
  *   const created = yield* NamespaceLabs.compute.createInstance({
  *     shape: { virtualCpu: 2, memoryMegabytes: 4096, os: "linux", machineArch: "amd64" },
- *     deadline: new Date(Date.now() + 10 * 60 * 1000),
+ *     deadline: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
  *   });
- *   const instance = yield* NamespaceLabs.compute.describeInstance({
- *     instanceId: created.metadata!.instanceId!,
- *   });
- *   yield* NamespaceLabs.compute.destroyInstance({ instanceId: created.metadata!.instanceId! });
+ *   const instanceId = created.metadata?.instanceId;
+ *   if (instanceId === undefined) return undefined;
+ *   const instance = yield* NamespaceLabs.compute.describeInstance({ instanceId });
+ *   yield* NamespaceLabs.compute.destroyInstance({ instanceId });
  *   return instance.metadata?.status;
  * });
  *
@@ -43,5 +43,6 @@ export {
   type NamespaceLabsOpError,
   type NamespaceLabsOpContext,
 } from "./protocol.ts";
+export { paginateCursor } from "./pagination.ts";
 export * as Retry from "./retry.ts";
 export * from "./services/index.ts";

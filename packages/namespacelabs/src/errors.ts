@@ -21,8 +21,9 @@ import type { DefaultErrors as CoreDefaultErrors } from "@distilled.cloud/core/e
 import * as Schema from "@distilled.cloud/core/schema-lite-typed";
 
 /**
- * A failed response whose HTTP status has no mapped error class. `code` is
- * the Connect error code (`not_found`, `permission_denied`, ...).
+ * A failed response no declared error class matches. `code` is the Connect
+ * error code (`unknown`, `data_loss`, ...) and `details` the Connect error
+ * details, which carry the request id.
  */
 export class UnknownNamespaceLabsError
   extends /*@__PURE__*/ Schema.TaggedError<UnknownNamespaceLabsError>()(
@@ -30,6 +31,7 @@ export class UnknownNamespaceLabsError
     {
       code: /*@__PURE__*/ Schema.optional(Schema.String),
       message: /*@__PURE__*/ Schema.optional(Schema.String),
+      details: /*@__PURE__*/ Schema.optional(Schema.Unknown),
       body: Schema.Unknown,
     },
   ).pipe(Category.withServerError) {}

@@ -1,12 +1,7 @@
 #!/usr/bin/env -S node --conditions=bun
 import { runGeneratorCli } from "@distilled.cloud/dev/codegen/cli";
-/**
- * generate — turn the Smithy JSON models written by scripts/convert.ts into
- * the Namespace Effect SDK: src/services/<slug>.ts + src/services/index.ts.
- * Wire names are proto3 JSON camelCase, which convert already uses as Smithy
- * member names, so no renaming.
- */
 import type { SdkSpec } from "@distilled.cloud/dev/codegen/generator";
+import { ERROR_MATCHERS_TRAIT } from "@distilled.cloud/dev/codegen/openapi";
 
 const SENSITIVE_TRAIT = "smithy.api#sensitive";
 
@@ -19,6 +14,14 @@ const camel = (slug: string): string =>
 
 const spec: SdkSpec = {
   sourceNote: ".generated-specs (buf.build/namespace/cloud → smithy)",
+  errorMatchersTrait: ERROR_MATCHERS_TRAIT,
+
+  paginationProfiles: {
+    cursor: {
+      strategy: "paginateCursor",
+      itemsFallback: "items",
+    },
+  },
 
   memberTraitPipes: {
     [SENSITIVE_TRAIT]: "T.SensitiveValue",

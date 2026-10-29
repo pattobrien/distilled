@@ -15,7 +15,10 @@ build-event protos, is not read by anything the generator converts.
 Convert writes one Smithy model per proto service and maps each unary RPC to
 `POST /<package>.<Service>/<Method>` with a proto3 JSON body (camelCase
 fields, 64-bit integers as strings, `bytes` as base64). Streaming RPCs are
-skipped; most have a polling or `*Sync` counterpart.
+skipped; most have a polling or `*Sync` counterpart. Five services in the
+module answer 404 on every `namespaceapis.com` host (`ManagementService`,
+the devbox `AgentService` and `DevBoxExtraService`, `private.instance` and
+`experimental.remote.ExecutionService`) and are not generated.
 
 The package is `namespacelabs` (Namespace's GitHub org and npm scope) rather
 than `namespace`, so it does not shadow Alchemy's own `Namespace` export when
@@ -30,10 +33,10 @@ service, so `ComputeService` is `compute`, `CommandService` is
 
 | Host | Services |
 | --- | --- |
-| `https://<region>.compute.namespaceapis.com` | `compute`, `computeCommand`, `computeStorage`, `computeUsage`, `computeObservability`, `computeManagement`, `builder`, `experimentalComputeReservation` |
+| `https://<region>.compute.namespaceapis.com` | `compute`, `computeCommand`, `computeStorage`, `computeUsage`, `computeObservability`, `builder`, `experimentalComputeReservation` |
 | `https://<region>.storage.namespaceapis.com` | `artifacts` |
-| `https://global.namespaceapis.com` | `iamTenant`, `iamTenantMembership`, `iamToken`, `registry`, `vault`, `image`, `egress`, `bazel`, `bazelCache`, `gradleCache`, `httpcache`, `buildkiteJobs`, `buildkiteQueue`, `testing`, `audit`, `experimentalRemote*` |
-| `https://private-api.global.namespaceapis.com` | `privateDevbox`, `privateDevboxExtra`, `privateDevboxWireAgent`, `privateInstance`, `privateUserSessions`, `githubProfile`, `githubJobs`, `githubImage` |
+| `https://global.namespaceapis.com` | `iamTenant`, `iamTenantMembership`, `iamToken`, `registry`, `vault`, `image`, `egress`, `bazel`, `bazelCache`, `gradleCache`, `httpcache`, `buildkiteJobs`, `buildkiteQueue`, `testing`, `audit`, `experimentalRemoteResults` |
+| `https://private-api.global.namespaceapis.com` | `privateDevbox`, `privateUserSessions`, `githubProfile`, `githubJobs`, `githubImage` |
 
 The protocol picks the host from the operation's proto package. The
 `namespace.private.*` services are in the public module and used by the
@@ -55,9 +58,10 @@ import * as NamespaceLabs from "@distilled.cloud/namespacelabs";
 const program = Effect.gen(function* () {
   const created = yield* NamespaceLabs.compute.createInstance({
     shape: { virtualCpu: 2, memoryMegabytes: 4096, os: "linux", machineArch: "amd64" },
-    deadline: new Date(Date.now() + 10 * 60 * 1000),
+    deadline: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
   });
-  const instanceId = created.metadata!.instanceId!;
+  const instanceId = created.metadata?.instanceId;
+  if (instanceId === undefined) return undefined;
   const instance = yield* NamespaceLabs.compute.describeInstance({ instanceId });
   yield* NamespaceLabs.compute.destroyInstance({ instanceId });
   return instance.metadata?.status;
@@ -74,14 +78,47 @@ program.pipe(Effect.provide(Live), Effect.runPromise);
 
 ## Auth
 
-`NSC_TOKEN` as `Authorization: Bearer`. Mint one with
-`nsc auth generate-dev-token`, `nsc token create --grant ...`, or
-`iamToken.issueTenantTokenWithOidc` from a CI identity token. Optional:
-`NSC_REGION` (default `us`) selects the compute and storage hosts;
-`NSC_COMPUTE_URL`, `NSC_STORAGE_URL`, `NSC_GLOBAL_URL` and
-`NSC_PRIVATE_API_URL` override a host. `credentials({ token, region })` and
-`fromToken(token)` build the same layer in code.
+`CredentialsFromEnv` sends `NSC_TOKEN` as `Authorization: Bearer`. Mint one
+with `nsc auth generate-dev-token`, `nsc token create --grant ...`, or
+`iamToken.issueTenantTokenWithOIDC` from a CI identity token.
 
-Tokens, issued private keys and the third-party API keys a devbox template
-carries are `Redacted` in responses and accepted as `string | Redacted<string>`
-in requests.
+Inside a Namespace instance, devbox or GitHub runner the workload token is a
+file instead: `CredentialsFromTokenFile` reads `bearer_token` from
+`NSC_TOKEN_FILE` (default `/var/run/nsc/token.json`) on every call, because
+Namespace refreshes it. The layer needs a `FileSystem`, for example
+`NodeFileSystem.layer` from `@effect/platform-node`. A session token from
+`nsc login` is not a bearer token; exchange it with
+`privateUserSessions.issueTenantTokenFromSession`.
+
+Both layers read `NSC_REGION` (default `us`) for the compute and storage hosts
+and `NSC_COMPUTE_URL` (or `NSC_ENDPOINT`, which Namespace sets inside an
+instance), `NSC_STORAGE_URL`, `NSC_GLOBAL_URL` and `NSC_PRIVATE_API_URL` to
+override a host. `credentials({ token, region })`, `fromToken(token)` and
+`fromTokenFile(path)` build the same layers in code.
+
+## Errors
+
+Every operation declares the Connect error codes as typed errors, matched on
+the HTTP status and, where one status covers several codes, on the body's
+`code`: `InvalidArgument`, `FailedPrecondition`, `OutOfRange`,
+`Unauthenticated`, `PermissionDenied`, `NotFound`, `AlreadyExists`, `Aborted`,
+`ResourceExhausted`, `Canceled` and `Unimplemented`. Each carries `message`
+and the Connect `body` (`code`, `message`, `details` with the request id).
+Anything else is `UnknownNamespaceLabsError` with `code` and `details`.
+
+```ts
+NamespaceLabs.compute.describeInstance({ instanceId }).pipe(
+  Effect.catchTag("NotFound", () => Effect.succeed(undefined)),
+);
+```
+
+## Pagination
+
+List operations whose request and response carry a cursor (`listInstances`,
+`privateDevbox.list`, `githubJobs.listJobs`, `audit.listEntries`, the registry
+lists, ...) expose `.pages(input)` and `.items(input)` streams that follow
+`paginationCursor` until the last page.
+
+Tokens, vault values, issued private keys and the third-party API keys a
+devbox template carries are `Redacted` in responses and accepted as
+`string | Redacted<string>` in requests.
