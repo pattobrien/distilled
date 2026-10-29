@@ -443,6 +443,13 @@ export interface BuildRequestOptions {
    * Defaults to the key verbatim.
    */
   readonly unknownKeyToWire?: (key: string) => string;
+  /**
+   * Send `{}` on a bodied method even when the input declares no body
+   * members. Connect and gRPC-JSON RPCs take a JSON message on every call,
+   * so a `google.protobuf.Empty` request still needs a `{}` body and its
+   * content type; without one Connect answers 415.
+   */
+  readonly emptyJsonBody?: boolean;
 }
 
 /**
@@ -643,6 +650,7 @@ const requestOrInvalid = ({
   headers: baseHeaders,
   mapMemberHeader,
   unknownKeyToWire,
+  emptyJsonBody = false,
 }: BuildRequestOptions): HttpClientRequest.HttpClientRequest | InvalidInput => {
   const inputObj = (input ?? {}) as Record<string, unknown>;
   const plan = planFor(inputAst);
@@ -849,7 +857,7 @@ const requestOrInvalid = ({
     // The `{}`-when-empty rule below stays limited to methods that expect a
     // body, so a bodyless method with nothing set still sends nothing.
     bodyKeys > 0 ||
-    (hasBodyMembers && bodied && http.method !== "DELETE")
+    ((hasBodyMembers || emptyJsonBody) && bodied && http.method !== "DELETE")
   ) {
     // Send `{}` rather than no body when the schema declares body members --
     // some endpoints reject a missing JSON body outright.

@@ -443,6 +443,11 @@ shallow = true
 	url = https://github.com/distilled-mirror/spec-mirror-linear.git
 	ignore = dirty
 	shallow = true
+[submodule "packages/namespacelabs/specs/spec-mirror-namespacelabs"]
+	path = packages/namespacelabs/specs/spec-mirror-namespacelabs
+	url = https://github.com/distilled-mirror/spec-mirror-namespacelabs.git
+	ignore = dirty
+	shallow = true
 [submodule "packages/tailscale/specs/spec-mirror-tailscale"]
 	path = packages/tailscale/specs/spec-mirror-tailscale
 	url = https://github.com/distilled-mirror/spec-mirror-tailscale.git

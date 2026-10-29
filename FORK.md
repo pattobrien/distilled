@@ -15,6 +15,8 @@ not merged yet.
   [alchemy-run/distilled#698](https://github.com/alchemy-run/distilled/pull/698).
 - The Tailscale SDK in `packages/tailscale`, based on upstream PR
   [alchemy-run/distilled#956](https://github.com/alchemy-run/distilled/pull/956).
+- The Namespace SDK in `packages/namespacelabs`, with core's `emptyJsonBody` protocol option it
+  needs for Connect-JSON. Not yet proposed upstream.
 - The fork release workflow `.github/workflows/release-fork.yml` and its scripts
   `scripts/release/fork-publish.ts` and `scripts/release/fork-next-version.ts`.
 
