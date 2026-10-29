@@ -1,0 +1,122 @@
+{
+  "description": "Add getPolicyFileDetails for GET /tailnet/{tailnet}/acl?details=true. The spec documents details only as a query parameter on getPolicyFile, whose response the hujson patch types as raw HuJSON text, but with details=true the body is JSON {acl: base64 of the HuJSON, warnings: string[], errors: string[]} (the spec's details description and its exampleWithDetails, which sends errors: null; tailscale/tailscale client/tailscale/acl.go (3ec5be3f5) ACLHuJSON decodes acl and warnings from it and reads the ETag header). getPolicyFile loses details, and the new operation returns the JSON typed, warnings and errors nullable.",
+  "patches": [
+    {
+      "op": "remove",
+      "path": "/shapes/com.tailscale.api#GetPolicyFileRequest/members/details"
+    },
+    {
+      "op": "add",
+      "path": "/shapes/com.tailscale.api#GetPolicyFileDetailsRequest",
+      "value": {
+        "type": "structure",
+        "members": {},
+        "traits": {
+          "smithy.api#input": {}
+        }
+      }
+    },
+    {
+      "op": "copy",
+      "from": "/shapes/com.tailscale.api#GetPolicyFileRequest/members/tailnet",
+      "path": "/shapes/com.tailscale.api#GetPolicyFileDetailsRequest/members/tailnet"
+    },
+    {
+      "op": "add",
+      "path": "/shapes/com.tailscale.api#GetPolicyFileDetailsResponseWarningsList",
+      "value": {
+        "type": "list",
+        "member": {
+          "target": "smithy.api#String"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/shapes/com.tailscale.api#GetPolicyFileDetailsResponseErrorsList",
+      "value": {
+        "type": "list",
+        "member": {
+          "target": "smithy.api#String"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/shapes/com.tailscale.api#GetPolicyFileDetailsResponse",
+      "value": {
+        "type": "structure",
+        "members": {
+          "acl": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#required": {},
+              "smithy.api#documentation": "The policy file's HuJSON text, base64-encoded."
+            }
+          },
+          "warnings": {
+            "target": "com.tailscale.api#GetPolicyFileDetailsResponseWarningsList",
+            "traits": {
+              "smithy.api#required": {},
+              "com.distilled.openapi#nullable": {},
+              "smithy.api#documentation": "Syntactically valid but nonsensical entries."
+            }
+          },
+          "errors": {
+            "target": "com.tailscale.api#GetPolicyFileDetailsResponseErrorsList",
+            "traits": {
+              "smithy.api#required": {},
+              "com.distilled.openapi#nullable": {},
+              "smithy.api#documentation": "Parsing failures."
+            }
+          },
+          "eTag": {
+            "target": "smithy.api#String",
+            "traits": {
+              "smithy.api#httpHeader": "ETag",
+              "smithy.api#documentation": "Entity tag for the policy file. Send it back as If-Match on setPolicyFile."
+            }
+          }
+        },
+        "traits": {
+          "smithy.api#output": {}
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/shapes/com.tailscale.api#GetPolicyFileDetails",
+      "value": {
+        "type": "operation",
+        "input": {
+          "target": "com.tailscale.api#GetPolicyFileDetailsRequest"
+        },
+        "output": {
+          "target": "com.tailscale.api#GetPolicyFileDetailsResponse"
+        },
+        "errors": [
+          {
+            "target": "com.tailscale.api#BadRequest"
+          },
+          {
+            "target": "com.tailscale.api#Forbidden"
+          },
+          {
+            "target": "com.tailscale.api#NotFound"
+          },
+          {
+            "target": "com.tailscale.api#TailnetNotFound"
+          }
+        ],
+        "traits": {
+          "smithy.api#http": {
+            "method": "GET",
+            "uri": "/tailnet/{tailnet}/acl?details=true",
+            "code": 200
+          },
+          "smithy.api#documentation": "Get policy file details\n\nRetrieves the current policy file for the given tailnet with `details=true`: the HuJSON text base64-encoded as `acl`, with the `warnings` and `errors` Tailscale found in it. The response also includes the `ETag` header.\n\nOAuth Scope: `policy_file:read`."
+        }
+      }
+    }
+  ]
+}

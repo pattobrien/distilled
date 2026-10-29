@@ -1,5 +1,5 @@
 {
-  "description": "Carry policy files as raw HuJSON text. getPolicyFile, setPolicyFile and validateAndTestPolicyFile send and return the body verbatim as application/hujson (the spec's empty-object and oneOf JSON schemas drop or re-quote comments), require the request body (an omitted body stores {}, live 2026-10-03), and model the ETag header on getPolicyFile and setPolicyFile so a guarded write can follow a write without a read.",
+  "description": "Carry policy files as raw HuJSON text. getPolicyFile, setPolicyFile, validateAndTestPolicyFile and previewRuleMatches send and return the body verbatim as application/hujson (the spec's empty-object and oneOf JSON schemas drop or re-quote comments; convert drops previewRuleMatches's empty-object body entirely, though its requestBody also takes application/hujson as a string and tailscale/tailscale client/tailscale/acl.go previewACLPostRequest posts the candidate policy that way), require the request body (an omitted body stores {}, live 2026-10-03), and model the ETag header on getPolicyFile and setPolicyFile so a guarded write can follow a write without a read.",
   "patches": [
     {
       "op": "remove",
@@ -59,6 +59,17 @@
       "op": "add",
       "path": "/shapes/com.tailscale.api#ValidateAndTestPolicyFileRequest/members/body/traits/smithy.api#required",
       "value": {}
+    },
+    {
+      "op": "add",
+      "path": "/shapes/com.tailscale.api#PreviewRuleMatchesRequest/members/body",
+      "value": {
+        "target": "smithy.api#String",
+        "traits": {
+          "smithy.api#httpPayload": {},
+          "smithy.api#required": {}
+        }
+      }
     },
     {
       "op": "add",

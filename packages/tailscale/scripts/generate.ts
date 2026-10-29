@@ -9,7 +9,13 @@ import {
 
 const SENSITIVE_TRAIT = "smithy.api#sensitive";
 
-const HUJSON_BODY_URIS = new Set(["/tailnet/{tailnet}/acl", "/tailnet/{tailnet}/acl/validate"]);
+const HUJSON_BODY_URIS = new Set([
+  "/tailnet/{tailnet}/acl",
+  "/tailnet/{tailnet}/acl/preview",
+  "/tailnet/{tailnet}/acl/validate",
+]);
+
+const HAND_WRITTEN_ERRORS = ["PolicyFileRejected"];
 
 const tailscaleSpec: SdkSpec = {
   nullableTrait: NULLABLE_TRAIT,
@@ -37,10 +43,11 @@ const tailscaleSpec: SdkSpec = {
     `export const ${name} = S.Unknown as any as S.Schema<${name}>;\n`,
   ],
 
-  // Tailscale error bodies are `{"message": ...}` only; the generator's
-  // default would also declare a `code` the API never sends.
+  // Tailscale error bodies carry no `code`; the generator's default would
+  // declare one the API never sends.
   errors: {
     defaultFields: () => [`  message: S.String,`],
+    override: ({ name }) => (HAND_WRITTEN_ERRORS.includes(name) ? [] : undefined),
   },
 
   paginationProfiles: {
@@ -72,13 +79,18 @@ const tailscaleSpec: SdkSpec = {
 
   sourceNote: ".generated-specs (specs/spec-mirror-tailscale)",
 
-  postProcess: (code) =>
-    code.includes("Redacted.Redacted<")
-      ? code.replace(
+  postProcess: (code) => {
+    const imported = code.replace(
+      `import { UnknownTailscaleError } from "../errors.ts";\n`,
+      `import { ${[...HAND_WRITTEN_ERRORS, "UnknownTailscaleError"].join(", ")} } from "../errors.ts";\n`,
+    );
+    return imported.includes("Redacted.Redacted<")
+      ? imported.replace(
           `import * as S from "@distilled.cloud/core/schema-lite";\n`,
           `import * as S from "@distilled.cloud/core/schema-lite";\nimport type * as Redacted from "effect/Redacted";\n`,
         )
-      : code,
+      : imported;
+  },
 };
 
 runGeneratorCli({

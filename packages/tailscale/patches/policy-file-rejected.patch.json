@@ -1,0 +1,49 @@
+{
+  "description": "Type setPolicyFile's and previewRuleMatches's 400 as PolicyFileRejected instead of the spec's message-only BadRequest, so callers keep the per-source findings. A rejected policy file's 400 body is {message, data: [{user, errors, warnings}] | null}: tailscale/tailscale client/tailscale/acl.go (3ec5be3f5) decodes every non-200 from POST /tailnet/{tailnet}/acl as ACLTestError{message, data []ACLTestFailureSummary} with user, errors and warnings omitempty and data not; tailscale-client-go-v2 client.go (9b68d9333) decodes every API error as APIError{message, data []APIErrorData{user, errors}}; the spec's /acl/validate 200 documents the same {message, data: [{user, errors | warnings}]} shape. Every 400 on these operations takes the class, since a body matcher cannot test for the data array; data is optional. The class is hand-written in src/errors.ts so its body is typed; the generator skips this shape (HAND_WRITTEN_ERRORS in scripts/generate.ts).",
+  "patches": [
+    {
+      "op": "add",
+      "path": "/shapes/com.tailscale.api#PolicyFileRejected",
+      "value": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#error": "client",
+          "smithy.api#httpError": 400
+        }
+      }
+    },
+    {
+      "op": "test",
+      "path": "/shapes/com.tailscale.api#SetPolicyFile/errors/0",
+      "value": {
+        "target": "com.tailscale.api#BadRequest"
+      }
+    },
+    {
+      "op": "replace",
+      "path": "/shapes/com.tailscale.api#SetPolicyFile/errors/0",
+      "value": {
+        "target": "com.tailscale.api#PolicyFileRejected"
+      }
+    },
+    {
+      "op": "test",
+      "path": "/shapes/com.tailscale.api#PreviewRuleMatches/errors/0",
+      "value": {
+        "target": "com.tailscale.api#BadRequest"
+      }
+    },
+    {
+      "op": "replace",
+      "path": "/shapes/com.tailscale.api#PreviewRuleMatches/errors/0",
+      "value": {
+        "target": "com.tailscale.api#PolicyFileRejected"
+      }
+    }
+  ]
+}
