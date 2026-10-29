@@ -45,6 +45,7 @@ export interface CreateEnvironmentRequest {
   settings?: EnvironmentSettings;
   environmentType?: EnvironmentType | (string & {});
   defaultMemberRole?: EnvironmentRole | (string & {});
+  /** String representation; parsed when the enum is unspecified. */
   defaultMemberRoleStr?: string;
 }
 export interface CreateEnvironmentResponse {}
@@ -134,8 +135,8 @@ export interface EnvironmentGetRolesResponsePrincipal {
   userName?: string;
   serviceUserName?: string;
   role?: EnvironmentRole;
-  roleStr?: string;
   /** String representation for the CLI */
+  roleStr?: string;
   choosableRoles?: EnvironmentRoleList;
   memberRole?: MemberRole;
   inheritsDefaultMemberRole?: boolean;
@@ -177,8 +178,8 @@ export interface EnvironmentListItem {
   maxConcurrentGpus?: number;
   currentConcurrentTasks?: number;
   currentConcurrentGpus?: number;
-  cycleBudgetDollars?: number;
   /** manager-set */
+  cycleBudgetDollars?: number;
   effectiveCycleSpendLimit?: number;
   currentCycleUsage?: number;
   spendLimitReached?: boolean;
@@ -196,6 +197,7 @@ export interface SetEnvironmentRoleRequest {
   userId?: string;
   serviceUserId?: string;
   role?: EnvironmentRole | (string & {});
+  /** String representation from the CLI; parsed when role is unspecified */
   roleStr?: string;
 }
 export interface SetEnvironmentRoleResponse {}
@@ -224,8 +226,8 @@ export interface UpdateEnvironmentResponse {
   maxConcurrentGpus?: number;
   currentConcurrentTasks?: number;
   currentConcurrentGpus?: number;
-  cycleBudgetDollars?: number;
   /** manager-set */
+  cycleBudgetDollars?: number;
   effectiveCycleSpendLimit?: number;
   currentCycleUsage?: number;
   spendLimitReached?: boolean;

@@ -27,6 +27,7 @@ const TELEMETRY = {
 export interface CancelFunctionCallRequest {
   functionCallId?: string;
   terminateContainers?: boolean;
+  /** Only provided for sync input cancellation on the input plane. Async input cancellation does not provide this field this. */
   functionId?: string;
 }
 export interface CancelFunctionCallResponse {}
@@ -51,24 +52,24 @@ export type GPUType =
   | "GPU_TYPE_L40S"
   | "GPU_TYPE_H200";
 export interface GPUConfig {
-  type?: GPUType | (string & {});
   /** Deprecated, at some point */
+  type?: GPUType | (string & {});
   count?: number;
   gpuType?: string;
 }
-/** milli CPU cores */
 export interface Resources {
-  memoryMb?: number;
   /** MiB */
-  milliCpu?: number;
+  memoryMb?: number;
   /** milli CPU cores */
+  milliCpu?: number;
   gpuConfig?: GPUConfig;
+  /** MiB */
   memoryMbMax?: number;
   /** MiB */
   ephemeralDiskMb?: number;
-  /** MiB */
-  milliCpuMax?: number;
   /** milli CPU cores */
+  milliCpuMax?: number;
+  /** Whether to use RDMA interfaces */
   rdma?: boolean;
 }
 export type RateLimitInterval =
@@ -79,7 +80,6 @@ export interface RateLimit {
   limit?: number;
   interval?: RateLimitInterval | (string & {});
 }
-/** The default */
 export type WebhookType =
   | "WEBHOOK_TYPE_UNSPECIFIED"
   | "WEBHOOK_TYPE_ASGI_APP"
@@ -98,17 +98,17 @@ export type CustomDomainConfigList = Array<CustomDomainConfig>;
 export interface WebhookConfig {
   type?: WebhookType | (string & {});
   method?: string;
-  requestedSuffix?: string;
   /** User-supplied "label" component of URL */
+  requestedSuffix?: string;
   asyncMode?: WebhookAsyncMode | (string & {});
   customDomains?: CustomDomainConfigList;
   webServerPort?: number;
   webServerStartupTimeout?: number;
   webEndpointDocs?: boolean;
   requiresProxyAuth?: boolean;
+  /** Additional URL suffix added for ephemeral Apps */
   ephemeralSuffix?: string;
 }
-/** libmodal/modal-go: Go SDK, since version modal-go/v0.0.15 */
 export type CloudProvider =
   | "CLOUD_PROVIDER_UNSPECIFIED"
   | "CLOUD_PROVIDER_AWS"
@@ -130,14 +130,13 @@ export interface FunctionRetryPolicy {
 }
 export type PTYInfoPTYType = "PTY_TYPE_UNSPECIFIED" | "PTY_TYPE_FUNCTION" | "PTY_TYPE_SHELL";
 export interface PTYInfo {
-  enabled?: boolean;
   /** Soon deprecated */
+  enabled?: boolean;
   winszRows?: number;
   winszCols?: number;
   envTerm?: string;
   envColorterm?: string;
   envTermProgram?: string;
-  /** Replace function with shell */
   ptyType?: PTYInfoPTYType | (string & {});
   noTerminateOnIdleStdin?: boolean;
 }
@@ -211,6 +210,7 @@ export interface SchedulerPlacement {
   Zone?: string;
   Lifecycle?: string;
   InstanceTypes?: StringList;
+  /** Functions only */
   nonpreemptible?: boolean;
 }
 export type ClassParameterInfoParameterSerializationFormat =
@@ -231,13 +231,14 @@ export type ParameterType =
 export type GenericPayloadTypeList = Array<GenericPayloadType>;
 export interface GenericPayloadType {
   baseType?: ParameterType | (string & {});
+  /** sub-type for generic types like lists */
   subTypes?: GenericPayloadTypeList;
 }
 export interface ClassParameterSpec {
   /** TODO: rename into NamedPayloadType or similar */
   name?: string;
-  type?: ParameterType | (string & {});
   /** TODO: deprecate - use full_type instead */
+  type?: ParameterType | (string & {});
   hasDefault?: boolean;
   /** Default *values* are only registered for class parameters */
   stringDefault?: string;
@@ -245,12 +246,13 @@ export interface ClassParameterSpec {
   pickleDefault?: string;
   bytesDefault?: string;
   boolDefault?: boolean;
+  /** supersedes `type` */
   fullType?: GenericPayloadType;
 }
 export type ClassParameterSpecList = Array<ClassParameterSpec>;
 export interface ClassParameterInfo {
-  /** new format using api.FunctionParameterSet */
   format?: ClassParameterInfoParameterSerializationFormat | (string & {});
+  /** only set for PARAM_SERIALIZATION_FORMAT_PROTO */
   schema?: ClassParameterSpecList;
 }
 export interface TaskTemplate {
@@ -281,8 +283,8 @@ export interface Schedule {
 }
 export type FunctionSchemaFunctionSchemaType = "FUNCTION_SCHEMA_UNSPECIFIED" | "FUNCTION_SCHEMA_V1";
 export interface FunctionSchema {
-  schemaType?: FunctionSchemaFunctionSchemaType | (string & {});
   /** allows easy disambiguation between empty schema and no schema collection etc. */
+  schemaType?: FunctionSchemaFunctionSchemaType | (string & {});
   arguments?: ClassParameterSpecList;
   returnType?: GenericPayloadType;
 }
@@ -319,14 +321,13 @@ export interface AutoscalerSettings {
   scaledownWindow?: number;
   /** Integer-valued target concurrent requests per replica for Flash autoscaling. Superseded by `target_concurrency_float`, which allows non-integer targets. */
   targetConcurrency?: number;
-  /** Deprecated Maximum number of containers that can be scaled down per minute for Flash autoscaling. */
+  /** Maximum number of containers that can be scaled down per minute for Flash autoscaling. */
   scaledownRateLimit?: number;
   /** Target concurrent requests per replica for Flash autoscaling; may be fractional. */
   targetConcurrencyFloat?: number;
 }
 export type StringMap = { [key: string]: string | undefined };
 export interface LiftAndShiftConfig {}
-/** (?) */
 export interface HTTPConfig {
   port?: number;
   proxyRegions?: StringList;
@@ -352,30 +353,32 @@ export interface Function {
   sharedVolumeMounts?: SharedVolumeMountList;
   proxyId?: string;
   retryPolicy?: FunctionRetryPolicy;
+  /** To be replaced by autoscaler_settings.max_containers */
   concurrencyLimit?: number;
   /** old fields */
   timeoutSecs?: number;
   ptyInfo?: PTYInfo;
   classSerialized?: string;
-  taskIdleTimeoutSecs?: number;
   /** To be replaced by autoscaler_settings.scaledown_period */
-  cloudProvider?: CloudProvider | (string & {});
+  taskIdleTimeoutSecs?: number;
   /** Deprecated at some point */
-  warmPoolSize?: number;
+  cloudProvider?: CloudProvider | (string & {});
   /** To be replaced by autoscaler_settings.min_containers */
+  warmPoolSize?: number;
   webUrl?: string;
   webUrlInfo?: WebUrlInfo;
   /** If set, overrides the runtime used by the function, either "runc" or "gvisor". */
   runtime?: string;
-  appName?: string;
   /** Formerly stub_name */
+  appName?: string;
   volumeMounts?: VolumeMountList;
   maxConcurrentInputs?: number;
   customDomainInfo?: CustomDomainInfoList;
+  /** For internal debugging use only. */
   workerId?: string;
   /** For internal debugging use only. */
   runtimeDebug?: boolean;
-  /** For internal debugging use only. TODO: combine into enum? */
+  /** TODO: combine into enum? */
   isBuilderFunction?: boolean;
   isAutoSnapshot?: boolean;
   isMethod?: boolean;
@@ -397,60 +400,62 @@ export interface Function {
   classParameterInfo?: ClassParameterInfo;
   /** _experimental_resources */
   batchMaxSize?: number;
-  /** Maximum number of inputs to fetch at once */
-  batchLingerMs?: string;
   /** Miliseconds to block before a response is needed */
+  batchLingerMs?: string;
   i6pnEnabled?: boolean;
   ExperimentalConcurrentCancellations?: boolean;
   targetConcurrentInputs?: number;
   /** TODO(irfansharif): Remove, once https://github.com/modal-labs/modal/pull/15645 lands. */
   ExperimentalTaskTemplatesEnabled?: boolean;
-  /** forces going through the new gpu-fallbacks integration path, even if no fallback options are specified */
+  /** for fallback options, where the first/most-preferred "template" is derived from fields above */
   ExperimentalTaskTemplates?: TaskTemplateList;
-  /** for fallback options, where the first/most-preferred "template" is derived from fields above When the function is a "grouped" one, this records the # of tasks we want to schedule in tandem. */
+  /** When the function is a "grouped" one, this records the # of tasks we want to schedule in tandem. */
   ExperimentalGroupSize?: number;
   /** When set on a "grouped" function, constrains placement across GPU-memory fabrics: the cluster is placed in co-fabric blocks of this size. */
   ExperimentalFabricSize?: number;
   /** If set, the function will be run in an untrusted environment. */
   untrusted?: boolean;
-  ExperimentalBufferContainers?: number;
   /** To be replaced by autoscaler_settings.buffer_containers */
-  runtimePerfRecord?: boolean;
+  ExperimentalBufferContainers?: number;
   /** For internal debugging use only. */
+  runtimePerfRecord?: boolean;
   schedule?: Schedule;
+  /** For internal debugging use only. */
   snapshotDebug?: boolean;
-  /** For internal debugging use only. Mapping of method names to method definitions, only non-empty for class service functions */
+  /** Mapping of method names to method definitions, only non-empty for class service functions */
   methodDefinitions?: MethodDefinitionMap;
   methodDefinitionsSet?: boolean;
   ExperimentalCustomScaling?: boolean;
-  cloudProviderStr?: string;
   /** Supersedes cloud_provider */
-  ExperimentalEnableGpuSnapshot?: boolean;
+  cloudProviderStr?: string;
   /** Experimental support for GPU snapshotting */
-  autoscalerSettings?: AutoscalerSettings;
+  ExperimentalEnableGpuSnapshot?: boolean;
   /** Bundle of parameters related to autoscaling */
+  autoscalerSettings?: AutoscalerSettings;
+  /** Function schema, may be missing: client doesn't block deployment if it fails to get it */
   functionSchema?: FunctionSchema;
-  /** Function schema, may be missing: client doesn't block deployment if it fails to get it For server-side experimental functionality. Prefer using this over individual _experimental_* fields. Note the value type as string. Internally we'll coerce all values to string with str(). On the server, it's necessary to convert back to the most natural type (e.g. int) when relevant. */
+  /** For server-side experimental functionality. Prefer using this over individual _experimental_* fields. Note the value type as string. Internally we'll coerce all values to string with str(). On the server, it's necessary to convert back to the most natural type (e.g. int) when relevant. */
   experimentalOptions?: StringMap;
   /** Deprecated: still set by client but ignored by server. The scheduler derives this from the image's builder_version directly. */
   mountClientDependencies?: boolean;
   flashServiceUrls?: StringList;
   flashServiceLabel?: string;
-  enableGpuSnapshot?: boolean;
   /** GPU memory snapshotting (alpha) */
+  enableGpuSnapshot?: boolean;
   startupTimeoutSecs?: number;
-  supportedInputFormats?: DataFormatList;
   /** can be used as inputs */
+  supportedInputFormats?: DataFormatList;
   supportedOutputFormats?: DataFormatList;
   httpConfig?: HTTPConfig;
   /** Attribute on the module with the implementation, which may differ from function_name when the user provided a custom name= for the Function inside the Application namespace */
   implementationName?: string;
-  singleUseContainers?: boolean;
   /** When True, containers will shut down after handling a single input */
-  isServer?: boolean;
+  singleUseContainers?: boolean;
   /** When True, the function is a server function */
+  isServer?: boolean;
+  /** Where inputs to a function should be routed through. */
   routingRegion?: string;
-  /** Where inputs to a function should be routed through. True when the function is a Sessioned Server. Only valid together with is_server. */
+  /** True when the function is a Sessioned Server. Only valid together with is_server. */
   isSessioned?: boolean;
 }
 /** use_method_name, pre-0.67 class method placeholders */
@@ -474,8 +479,8 @@ export interface FunctionData {
   ExperimentalBufferContainers?: number;
   ExperimentalCustomScaling?: boolean;
   ExperimentalEnableGpuSnapshot?: boolean;
-  workerId?: string;
   /** for internal debugging use only */
+  workerId?: string;
   timeoutSecs?: number;
   webUrl?: string;
   webUrlInfo?: WebUrlInfo;
@@ -484,20 +489,20 @@ export interface FunctionData {
   /** Mapping of method names to method definitions, only non-empty for class service functions */
   methodDefinitions?: MethodDefinitionMap;
   methodDefinitionsSet?: boolean;
-  isClass?: boolean;
   /** if "Function" is actually a class grouping multiple methods - applies across all underlying tasks */
+  isClass?: boolean;
   classParameterInfo?: ClassParameterInfo;
   isMethod?: boolean;
   rankedFunctions?: FunctionDataRankedFunctionList;
   schedule?: Schedule;
-  untrusted?: boolean;
   /** If set, the function will be run in an untrusted environment. */
+  untrusted?: boolean;
+  /** For internal debugging use only. */
   snapshotDebug?: boolean;
   /** For internal debugging use only. */
   runtimePerfRecord?: boolean;
-  /** For internal debugging use only. */
-  autoscalerSettings?: AutoscalerSettings;
   /** Bundle of parameters related to autoscaling */
+  autoscalerSettings?: AutoscalerSettings;
   functionSchema?: FunctionSchema;
   experimentalOptions?: StringMap;
   flashServiceUrls?: StringList;
@@ -508,17 +513,18 @@ export interface FunctionData {
   httpConfig?: HTTPConfig;
   /** Attribute on the module with the implementation, which may differ from function_name when the user provided a custom name= for the Function inside the Application namespace */
   implementationName?: string;
-  isServer?: boolean;
   /** When True, the function is a server function */
+  isServer?: boolean;
+  /** Where inputs to a function should be routed through. */
   routingRegion?: string;
-  /** Where inputs to a function should be routed through. True when the function is a Sessioned Server. Only valid together with is_server. */
+  /** True when the function is a Sessioned Server. Only valid together with is_server. */
   isSessioned?: boolean;
 }
 export interface CreateFunctionRequest {
   function?: Function;
   appId?: string;
-  schedule?: Schedule;
   /** Deprecated: now passed in the Function definition */
+  schedule?: Schedule;
   existingFunctionId?: string;
   /** defer_updates */
   functionData?: FunctionData;
@@ -532,7 +538,6 @@ export interface FunctionHandleMetadata {
   isMethod?: boolean;
   /** use_function_id, pre-0.67 class method placeholders */
   useMethodName?: string;
-  /** used for methods */
   definitionId?: string;
   classParameterInfo?: ClassParameterInfo;
   /** Mapping of method names to their metadata, only non-empty for class service functions */
@@ -543,8 +548,8 @@ export interface FunctionHandleMetadata {
   /** Use optional to ensure unset values default to None instead of 0 */
   maxObjectSizeBytes?: string;
   maxAsyncObjectSizeBytes?: string;
-  ExperimentalFlashUrls?: StringList;
   /** (Optional) urls for flash services */
+  ExperimentalFlashUrls?: StringList;
   supportedInputFormats?: DataFormatList;
   supportedOutputFormats?: DataFormatList;
   appId?: string;
@@ -563,10 +568,10 @@ export interface Warning {
 export type WarningList = Array<Warning>;
 export interface CreateFunctionResponse {
   functionId?: string;
-  DeprecatedWebUrl?: string;
   /** Used up until 0.62.212 */
-  function?: Function;
+  DeprecatedWebUrl?: string;
   /** deprecated soon */
+  function?: Function;
   handleMetadata?: FunctionHandleMetadata;
   serverWarnings?: WarningList;
   functionData?: FunctionData;
@@ -611,8 +616,8 @@ export interface FetchFunctionCallResponse {
 /** todo(ayush): update this to also use `autoscaler_settings` */
 export interface FunctionOptions {
   secretIds?: StringList;
-  mountIds?: StringList;
   /** Currently not supported */
+  mountIds?: StringList;
   resources?: Resources;
   retryPolicy?: FunctionRetryPolicy;
   concurrencyLimit?: number;
@@ -639,6 +644,7 @@ export interface FunctionBindParamsRequest {
   serializedParams?: string;
   functionOptions?: FunctionOptions;
   environmentName?: string;
+  /** Only used for the input plane. */
   authSecret?: string | Redacted.Redacted<string>;
 }
 export interface FunctionBindParamsResponse {
@@ -680,7 +686,7 @@ export interface FunctionCallInfo {
   idx?: number;
   /** old fields */
   createdAt?: number;
-  /** when the call was created */
+  /** if cron job, when run was scheduled */
   scheduledAt?: number;
   /** old fields */
   pendingInputs?: InputCategoryInfo;
@@ -698,6 +704,7 @@ export interface DataChunk {
   dataFormat?: DataFormat | (string & {});
   data?: string;
   dataBlobId?: string;
+  /** Index of this data chunk in the stream. */
   index?: string;
 }
 export type DataChunkList = Array<DataChunk>;
@@ -814,10 +821,11 @@ export interface FunctionGetSerializedResponse {
 }
 export interface FunctionGetTimeRangeStatsRequest {
   functionId?: string;
-  since?: string;
   /** Inclusive. */
+  since?: string;
+  /** Exclusive. */
   until?: string;
-  /** Exclusive. Aggregate the root Function pool and its non-version-pinned variant pools. */
+  /** Aggregate the root Function pool and its non-version-pinned variant pools. */
   rollup?: boolean;
   /** Filter stats for a specific container */
   containerId?: string;
@@ -837,10 +845,11 @@ export type StatsPercentileDistributionMap = {
   [key: string]: StatsPercentileDistribution | undefined;
 };
 export interface FunctionGetTimeRangeStatsResponse {
-  since?: string;
   /** Inclusive. */
+  since?: string;
+  /** Exclusive. */
   until?: string;
-  /** Exclusive. Counts of inputs that finish in the requested time range. */
+  /** Counts of inputs that finish in the requested time range. */
   inputSuccessCount?: string;
   inputFailureCount?: string;
   inputTimeoutCount?: string;
@@ -890,14 +899,15 @@ export interface FunctionInput {
   args?: string;
   argsBlobId?: string;
   finalInput?: boolean;
-  dataFormat?: DataFormat | (string & {});
   /** For args_oneof. */
+  dataFormat?: DataFormat | (string & {});
+  /** specifies which method to call when calling a class/object function */
   methodName?: string;
 }
 export type BlobUploadResultOutcome = "OUTCOME_UNSPECIFIED" | "OUTCOME_SUCCESS" | "OUTCOME_FAILURE";
 export interface BlobUploadResult {
-  blobId?: string;
   /** The blob id (from BlobCreateResponse) that this upload attempt targeted. */
+  blobId?: string;
   outcome?: BlobUploadResultOutcome | (string & {});
   throughputBytesS?: string;
 }
@@ -964,24 +974,24 @@ export interface FunctionPutInputsRequest {
 export interface FunctionPutInputsResponse {
   inputs?: FunctionPutInputsResponseItemList;
 }
-/** sub-type for generic types like lists */
 export interface GenericResult {
-  status?: GenericResultGenericStatus | (string & {});
   /** Status of the task or function output. */
-  exception?: string;
+  status?: GenericResultGenericStatus | (string & {});
   /** Exception message for failures, if available. */
-  exitcode?: number;
+  exception?: string;
   /** Status code of the container entrypoint or builder process if it terminates unexpectedly. */
-  traceback?: string;
+  exitcode?: number;
   /** String value of the Python traceback. */
-  serializedTb?: string;
+  traceback?: string;
   /** Pickled traceback object. */
-  tbLineCache?: string;
+  serializedTb?: string;
   /** Pickled line cache for traceback object. */
-  data?: string;
+  tbLineCache?: string;
   /** Inline data of the result. */
-  dataBlobId?: string;
+  data?: string;
   /** Blob ID for large data. */
+  dataBlobId?: string;
+  /** (?) */
   propagationReason?: string;
 }
 export interface FunctionPutOutputsItem {
@@ -989,9 +999,10 @@ export interface FunctionPutOutputsItem {
   result?: GenericResult;
   inputStartedAt?: number;
   outputCreatedAt?: number;
-  dataFormat?: DataFormat | (string & {});
   /** for result.data_oneof */
+  dataFormat?: DataFormat | (string & {});
   retryCount?: number;
+  /** injected by the worker */
   functionCallId?: string;
   /** injected by the worker */
   functionMapIdx?: number;
@@ -1001,10 +1012,10 @@ export interface FunctionPutOutputsItem {
 export type FunctionPutOutputsItemList = Array<FunctionPutOutputsItem>;
 export interface FunctionPutOutputsRequest {
   outputs?: FunctionPutOutputsItemList;
+  /** Used for waypoints. */
   requestedAt?: number;
 }
 export interface FunctionPutOutputsResponse {}
-/** Used for waypoints. */
 export interface FunctionRetryInputsItem {
   inputJwt?: string;
   input?: FunctionInput;
@@ -1045,9 +1056,9 @@ export interface GetFunctionInputsRequest {
   functionId?: string;
   /** average_call_time */
   inputConcurrency?: number;
-  /** Container aims to fetch multiple inputs at the same time */
-  batchMaxSize?: number;
   /** Maximum number of inputs to fetch at once */
+  batchMaxSize?: number;
+  /** Miliseconds to block before a response is needed */
   batchLingerMs?: string;
 }
 export interface GetFunctionInputsItem {
@@ -1058,14 +1069,15 @@ export interface GetFunctionInputsItem {
   functionCallId?: string;
   functionCallInvocationType?: FunctionCallInvocationType;
   retryCount?: number;
-  functionMapIdx?: number;
   /** intercepted and only used by the worker. */
+  functionMapIdx?: number;
   attemptToken?: string;
   fromInputPlane?: boolean;
 }
 export type GetFunctionInputsItemList = Array<GetFunctionInputsItem>;
 export interface GetFunctionInputsResponse {
   inputs?: GetFunctionInputsItemList;
+  /** How long to sleep before requesting another input. */
   rateLimitSleepDuration?: number;
 }
 export interface GetFunctionOutputsRequest {
@@ -1073,27 +1085,29 @@ export interface GetFunctionOutputsRequest {
   maxValues?: number;
   timeout?: number;
   lastEntryId?: string;
-  clearOnSuccess?: boolean;
   /** expires *any* remaining outputs soon after this call, not just the returned ones */
+  clearOnSuccess?: boolean;
+  /** Used for waypoints. */
   requestedAt?: number;
-  /** Used for waypoints. The jwts the client expects the server to be processing. This is optional and used for sync inputs only. */
+  /** The jwts the client expects the server to be processing. This is optional and used for sync inputs only. */
   inputJwts?: StringList;
-  startIdx?: number;
   /** for async batch requests. this indicates which index to start from. */
+  startIdx?: number;
+  /** for async batch requests. this indicates which index to end at. */
   endIdx?: number;
 }
 export type IntegerList = Array<number>;
-/** How long to sleep before requesting another input. */
 export interface GetFunctionOutputsItem {
   result?: GenericResult;
   idx?: number;
   inputId?: string;
-  dataFormat?: DataFormat;
   /** for result.data_oneof */
+  dataFormat?: DataFormat;
   taskId?: string;
   inputStartedAt?: number;
   outputCreatedAt?: number;
   retryCount?: number;
+  /** datadog function call trace tag */
   fcTraceTag?: string;
 }
 export type GetFunctionOutputsItemList = Array<GetFunctionOutputsItem>;

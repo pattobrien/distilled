@@ -420,8 +420,9 @@ export type CreateInstanceRequestExperimentalFeaturesContainerdShimList =
 export interface CreateInstanceRequestExperimentalFeaturesTlsBackedPort {
   name?: string;
   port?: number;
+  /** If this is false, TLS is used in passthrough mode. */
   terminateTls?: boolean;
-  /** If this is false, TLS is used in passthrough mode. Only applies when terminate_tls is true. Defaults to mTLS. */
+  /** Only applies when terminate_tls is true. Defaults to mTLS. */
   clientAuthentication?: IngressClientAuthentication | (string & {});
 }
 export type CreateInstanceRequestExperimentalFeaturesTlsBackedPortList =
@@ -580,7 +581,6 @@ export interface EgressPolicySpecAllowOpts {}
 export interface EgressPolicySpecProxyOpts {
   viaDomain?: string;
 }
-/** Cache until stale, then refresh. Staleness follows the Cache-Control: max-age returned by from_endpoint, with a minimum of 10s. Requires from_endpoint. */
 export interface EgressPolicySpecInjectOptsFromEndpoint {
   url?: string;
   headers?: HttpHeaderList;
@@ -593,11 +593,10 @@ export interface EgressPolicySpecInjectOpts {
   headerName?: string;
   /** Exactly one value source must be set. */
   fromSecretId?: string;
-  /** References a Vault secret. */
-  value?: string;
   /** Plaintext value. */
-  fromEndpoint?: EgressPolicySpecInjectOptsFromEndpoint;
+  value?: string;
   /** Fetches the value to inject from an HTTP endpoint using GET. */
+  fromEndpoint?: EgressPolicySpecInjectOptsFromEndpoint;
   resolutionPolicy?: EgressPolicySpecInjectOptsResolutionPolicy | (string & {});
 }
 export interface EgressPolicySpecRule {

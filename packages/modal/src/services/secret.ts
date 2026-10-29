@@ -38,7 +38,7 @@ export interface ListSecretRequest {
 export interface CreationInfo {
   /** This message is used in metadata for resource objects like Dict, Queue, Volume, etc. */
   createdAt?: number;
-  /** Timestamp of resource creation */
+  /** User name or service name */
   createdBy?: string;
 }
 export type StringList = Array<string>;
@@ -50,11 +50,11 @@ export interface SecretMetadata {
 }
 export interface SecretListItem {
   label?: string;
-  createdAt?: number;
   /** Superseded by metadata, used by clients up to 1.1.2 */
+  createdAt?: number;
   lastUsedAt?: number;
-  environmentName?: string;
   /** Unused by client */
+  environmentName?: string;
   secretId?: string;
   metadata?: SecretMetadata;
 }
@@ -81,11 +81,11 @@ export interface SecretGetOrCreateRequest {
   deploymentName?: string;
   /** removed namespace */
   environmentName?: string;
-  objectCreationType?: ObjectCreationType | (string & {});
   /** Not used atm */
+  objectCreationType?: ObjectCreationType | (string & {});
   envDict?: StringMap;
-  appId?: string;
   /** only used with OBJECT_CREATION_TYPE_ANONYMOUS_OWNED_BY_APP */
+  appId?: string;
   requiredKeys?: StringList;
 }
 export interface SecretGetOrCreateResponse {
@@ -94,11 +94,11 @@ export interface SecretGetOrCreateResponse {
 }
 export interface UpdateSecretRequestUpdate {
   key?: string;
+  /** If not set, the key is removed. */
   value?: string;
 }
 export type UpdateSecretRequestUpdateList = Array<UpdateSecretRequestUpdate>;
 export interface UpdateSecretRequest {
-  /** If not set, the key is removed. */
   secretId?: string;
   updates?: UpdateSecretRequestUpdateList;
 }

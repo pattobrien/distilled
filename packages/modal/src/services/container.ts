@@ -27,7 +27,6 @@ export interface ContainerCheckpointRequest {
   checkpointId?: string;
 }
 export interface ContainerCheckpointResponse {}
-/** Whether to use RDMA interfaces */
 export interface RuntimeInputMessage {
   message?: string;
   messageIndex?: string;
@@ -47,8 +46,8 @@ export interface ContainerExecWaitResponse {
   completed?: boolean;
 }
 export interface ContainerHeartbeatRequest {
-  canceledInputsReturnOutputs?: boolean;
   /** Bad client version. */
+  canceledInputsReturnOutputs?: boolean;
   canceledInputsReturnOutputsV2?: boolean;
 }
 export type StringList = Array<string>;
@@ -112,14 +111,13 @@ export interface ContainerServerLifecycleReadyRequest {}
 export interface ContainerServerLifecycleReadyResponse {}
 export type PTYInfoPTYType = "PTY_TYPE_UNSPECIFIED" | "PTY_TYPE_FUNCTION" | "PTY_TYPE_SHELL";
 export interface PTYInfo {
-  enabled?: boolean;
   /** Soon deprecated */
+  enabled?: boolean;
   winszRows?: number;
   winszCols?: number;
   envTerm?: string;
   envColorterm?: string;
   envTermProgram?: string;
-  /** Replace function with shell */
   ptyType?: PTYInfoPTYType | (string & {});
   noTerminateOnIdleStdin?: boolean;
 }
@@ -135,8 +133,8 @@ export interface ExecContainerRequest {
   ptyInfo?: PTYInfo;
   /** Send SIGTERM to running container on exit of exec command. */
   terminateContainerOnExit?: boolean;
-  runtimeDebug?: boolean;
   /** For internal debugging use only. */
+  runtimeDebug?: boolean;
   stdoutOutput?: ExecOutputOption | (string & {});
   stderrOutput?: ExecOutputOption | (string & {});
   timeoutSecs?: number;
@@ -221,6 +219,7 @@ export interface ExecContainerFilesystemResponse {
 }
 export interface StopContainerRequest {
   taskId?: string;
+  /** Let a Function container finish processing any inputs before exiting. */
   graceful?: boolean;
 }
 export interface StopContainerResponse {}

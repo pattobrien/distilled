@@ -163,9 +163,9 @@ export interface DescribeReservationResponse {
 export interface ListReservationsRequest {
   /** When filtering for a time range, we return all reservations which were/are active at any point in that time range, meaning at least one of (creation_time, reservation_end) is in the window [period_start, period_end] OR creation_time < period_start < period_end < reservation_end. We consider reservation_end to be the reservation_deadline for reservations that have not been fulfilled, and fulfillment_time for those that have, so a reservation with fulfillment_time < period_start <= reservation_deadline will not be included in the response. */
   periodStart?: string;
-  /** default to epoch */
+  /** default to now */
   periodEnd?: string;
-  /** default to now Maximum number of reservations to return. Capped at 50,000; default 100 */
+  /** Maximum number of reservations to return. Capped at 50,000; default 100 */
   maxEntries?: string;
   /** If true, no reservations that have been fulfilled (have an instance assigned) will be returned */
   excludeFulfilled?: boolean;
@@ -447,8 +447,9 @@ export type CreateInstanceRequestExperimentalFeaturesContainerdShimList =
 export interface CreateInstanceRequestExperimentalFeaturesTlsBackedPort {
   name?: string;
   port?: number;
+  /** If this is false, TLS is used in passthrough mode. */
   terminateTls?: boolean;
-  /** If this is false, TLS is used in passthrough mode. Only applies when terminate_tls is true. Defaults to mTLS. */
+  /** Only applies when terminate_tls is true. Defaults to mTLS. */
   clientAuthentication?: IngressClientAuthentication | (string & {});
 }
 export type CreateInstanceRequestExperimentalFeaturesTlsBackedPortList =
@@ -607,7 +608,6 @@ export interface EgressPolicySpecAllowOpts {}
 export interface EgressPolicySpecProxyOpts {
   viaDomain?: string;
 }
-/** Cache until stale, then refresh. Staleness follows the Cache-Control: max-age returned by from_endpoint, with a minimum of 10s. Requires from_endpoint. */
 export interface EgressPolicySpecInjectOptsFromEndpoint {
   url?: string;
   headers?: HttpHeaderList;
@@ -620,11 +620,10 @@ export interface EgressPolicySpecInjectOpts {
   headerName?: string;
   /** Exactly one value source must be set. */
   fromSecretId?: string;
-  /** References a Vault secret. */
-  value?: string;
   /** Plaintext value. */
-  fromEndpoint?: EgressPolicySpecInjectOptsFromEndpoint;
+  value?: string;
   /** Fetches the value to inject from an HTTP endpoint using GET. */
+  fromEndpoint?: EgressPolicySpecInjectOptsFromEndpoint;
   resolutionPolicy?: EgressPolicySpecInjectOptsResolutionPolicy | (string & {});
 }
 export interface EgressPolicySpecRule {

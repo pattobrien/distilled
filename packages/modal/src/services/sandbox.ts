@@ -36,27 +36,26 @@ export type GPUType =
   | "GPU_TYPE_L40S"
   | "GPU_TYPE_H200";
 export interface GPUConfig {
-  type?: GPUType | (string & {});
   /** Deprecated, at some point */
+  type?: GPUType | (string & {});
   count?: number;
   gpuType?: string;
 }
-/** milli CPU cores */
 export interface Resources {
-  memoryMb?: number;
   /** MiB */
-  milliCpu?: number;
+  memoryMb?: number;
   /** milli CPU cores */
+  milliCpu?: number;
   gpuConfig?: GPUConfig;
+  /** MiB */
   memoryMbMax?: number;
   /** MiB */
   ephemeralDiskMb?: number;
-  /** MiB */
-  milliCpuMax?: number;
   /** milli CPU cores */
+  milliCpuMax?: number;
+  /** Whether to use RDMA interfaces */
   rdma?: boolean;
 }
-/** libmodal/modal-go: Go SDK, since version modal-go/v0.0.15 */
 export type CloudProvider =
   | "CLOUD_PROVIDER_UNSPECIFIED"
   | "CLOUD_PROVIDER_AWS"
@@ -106,14 +105,13 @@ export interface VolumeMount {
 export type VolumeMountList = Array<VolumeMount>;
 export type PTYInfoPTYType = "PTY_TYPE_UNSPECIFIED" | "PTY_TYPE_FUNCTION" | "PTY_TYPE_SHELL";
 export interface PTYInfo {
-  enabled?: boolean;
   /** Soon deprecated */
+  enabled?: boolean;
   winszRows?: number;
   winszCols?: number;
   envTerm?: string;
   envColorterm?: string;
   envTermProgram?: string;
-  /** Replace function with shell */
   ptyType?: PTYInfoPTYType | (string & {});
   noTerminateOnIdleStdin?: boolean;
 }
@@ -123,6 +121,7 @@ export interface SchedulerPlacement {
   Zone?: string;
   Lifecycle?: string;
   InstanceTypes?: StringList;
+  /** Functions only */
   nonpreemptible?: boolean;
 }
 export type TunnelType = "TUNNEL_TYPE_UNSPECIFIED" | "TUNNEL_TYPE_H2";
@@ -175,16 +174,16 @@ export interface Sandbox {
   imageId?: string;
   secretIds?: StringList;
   resources?: Resources;
-  cloudProvider?: CloudProvider | (string & {});
   /** Deprecated at some point */
-  timeoutSecs?: number;
+  cloudProvider?: CloudProvider | (string & {});
   /** The max lifetime of a sandbox in seconds. */
+  timeoutSecs?: number;
   workdir?: string;
   nfsMounts?: SharedVolumeMountList;
-  runtimeDebug?: boolean;
   /** For internal debugging use only. */
-  blockNetwork?: boolean;
+  runtimeDebug?: boolean;
   /** deprecated, use network_access instead */
+  blockNetwork?: boolean;
   s3Mounts?: S3MountList;
   cloudBucketMounts?: CloudBucketMountList;
   volumeMounts?: VolumeMountList;
@@ -193,7 +192,6 @@ export interface Sandbox {
   schedulerPlacement?: SchedulerPlacement;
   /** _experimental_resources */
   workerId?: string;
-  /** for internal debugging use only */
   openPorts?: PortSpecs;
   i6pnEnabled?: boolean;
   /** Network access configuration beyond simple allow/block. */
@@ -203,8 +201,9 @@ export interface Sandbox {
   enableSnapshot?: boolean;
   /** Used to pin gVisor version for memory-snapshottable sandboxes. This field is set by the server, not the client. */
   snapshotVersion?: number;
+  /** Supersedes cloud_provider */
   cloudProviderStr?: string;
-  /** Supersedes cloud_provider Specifies container runtime behavior for sandboxes which are restored from a snapshot. Set by the backend at snapshot creation time. */
+  /** Specifies container runtime behavior for sandboxes which are restored from a snapshot. Set by the backend at snapshot creation time. */
   runscRuntimeVersion?: string;
   /** Runtime the sandbox runs in: "vm" for a virtual machine, or a container runtime such as "gvisor". Leave it unset to let Modal pick. */
   runtime?: string;
@@ -216,8 +215,9 @@ export interface Sandbox {
   experimentalOptions?: BooleanMap;
   /** Experimental options */
   experimentalOptionsV2?: StringMap;
+  /** Internal use only. */
   preloadPathPrefixes?: StringList;
-  /** Internal use only. Optional idle timeout in seconds. If set, the sandbox will be terminated after being idle for this duration. */
+  /** Optional idle timeout in seconds. If set, the sandbox will be terminated after being idle for this duration. */
   idleTimeoutSecs?: number;
   /** Deprecated: direct sandbox commands are always enabled. */
   directSandboxCommandsEnabled?: boolean;
@@ -244,8 +244,8 @@ export type SandboxTagList = Array<SandboxTag>;
 export interface CreateSandboxRequest {
   appId?: string;
   definition?: Sandbox;
-  environmentName?: string;
   /** *DEPRECATED* 7/16/2025 */
+  environmentName?: string;
   tags?: SandboxTagList;
 }
 /** Used for both tasks and function outputs */
@@ -259,24 +259,24 @@ export type GenericResultGenericStatus =
   | "GENERIC_STATUS_INTERNAL_FAILURE"
   | "GENERIC_STATUS_IDLE_TIMEOUT"
   | "GENERIC_STATUS_MEMORY_MANAGER_EVICTION";
-/** sub-type for generic types like lists */
 export interface GenericResult {
-  status?: GenericResultGenericStatus;
   /** Status of the task or function output. */
-  exception?: string;
+  status?: GenericResultGenericStatus;
   /** Exception message for failures, if available. */
-  exitcode?: number;
+  exception?: string;
   /** Status code of the container entrypoint or builder process if it terminates unexpectedly. */
-  traceback?: string;
+  exitcode?: number;
   /** String value of the Python traceback. */
-  serializedTb?: string;
+  traceback?: string;
   /** Pickled traceback object. */
-  tbLineCache?: string;
+  serializedTb?: string;
   /** Pickled line cache for traceback object. */
-  data?: string;
+  tbLineCache?: string;
   /** Inline data of the result. */
-  dataBlobId?: string;
+  data?: string;
   /** Blob ID for large data. */
+  dataBlobId?: string;
+  /** (?) */
   propagationReason?: string;
 }
 export interface SandboxHandleMetadata {
@@ -332,7 +332,6 @@ export interface ListSandboxRequest {
   includeFinished?: boolean;
   tags?: SandboxTagList;
 }
-/** ENOSPC: No space left on device */
 export type TaskSnapshotBehavior =
   | "TASK_SNAPSHOT_BEHAVIOR_UNSPECIFIED"
   | "TASK_SNAPSHOT_BEHAVIOR_SNAPSHOT"
@@ -340,8 +339,8 @@ export type TaskSnapshotBehavior =
   | "TASK_SNAPSHOT_BEHAVIOR_NONE";
 export interface TaskInfo {
   id?: string;
-  startedAt?: number;
   /** For Function containers, this corresponds to the "ready" time, after startup phase */
+  startedAt?: number;
   finishedAt?: number;
   result?: GenericResult;
   enqueuedAt?: number;
@@ -355,15 +354,16 @@ export interface ResourceInfoResourceValue {
   isDefault?: boolean;
 }
 export interface ResourceInfo {
-  memoryMb?: ResourceInfoResourceValue;
   /** MiB */
-  milliCpu?: ResourceInfoResourceValue;
+  memoryMb?: ResourceInfoResourceValue;
   /** milli CPU cores */
+  milliCpu?: ResourceInfoResourceValue;
   gpuType?: string;
+  /** MiB */
   memoryMbMax?: number;
   /** MiB */
   ephemeralDiskMb?: number;
-  /** MiB */
+  /** milli CPU cores */
   milliCpuMax?: number;
 }
 export interface TunnelData {
@@ -380,8 +380,8 @@ export interface SandboxInfo {
   createdAt?: number;
   taskInfo?: TaskInfo;
   appId?: string;
-  tags?: SandboxTagList;
   /** TODO: Not yet exposed in client library. */
+  tags?: SandboxTagList;
   name?: string;
   imageId?: string;
   resourceInfo?: ResourceInfo;
@@ -405,8 +405,8 @@ export interface RestoreSandboxRequest {
   snapshotId?: string;
   sandboxNameOverride?: string;
   sandboxNameOverrideType?: RestoreSandboxRequestSandboxNameOverrideType | (string & {});
-  workerId?: string;
   /** For internal debugging use only. */
+  workerId?: string;
   replaceVolumeMounts?: boolean;
   volumeMounts?: VolumeMountList;
 }
@@ -467,7 +467,6 @@ export interface SandboxCreateV2Request {
   /** Applied in order. Cannot be combined with ephemeral_secrets. If definition.secret_ids is set, it must match the secret_id entries here. */
   secretSources?: SecretSourceList;
 }
-/** Defined as start time of the first task in the cluster */
 export interface CommandRouterAccess {
   jwt?: string;
   url?: string;
@@ -551,24 +550,28 @@ export interface SandboxGetResourceUsageResponse {
 }
 export interface SandboxGetTaskIdRequest {
   sandboxId?: string;
-  timeout?: number;
   /** Legacy clients do not provide a timeout. New clients must always provide a timeout. */
+  timeout?: number;
+  /** If true, waits until the container's postStart hook has been run before returning. Useful for detecting init failures. */
   waitUntilReady?: boolean;
 }
 export interface SandboxGetTaskIdResponse {
-  taskId?: string;
   /** This is None if the sandbox was terminated before a task could be scheduled. */
+  taskId?: string;
+  /** If the task has already exited, this is the result. */
   taskResult?: GenericResult;
 }
 export interface SandboxGetTaskIdV2Request {
   sandboxId?: string;
-  timeout?: number;
   /** Legacy clients do not provide a timeout. New clients must always provide a timeout. */
+  timeout?: number;
+  /** If true, waits until the container's postStart hook has been run before returning. Useful for detecting init failures. */
   waitUntilReady?: boolean;
 }
 export interface SandboxGetTaskIdV2Response {
-  taskId?: string;
   /** This is None if the sandbox was terminated before a task could be scheduled. */
+  taskId?: string;
+  /** If the task has already exited, this is the result. */
   taskResult?: GenericResult;
 }
 export interface SandboxGetTunnelsRequest {
@@ -601,6 +604,7 @@ export interface SandboxRestoreV2Request {
   snapshotId?: string;
   sandboxNameOverride?: string;
   sandboxNameOverrideType?: RestoreSandboxRequestSandboxNameOverrideType | (string & {});
+  /** For internal debugging use only. */
   workerId?: string;
 }
 export interface SandboxRestoreV2Response {

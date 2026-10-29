@@ -45,10 +45,11 @@ export interface FetchServerRequestResponse {
 }
 export interface ServerGetTimeRangeStatsRequest {
   functionId?: string;
-  since?: string;
   /** Inclusive. */
+  since?: string;
+  /** Exclusive. */
   until?: string;
-  /** Exclusive. Filter stats for a specific container */
+  /** Filter stats for a specific container */
   containerId?: string;
 }
 export interface ServerGetTimeRangeStatsResponseServerStatusCodeCount {
@@ -87,10 +88,10 @@ export interface ServerGetTimeRangeStatsResponseServerInferenceStats {
   scalarStats?: DoubleMap;
 }
 export interface ServerGetTimeRangeStatsResponse {
-  since?: string;
   /** Inclusive. */
-  until?: string;
+  since?: string;
   /** Exclusive. */
+  until?: string;
   requestCount?: string;
   requestCountByStatusCode?: ServerGetTimeRangeStatsResponseServerStatusCodeCountList;
   requestRatePerSecond?: number;

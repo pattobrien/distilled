@@ -128,10 +128,11 @@ export class Unimplemented
   ) {}
 
 export interface GetUsageRequestDate {
-  year?: number;
   /** e.g. 2023 */
-  month?: number;
+  year?: number;
   /** 1-12 */
+  month?: number;
+  /** 1-31 */
   day?: number;
 }
 /** ArtifactProduct enumerates the object storage products reported by GetArtifactUsage. */
@@ -167,7 +168,6 @@ export interface GetArtifactUsageResponse {
 }
 export interface GetConcurrencyRequest {}
 export type StringList = Array<string>;
-/** Key is linux/amd64, linux/arm64, macos/arm64 or windows/amd64. */
 export interface UsagePolicyConcurrencyLimits {
   maxCpu?: string;
   maxMemoryMb?: string;
@@ -179,8 +179,9 @@ export interface PlatformConcurrencyActiveConcurrency {
   memoryMb?: string;
 }
 export interface PlatformConcurrency {
+  /** e.g "Linux" */
   name?: string;
-  /** e.g "Linux" Platforms covered by this pool, e.g. "linux/amd64". Empty means all enabled platforms. */
+  /** Platforms covered by this pool, e.g. "linux/amd64". Empty means all enabled platforms. */
   platforms?: StringList;
   limits?: UsagePolicyConcurrencyLimits;
   activeConcurrency?: PlatformConcurrencyActiveConcurrency;
@@ -228,12 +229,12 @@ export interface UsageRecordUsage {
   builds?: UsageRecordBuilds;
 }
 export interface UsageRecord {
-  year?: number;
   /** e.g. 2023 */
-  month?: number;
+  year?: number;
   /** 1-12 */
-  day?: number;
+  month?: number;
   /** 1-31 */
+  day?: number;
   total?: UsageRecordUsage;
 }
 export type UsageRecordList = Array<UsageRecord>;

@@ -30,7 +30,6 @@ export interface DeleteSharedVolumeResponse {}
 export interface ListSharedVolumeRequest {
   environmentName?: string;
 }
-/** libmodal/modal-go: Go SDK, since version modal-go/v0.0.15 */
 export type CloudProvider =
   | "CLOUD_PROVIDER_UNSPECIFIED"
   | "CLOUD_PROVIDER_AWS"
@@ -38,8 +37,8 @@ export type CloudProvider =
   | "CLOUD_PROVIDER_AUTO"
   | "CLOUD_PROVIDER_OCI";
 export interface SharedVolumeListItem {
-  label?: string;
   /** app name of object entity app */
+  label?: string;
   sharedVolumeId?: string;
   createdAt?: number;
   cloudProvider?: CloudProvider;
@@ -69,6 +68,7 @@ export interface SharedVolumeGetOrCreateRequest {
   /** removed namespace */
   environmentName?: string;
   objectCreationType?: ObjectCreationType | (string & {});
+  /** only used with OBJECT_CREATION_TYPE_ANONYMOUS_OWNED_BY_APP */
   appId?: string;
 }
 export interface SharedVolumeGetOrCreateResponse {
@@ -106,6 +106,7 @@ export interface SharedVolumePutFileRequest {
   sha256Hex?: string;
   data?: string;
   dataBlobId?: string;
+  /** remove when required client version >= 47 */
   resumable?: boolean;
 }
 export interface SharedVolumePutFileResponse {

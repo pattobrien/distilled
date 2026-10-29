@@ -26,22 +26,23 @@ const TELEMETRY = {
 /** Result of executing a code cell. */
 export interface NotebookOutputExecuteResult {
   executionCount?: number;
-  data?: unknown;
   /** mimebundle */
+  data?: unknown;
   metadata?: unknown;
 }
 /** Data displayed as a result of code cell execution. */
 export interface NotebookOutputDisplayData {
-  data?: unknown;
   /** mimebundle */
+  data?: unknown;
   metadata?: unknown;
   /** This should not be included in saved notebook. */
   transientDisplayId?: string;
 }
 /** Stream output from a code cell (stdout / stderr). */
 export interface NotebookOutputStream {
-  name?: string;
   /** stdout | stderr */
+  name?: string;
+  /** multiline_string */
   text?: string;
 }
 export type StringList = Array<string>;

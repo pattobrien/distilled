@@ -80,27 +80,26 @@ export type GenericResultGenericStatus =
   | "GENERIC_STATUS_INTERNAL_FAILURE"
   | "GENERIC_STATUS_IDLE_TIMEOUT"
   | "GENERIC_STATUS_MEMORY_MANAGER_EVICTION";
-/** sub-type for generic types like lists */
 export interface GenericResult {
-  status?: GenericResultGenericStatus | (string & {});
   /** Status of the task or function output. */
-  exception?: string;
+  status?: GenericResultGenericStatus | (string & {});
   /** Exception message for failures, if available. */
-  exitcode?: number;
+  exception?: string;
   /** Status code of the container entrypoint or builder process if it terminates unexpectedly. */
-  traceback?: string;
+  exitcode?: number;
   /** String value of the Python traceback. */
-  serializedTb?: string;
+  traceback?: string;
   /** Pickled traceback object. */
-  tbLineCache?: string;
+  serializedTb?: string;
   /** Pickled line cache for traceback object. */
-  data?: string;
+  tbLineCache?: string;
   /** Inline data of the result. */
-  dataBlobId?: string;
+  data?: string;
   /** Blob ID for large data. */
+  dataBlobId?: string;
+  /** (?) */
   propagationReason?: string;
 }
-/** ENOSPC: No space left on device */
 export type TaskSnapshotBehavior =
   | "TASK_SNAPSHOT_BEHAVIOR_UNSPECIFIED"
   | "TASK_SNAPSHOT_BEHAVIOR_SNAPSHOT"
@@ -118,15 +117,15 @@ export type GPUType =
   | "GPU_TYPE_L40S"
   | "GPU_TYPE_H200";
 export interface GPUConfig {
-  type?: GPUType;
   /** Deprecated, at some point */
+  type?: GPUType;
   count?: number;
   gpuType?: string;
 }
 export interface TaskInfo {
   id?: string;
-  startedAt?: number;
   /** For Function containers, this corresponds to the "ready" time, after startup phase */
+  startedAt?: number;
   finishedAt?: number;
   result?: GenericResult;
   enqueuedAt?: number;

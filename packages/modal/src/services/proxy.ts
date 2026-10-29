@@ -28,7 +28,6 @@ export interface CreateProxyRequest {
   environmentName?: string;
   region?: string;
 }
-/** TODO(erikbern): needs_prefix */
 export type ProxyIpStatus =
   | "PROXY_IP_STATUS_UNSPECIFIED"
   | "PROXY_IP_STATUS_CREATING"
@@ -86,6 +85,7 @@ export interface ProxyGetOrCreateRequest {
   deploymentName?: string;
   /** namespace */
   environmentName?: string;
+  /** must be UNSPECIFIED */
   objectCreationType?: ObjectCreationType | (string & {});
 }
 export interface ProxyGetOrCreateResponse {

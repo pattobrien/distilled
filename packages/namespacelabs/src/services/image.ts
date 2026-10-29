@@ -130,8 +130,9 @@ export class Unimplemented
 
 export interface BuildRequest {
   blueprintName?: string;
+  /** If not provided, the latest blueprint version is used. */
   blueprintId?: string;
-  /** If not provided, the latest blueprint version is used. Optional: the deployment site to build the image at (e.g. "ord", "iad"). */
+  /** Optional: the deployment site to build the image at (e.g. "ord", "iad"). */
   site?: string;
 }
 export interface BlueprintSpecDockerfile {
@@ -237,6 +238,7 @@ export interface CreateBlueprintResponse {
 }
 export interface FetchBlueprintRequest {
   blueprintName?: string;
+  /** If not provided, the latest blueprint version is used. */
   blueprintId?: string;
 }
 export interface FetchBlueprintResponse {
