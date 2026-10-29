@@ -12,6 +12,7 @@ import { finalizeConvert } from "@distilled.cloud/dev/codegen/patches";
 import {
   convertProtoToSmithy,
   parseProto,
+  type ProtoErrorSpec,
   type ProtoFile,
 } from "@distilled.cloud/dev/codegen/proto";
 import { resolveSpecPath } from "@distilled.cloud/dev/codegen/spec-path";
@@ -28,6 +29,30 @@ const SLUG_ALIAS: Record<string, string> = {
   testing_test_results: "testing",
   private_sessions_user_sessions: "private_user_sessions",
 };
+
+/** Services in the module that no `namespaceapis.com` host serves (every host answers 404). */
+const UNSERVED_SERVICES = new Set([
+  "namespace.cloud.compute.v1beta.ManagementService",
+  "namespace.experimental.remote.ExecutionService",
+  "namespace.private.devbox.extra.v1beta.DevBoxExtraService",
+  "namespace.private.devbox.wire.v1beta.AgentService",
+  "namespace.private.instance.v1beta.InstanceService",
+]);
+
+/** Connect error codes, as the HTTP status Connect maps them to plus the body `code`. */
+const CONNECT_ERRORS: ReadonlyArray<ProtoErrorSpec> = [
+  { name: "InvalidArgument", status: 400, code: "invalid_argument" },
+  { name: "FailedPrecondition", status: 400, code: "failed_precondition" },
+  { name: "OutOfRange", status: 400, code: "out_of_range" },
+  { name: "Unauthenticated", status: 401 },
+  { name: "PermissionDenied", status: 403 },
+  { name: "NotFound", status: 404 },
+  { name: "AlreadyExists", status: 409, code: "already_exists" },
+  { name: "Aborted", status: 409, code: "aborted" },
+  { name: "ResourceExhausted", status: 429 },
+  { name: "Canceled", status: 499 },
+  { name: "Unimplemented", status: 501 },
+];
 
 const snake = (name: string): string =>
   name
@@ -70,6 +95,39 @@ const walk = (dir: string): string[] =>
     })
     .sort();
 
+/**
+ * A list RPC pages when its request and response both carry a cursor and the
+ * response has exactly one list member. Page sizes are only usable as such
+ * when they are 32-bit (64-bit integers are strings on the wire).
+ */
+const stampPagination = (shapes: Record<string, any>): number => {
+  let stamped = 0;
+  for (const op of Object.values(shapes)) {
+    if (op.type !== "operation") continue;
+    const input = shapes[op.input.target]?.members ?? {};
+    const output = shapes[op.output.target]?.members ?? {};
+    const inputToken = Object.keys(input).find((name) => /cursor/i.test(name));
+    const outputToken = Object.keys(output).find((name) => /cursor/i.test(name));
+    const items = Object.entries(output)
+      .filter(([, member]: [string, any]) => shapes[member.target]?.type === "list")
+      .map(([name]) => name);
+    if (!inputToken || !outputToken || items.length !== 1) continue;
+    const pageSize = Object.entries(input).find(
+      ([name, member]: [string, any]) =>
+        /^(maxEntries|limit|pageSize)$/.test(name) && member.target === "smithy.api#Integer",
+    )?.[0];
+    op.traits["smithy.api#paginated"] = {
+      mode: "cursor",
+      inputToken,
+      outputToken,
+      items: items[0],
+      ...(pageSize ? { pageSize } : {}),
+    };
+    stamped++;
+  }
+  return stamped;
+};
+
 const specDir = resolveSpecPath(ROOT, SPEC_DIR);
 if (!fs.existsSync(specDir)) {
   throw new Error(
@@ -86,10 +144,15 @@ clearModels(OUT_DIR);
 let written = 0;
 let totalOps = 0;
 let totalStreaming = 0;
+let totalPaginated = 0;
 const slugs = new Map<string, string>();
 
 for (const file of files) {
   for (const service of file.services) {
+    if (UNSERVED_SERVICES.has(service.fullName)) {
+      console.log(`   ${service.fullName}: not served on any host, skipped`);
+      continue;
+    }
     const slug = slugFor(file.package, service.name);
     const taken = slugs.get(slug);
     if (taken !== undefined) {
@@ -108,23 +171,26 @@ for (const file of files) {
       protoService: service.fullName,
       skipStreaming: true,
       skipDeprecated: true,
+      errors: CONNECT_ERRORS,
     });
     totalStreaming += result.skippedStreaming;
     if (result.converted === 0) {
       console.log(`   ${slug}: only streaming RPCs, skipped`);
       continue;
     }
+    const paginated = stampPagination(result.model.shapes);
+    totalPaginated += paginated;
     writeModel(path.join(OUT_DIR, `${slug}.json`), result.model);
     written++;
     totalOps += result.converted;
     console.log(
-      `   ${slug}: ${result.converted} ops, ${result.skippedStreaming} streaming skipped, ${result.shapeCount} shapes`,
+      `   ${slug}: ${result.converted} ops (${paginated} paginated), ${result.skippedStreaming} streaming skipped, ${result.shapeCount} shapes`,
     );
   }
 }
 
 console.log(
-  `✅ ${written} Smithy models (${totalOps} operations` +
+  `✅ ${written} Smithy models (${totalOps} operations, ${totalPaginated} paginated` +
     (totalStreaming ? `, ${totalStreaming} streaming skipped` : "") +
     `) → ${OUT_DIR}`,
 );

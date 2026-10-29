@@ -1,15 +1,6 @@
 import type * as API from "@distilled.cloud/core/api";
 import type { ConfigError, InvalidInput } from "@distilled.cloud/core/errors";
 import { makeRestProtocol, type RestErrorEnvelope } from "@distilled.cloud/core/protocol-rest";
-/**
- * NamespaceLabsProtocol -- Connect-JSON at gRPC method paths.
- *
- * Each generated operation is `POST /<package>.<Service>/<Method>` with a
- * proto3 JSON body (camelCase fields, 64-bit ints as strings, bytes as
- * base64) and `Authorization: Bearer <tenant token>`. Namespace serves every
- * service over gRPC and Connect on a handful of hosts; the host is chosen
- * from the operation's proto package.
- */
 import * as Effect from "effect/Effect";
 import type * as HttpClient from "effect/http/HttpClient";
 import type * as HttpClientError from "effect/http/HttpClientError";
@@ -60,6 +51,7 @@ export const baseUrlFor = (creds: Config, uri: string): string => {
   }
 };
 
+/** Connect error bodies are `{ code, message, details? }`. */
 const errorEnvelope = (body: unknown): RestErrorEnvelope | undefined => {
   if (body === null || typeof body !== "object") return undefined;
   const b = body as Record<string, unknown>;
@@ -68,6 +60,9 @@ const errorEnvelope = (body: unknown): RestErrorEnvelope | undefined => {
     message: typeof b.message === "string" ? b.message : undefined,
   };
 };
+
+const errorDetails = (body: unknown): unknown =>
+  body !== null && typeof body === "object" ? (body as Record<string, unknown>).details : undefined;
 
 export const NamespaceLabsProtocol: Layer.Layer<API.Protocol> =
   /*@__PURE__*/ makeRestProtocol<Config>({
@@ -80,6 +75,7 @@ export const NamespaceLabsProtocol: Layer.Layer<API.Protocol> =
       new UnknownNamespaceLabsError({
         code: typeof code === "string" ? code : code !== undefined ? String(code) : undefined,
         message,
+        details: errorDetails(body),
         body,
       }),
     parseError: ({ body, cause }) => new NamespaceLabsParseError({ body, cause }),

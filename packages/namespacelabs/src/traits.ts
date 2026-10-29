@@ -1,11 +1,3 @@
-/**
- * Namespace SDK trait surface -- hand-written.
- *
- * Re-exports the generic protocol traits from core so generated operations
- * import everything from one place. Namespace operations are proto3 JSON POSTs
- * at gRPC method paths, so there are no provider-specific traits beyond
- * the bearer-REST sensitive-value helper.
- */
 export {
   Body,
   Header,
