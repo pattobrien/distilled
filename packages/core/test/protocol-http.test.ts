@@ -1,5 +1,6 @@
 import * as Effect from "effect/Effect";
 import * as Redacted from "effect/Redacted";
+import type * as AST from "effect/SchemaAST";
 import { describe, expect, test } from "vitest";
 import { InvalidInput } from "../src/errors.ts";
 import { buildRequest, mapKeys } from "../src/protocol-http.ts";
@@ -36,6 +37,34 @@ const jsonBodyOf = (input: unknown): unknown => {
   const body = request.body as { readonly body?: string };
   return JSON.parse(body.body ?? "{}");
 };
+
+const EmptyInput = S.Struct({}).pipe(T.Http({ method: "POST", uri: "/pkg.Service/Method" }));
+const EmptyGetInput = S.Struct({}).pipe(T.Http({ method: "GET", uri: "/things" }));
+
+const requestFor = (inputAst: AST.AST, emptyJsonBody?: boolean) =>
+  Effect.runSync(
+    buildRequest({ input: {}, inputAst, baseUrl: "https://example.test", emptyJsonBody }),
+  );
+
+describe("emptyJsonBody", () => {
+  test("a POST with no body members sends nothing by default", () => {
+    const request = requestFor(EmptyInput.ast);
+    expect(request.body._tag).toBe("Empty");
+    expect(request.headers["content-type"]).toBeUndefined();
+  });
+
+  test("with emptyJsonBody a POST with no body members sends `{}` as JSON", () => {
+    const request = requestFor(EmptyInput.ast, true);
+    expect(request.body).toMatchObject({ _tag: "Uint8Array", contentType: "application/json" });
+    expect(new TextDecoder().decode((request.body as { readonly body: Uint8Array }).body)).toBe(
+      "{}",
+    );
+  });
+
+  test("emptyJsonBody leaves a bodyless method alone", () => {
+    expect(requestFor(EmptyGetInput.ast, true).body._tag).toBe("Empty");
+  });
+});
 
 describe("StringEncoded members", () => {
   test("booleans serialize as their string spelling", () => {
