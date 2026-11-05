@@ -2,6 +2,7 @@ import * as API from "@distilled.cloud/core/api";
 import * as S from "@distilled.cloud/core/schema-lite";
 import * as __L from "@distilled.cloud/core/schema-lite";
 import * as TxName from "@distilled.cloud/core/telemetry-name-template";
+import * as TxStream from "@distilled.cloud/core/telemetry-stream";
 import * as TxXray from "@distilled.cloud/core/telemetry-xray";
 import type * as HttpClient from "effect/http/HttpClient";
 import type * as redacted from "effect/Redacted";
@@ -2031,13 +2032,25 @@ export const converse: API.OperationMethod<
         { name: "gen_ai.request.max_tokens", field: "maxTokens" },
         { name: "gen_ai.request.temperature", field: "temperature" },
         { name: "gen_ai.request.top_p", field: "topP" },
+        { name: "gen_ai.request.stop_sequences", field: "stopSequences" },
       ],
+      guardrailConfig: [{ name: "aws.bedrock.guardrail.id", field: "guardrailIdentifier" }],
     },
     output: {
       stopReason: [{ name: "gen_ai.response.finish_reasons", transform: "list" }],
       usage: [
         { name: "gen_ai.usage.input_tokens", field: "inputTokens" },
         { name: "gen_ai.usage.output_tokens", field: "outputTokens" },
+        {
+          name: "gen_ai.usage.cache_read.input_tokens",
+          field: "cacheReadInputTokens",
+          transform: "nonZero",
+        },
+        {
+          name: "gen_ai.usage.cache_write.input_tokens",
+          field: "cacheWriteInputTokens",
+          transform: "nonZero",
+        },
       ],
     },
     rename: TxName.nameTemplate("chat {gen_ai.request.model}"),
@@ -2103,16 +2116,26 @@ export const converseStream: API.OperationMethod<
   telemetry: TELEMETRY,
   span: {
     op: "ConverseStream",
-    attributes: { "gen_ai.provider.name": "aws.bedrock", "gen_ai.operation.name": "chat" },
+    attributes: {
+      "gen_ai.provider.name": "aws.bedrock",
+      "gen_ai.operation.name": "chat",
+      "gen_ai.request.stream": true,
+    },
     input: {
       modelId: [{ name: "gen_ai.request.model" }],
       inferenceConfig: [
         { name: "gen_ai.request.max_tokens", field: "maxTokens" },
         { name: "gen_ai.request.temperature", field: "temperature" },
         { name: "gen_ai.request.top_p", field: "topP" },
+        { name: "gen_ai.request.stop_sequences", field: "stopSequences" },
       ],
+      guardrailConfig: [{ name: "aws.bedrock.guardrail.id", field: "guardrailIdentifier" }],
     },
     rename: TxName.nameTemplate("chat {gen_ai.request.model}"),
+    hold: TxStream.holdForStream({
+      member: "stream",
+      firstChunk: "gen_ai.response.time_to_first_chunk",
+    }),
   },
 }));
 
