@@ -119,6 +119,22 @@ export class NotFound
   declare readonly body?: Error | string;
 }
 
+/** Tailscale rejected the policy file (HTTP 400): it does not parse, is invalid, or fails its own tests. `body.data` lists the errors and warnings per test source. */
+export class PolicyFileRejected
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedError<PolicyFileRejected>()("PolicyFileRejected", {
+      message: S.String,
+      body: /*@__PURE__*/ S.optional(
+        /*@__PURE__*/ S.Union([/*@__PURE__*/ S.suspend(() => __S(626, __c78, 2)), S.String]),
+      ),
+      headers: /*@__PURE__*/ S.optional(/*@__PURE__*/ S.Record(S.String, S.String)),
+    }).pipe(C.withBadRequestError),
+    [{ status: 400 }],
+  )
+{
+  declare readonly body?: PolicyFileRejectedBody | string;
+}
+
 export class PreconditionFailed
   extends /*@__PURE__*/ T.applyErrorMatchers(
     /*@__PURE__*/ S.TaggedError<PreconditionFailed>()("PreconditionFailed", {
@@ -174,7 +190,7 @@ export class UnprocessableEntity
     /*@__PURE__*/ S.TaggedError<UnprocessableEntity>()("UnprocessableEntity", {
       message: S.String,
       body: /*@__PURE__*/ S.optional(
-        /*@__PURE__*/ S.Union([/*@__PURE__*/ S.suspend(() => __S(864, __c108, 0)), S.String]),
+        /*@__PURE__*/ S.Union([/*@__PURE__*/ S.suspend(() => __S(8, __c1, 0)), S.String]),
       ),
       headers: /*@__PURE__*/ S.optional(/*@__PURE__*/ S.Record(S.String, S.String)),
     }).pipe(C.withBadRequestError),
@@ -285,7 +301,7 @@ export interface BatchUpdateCustomDevicePostureAttributesRequest {
   /** An optional comment indicating why attributes are being set, which will be added to the audit log. */
   comment?: string | undefined;
 }
-export type BatchUpdateCustomDevicePostureAttributesResponse = unknown;
+export type BatchUpdateCustomDevicePostureAttributesResponse = unknown | null;
 export interface CreateDeviceInvitesRequestBodyItem {
   /** Whether the invite can be accepted more than once. When set to `true`, it results in an invite that can be accepted up to 1,000 times. */
   multiUse?: boolean | undefined;
@@ -1115,13 +1131,26 @@ export interface GetOAuthAppRequest {
 export interface GetPolicyFileRequest {
   /** The tailnet ID. Tailnets created before Oct 2025 can still use the legacy ID, but the Tailnet ID is the preferred identifier. When specifying a tailnet in the API, you can: - Provide a dash (`-`) to reference the default tailnet of the access token being used to make the API call. This is the best option for most users. Your API calls would start: ```sh curl "https://api.tailscale.com/api/v2/tailnet/-/..." ``` - Provide the **tailnet ID** found on the **[General Settings](https://login.tailscale.com/admin/settings/general)** page of the Tailscale admin console. For example, if your tailnet ID name is `T1234CNTRL`, your API calls would start: ```sh curl "https://api.tailscale.com/api/v2/tailnet/T1234CNTRL/..." ``` Learn more about [tailnet ID](https://tailscale.com/docs/concepts/tailnet-name#tailnet-id). */
   tailnet: string;
-  /** Request a detailed description of the tailnet policy file by providing `details=true` in the URL query string. Supplying any other value for `details`, or not sending the param, is treated as sending `details=false`. If using this, do not supply an `Accept` parameter in the header. The response will contain a JSON object with the fields: - `acl`: a base64-encoded string representation of the huJSON format. - `warnings`: array of strings for syntactically valid but nonsensical entries. - `errors`: an array of strings for parsing failures. */
-  details?: boolean | undefined;
   /** Response is encoded as JSON if `application/json` is requested, otherwise HuJSON will be returned. */
   accept?: string | undefined;
 }
 export interface GetPolicyFileResponse {
   body: string;
+  /** Entity tag for the policy file. Send it back as If-Match on setPolicyFile. */
+  eTag?: string | undefined;
+}
+export interface GetPolicyFileDetailsRequest {
+  /** The tailnet ID. Tailnets created before Oct 2025 can still use the legacy ID, but the Tailnet ID is the preferred identifier. When specifying a tailnet in the API, you can: - Provide a dash (`-`) to reference the default tailnet of the access token being used to make the API call. This is the best option for most users. Your API calls would start: ```sh curl "https://api.tailscale.com/api/v2/tailnet/-/..." ``` - Provide the **tailnet ID** found on the **[General Settings](https://login.tailscale.com/admin/settings/general)** page of the Tailscale admin console. For example, if your tailnet ID name is `T1234CNTRL`, your API calls would start: ```sh curl "https://api.tailscale.com/api/v2/tailnet/T1234CNTRL/..." ``` Learn more about [tailnet ID](https://tailscale.com/docs/concepts/tailnet-name#tailnet-id). */
+  tailnet: string;
+}
+export type GetPolicyFileDetailsResponseMessageList = Array<string>;
+export interface GetPolicyFileDetailsResponse {
+  /** The policy file's HuJSON text, base64-encoded. */
+  acl: string;
+  /** Syntactically valid but nonsensical entries. */
+  warnings: GetPolicyFileDetailsResponseMessageList | null;
+  /** Parsing failures. */
+  errors: GetPolicyFileDetailsResponseMessageList | null;
   /** Entity tag for the policy file. Send it back as If-Match on setPolicyFile. */
   eTag?: string | undefined;
 }
@@ -1876,6 +1905,7 @@ export interface PreviewRuleMatchesRequest {
   type: PreviewRuleMatchesRequestType | (string & {});
   /** - If `type` is `user`, provide the email of a valid user with registered machines. - If `type` is `ipport`, provide an IP address + port: `10.0.0.1:80`. The supplied policy file is queried with this parameter to determine which rules match. */
   previewFor: string;
+  body: string;
 }
 /** Source entities affected by the rule. */
 export type PreviewRuleMatchesResponseMatchesItemUsersList = Array<string>;
@@ -2319,6 +2349,19 @@ export interface ValidateAwsExternalIdResponse {}
 export interface Error {
   message: string;
 }
+export type PolicyFileFindingMessageList = Array<string>;
+export interface PolicyFileFinding {
+  /** The `src` of the failing test. */
+  user?: string | undefined;
+  errors?: PolicyFileFindingMessageList | undefined;
+  warnings?: PolicyFileFindingMessageList | undefined;
+}
+export type PolicyFileFindingList = Array<PolicyFileFinding>;
+export interface PolicyFileRejectedBody {
+  message: string;
+  /** The errors and warnings per test source. */
+  data?: PolicyFileFindingList | null | undefined;
+}
 export interface Error422Body {
   /** The reason for validation failure. */
   message?: string | undefined;
@@ -2331,8 +2374,8 @@ export const acceptDeviceInvite: API.OperationMethod<
   AcceptDeviceInviteError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(40, __c5, 0) as any as S.Schema<AcceptDeviceInviteRequest>,
-  output: __S(43, __c5, 3) as any as S.Schema<AcceptDeviceInviteResponse>,
+  input: __S(64, __c8, 0) as any as S.Schema<AcceptDeviceInviteRequest>,
+  output: __S(67, __c8, 3) as any as S.Schema<AcceptDeviceInviteResponse>,
   errors: [BadRequest, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2348,8 +2391,8 @@ export const approveUser: API.OperationMethod<
   ApproveUserError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(48, __c6, 0) as any as S.Schema<ApproveUserRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<ApproveUserResponse>,
+  input: __S(72, __c9, 0) as any as S.Schema<ApproveUserRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<ApproveUserResponse>,
   errors: [BadRequest, Forbidden, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2365,8 +2408,8 @@ export const authorizeDevice: API.OperationMethod<
   AuthorizeDeviceError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(64, __c8, 0) as any as S.Schema<AuthorizeDeviceRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<AuthorizeDeviceResponse>,
+  input: __S(88, __c11, 0) as any as S.Schema<AuthorizeDeviceRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<AuthorizeDeviceResponse>,
   errors: [BadRequest, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2386,8 +2429,8 @@ export const batchUpdateCustomDevicePostureAttributes: API.OperationMethod<
   BatchUpdateCustomDevicePostureAttributesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(75, __c9, 3) as any as S.Schema<BatchUpdateCustomDevicePostureAttributesRequest>,
-  output: __S(76, __c9, 4) as any as S.Schema<BatchUpdateCustomDevicePostureAttributesResponse>,
+  input: __S(99, __c12, 3) as any as S.Schema<BatchUpdateCustomDevicePostureAttributesRequest>,
+  output: __S(100, __c12, 4) as any as S.Schema<BatchUpdateCustomDevicePostureAttributesResponse>,
   errors: [BadRequest, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2403,8 +2446,8 @@ export const createDeviceInvites: API.OperationMethod<
   CreateDeviceInvitesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(82, __c10, 2) as any as S.Schema<CreateDeviceInvitesRequest>,
-  output: __S(97, __c12, 1) as any as S.Schema<CreateDeviceInvitesResponse>,
+  input: __S(106, __c13, 2) as any as S.Schema<CreateDeviceInvitesRequest>,
+  output: __S(121, __c15, 1) as any as S.Schema<CreateDeviceInvitesResponse>,
   errors: [NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2420,8 +2463,8 @@ export const createKey: API.OperationMethod<
   CreateKeyError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(104, __c13, 0) as any as S.Schema<CreateKeyRequest>,
-  output: __S(132, __c16, 4) as any as S.Schema<Key>,
+  input: __S(128, __c16, 0) as any as S.Schema<CreateKeyRequest>,
+  output: __S(148, __c18, 4) as any as S.Schema<Key>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2442,8 +2485,8 @@ export const createOAuthApp: API.OperationMethod<
   CreateOAuthAppError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(136, __c17, 0) as any as S.Schema<CreateOAuthAppRequest>,
-  output: __S(144, __c18, 0) as any as S.Schema<OAuthApp>,
+  input: __S(152, __c19, 0) as any as S.Schema<CreateOAuthAppRequest>,
+  output: __S(160, __c20, 0) as any as S.Schema<OAuthApp>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2464,8 +2507,8 @@ export const createOrganizationTailnet: API.OperationMethod<
   CreateOrganizationTailnetError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(152, __c19, 0) as any as S.Schema<CreateOrganizationTailnetRequest>,
-  output: __S(154, __c19, 2) as any as S.Schema<CreateOrganizationTailnetResponse>,
+  input: __S(168, __c21, 0) as any as S.Schema<CreateOrganizationTailnetRequest>,
+  output: __S(170, __c21, 2) as any as S.Schema<CreateOrganizationTailnetResponse>,
   errors: [BadRequest, Forbidden, NotFound, TailnetDisplayNameAlreadyExists, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2485,8 +2528,8 @@ export const createPostureIntegration: API.OperationMethod<
   CreatePostureIntegrationError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(160, __c20, 0) as any as S.Schema<CreatePostureIntegrationRequest>,
-  output: __S(169, __c21, 1) as any as S.Schema<PostureIntegrationOutput>,
+  input: __S(176, __c22, 0) as any as S.Schema<CreatePostureIntegrationRequest>,
+  output: __S(185, __c23, 1) as any as S.Schema<PostureIntegrationOutput>,
   errors: [Forbidden, Conflict, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2506,8 +2549,8 @@ export const createUserInvites: API.OperationMethod<
   CreateUserInvitesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(178, __c22, 2) as any as S.Schema<CreateUserInvitesRequest>,
-  output: __S(193, __c24, 1) as any as S.Schema<CreateUserInvitesResponse>,
+  input: __S(194, __c24, 2) as any as S.Schema<CreateUserInvitesRequest>,
+  output: __S(209, __c26, 1) as any as S.Schema<CreateUserInvitesResponse>,
   errors: [NotFound, FeatureNotAvailable, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2528,8 +2571,8 @@ export const createWebhook: API.OperationMethod<
   CreateWebhookError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(200, __c25, 0) as any as S.Schema<CreateWebhookRequest>,
-  output: __S(216, __c27, 0) as any as S.Schema<Webhook>,
+  input: __S(216, __c27, 0) as any as S.Schema<CreateWebhookRequest>,
+  output: __S(232, __c29, 0) as any as S.Schema<Webhook>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2548,8 +2591,8 @@ export const deleteCustomDevicePostureAttributes: API.OperationMethod<
   DeleteCustomDevicePostureAttributesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(224, __c28, 0) as any as S.Schema<DeleteCustomDevicePostureAttributesRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<DeleteCustomDevicePostureAttributesResponse>,
+  input: __S(240, __c30, 0) as any as S.Schema<DeleteCustomDevicePostureAttributesRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<DeleteCustomDevicePostureAttributesResponse>,
   errors: [NotFound, FeatureNotAvailable, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2565,8 +2608,8 @@ export const deleteDevice: API.OperationMethod<
   DeleteDeviceError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(232, __c29, 0) as any as S.Schema<DeleteDeviceRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<DeleteDeviceResponse>,
+  input: __S(248, __c31, 0) as any as S.Schema<DeleteDeviceRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<DeleteDeviceResponse>,
   errors: [BadRequest, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2582,8 +2625,8 @@ export const deleteDeviceInvite: API.OperationMethod<
   DeleteDeviceInviteError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(240, __c30, 0) as any as S.Schema<DeleteDeviceInviteRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<DeleteDeviceInviteResponse>,
+  input: __S(256, __c32, 0) as any as S.Schema<DeleteDeviceInviteRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<DeleteDeviceInviteResponse>,
   errors: [NotFound, DeviceInviteNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2599,8 +2642,8 @@ export const deleteKey: API.OperationMethod<
   DeleteKeyError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(248, __c31, 0) as any as S.Schema<DeleteKeyRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<DeleteKeyResponse>,
+  input: __S(264, __c33, 0) as any as S.Schema<DeleteKeyRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<DeleteKeyResponse>,
   errors: [Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2621,8 +2664,8 @@ export const deleteOAuthApp: API.OperationMethod<
   DeleteOAuthAppError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(256, __c32, 0) as any as S.Schema<DeleteOAuthAppRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<DeleteOAuthAppResponse>,
+  input: __S(272, __c34, 0) as any as S.Schema<DeleteOAuthAppRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<DeleteOAuthAppResponse>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2638,8 +2681,8 @@ export const deletePostureIntegration: API.OperationMethod<
   DeletePostureIntegrationError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(264, __c33, 0) as any as S.Schema<DeletePostureIntegrationRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<DeletePostureIntegrationResponse>,
+  input: __S(280, __c35, 0) as any as S.Schema<DeletePostureIntegrationRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<DeletePostureIntegrationResponse>,
   errors: [Forbidden, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2660,8 +2703,8 @@ export const deleteService: API.OperationMethod<
   DeleteServiceError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(272, __c34, 0) as any as S.Schema<DeleteServiceRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<DeleteServiceResponse>,
+  input: __S(288, __c36, 0) as any as S.Schema<DeleteServiceRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<DeleteServiceResponse>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2677,8 +2720,8 @@ export const deleteTailnet: API.OperationMethod<
   DeleteTailnetError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(280, __c35, 0) as any as S.Schema<DeleteTailnetRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<DeleteTailnetResponse>,
+  input: __S(296, __c37, 0) as any as S.Schema<DeleteTailnetRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<DeleteTailnetResponse>,
   errors: [BadRequest, Forbidden, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2694,8 +2737,8 @@ export const deleteUser: API.OperationMethod<
   DeleteUserError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(288, __c36, 0) as any as S.Schema<DeleteUserRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<DeleteUserResponse>,
+  input: __S(304, __c38, 0) as any as S.Schema<DeleteUserRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<DeleteUserResponse>,
   errors: [BadRequest, Forbidden, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2711,8 +2754,8 @@ export const deleteUserInvite: API.OperationMethod<
   DeleteUserInviteError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(296, __c37, 0) as any as S.Schema<DeleteUserInviteRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<DeleteUserInviteResponse>,
+  input: __S(312, __c39, 0) as any as S.Schema<DeleteUserInviteRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<DeleteUserInviteResponse>,
   errors: [NotFound, UserOwnedKeyRequired, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2728,8 +2771,8 @@ export const deleteWebhook: API.OperationMethod<
   DeleteWebhookError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(304, __c38, 0) as any as S.Schema<DeleteWebhookRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<DeleteWebhookResponse>,
+  input: __S(320, __c40, 0) as any as S.Schema<DeleteWebhookRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<DeleteWebhookResponse>,
   errors: [BadRequest, Forbidden, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2750,8 +2793,8 @@ export const disableLogStreaming: API.OperationMethod<
   DisableLogStreamingError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(312, __c39, 0) as any as S.Schema<DisableLogStreamingRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<DisableLogStreamingResponse>,
+  input: __S(328, __c41, 0) as any as S.Schema<DisableLogStreamingRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<DisableLogStreamingResponse>,
   errors: [Forbidden, NotFound, FeatureNotAvailable, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2767,8 +2810,8 @@ export const expireDeviceKey: API.OperationMethod<
   ExpireDeviceKeyError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(320, __c40, 0) as any as S.Schema<ExpireDeviceKeyRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<ExpireDeviceKeyResponse>,
+  input: __S(336, __c42, 0) as any as S.Schema<ExpireDeviceKeyRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<ExpireDeviceKeyResponse>,
   errors: [NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2784,8 +2827,8 @@ export const getAwsExternalId: API.OperationMethod<
   GetAwsExternalIdError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(328, __c41, 0) as any as S.Schema<GetAwsExternalIdRequest>,
-  output: __S(329, __c41, 1) as any as S.Schema<AwsExternalId>,
+  input: __S(344, __c43, 0) as any as S.Schema<GetAwsExternalIdRequest>,
+  output: __S(345, __c43, 1) as any as S.Schema<AwsExternalId>,
   errors: [Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2801,8 +2844,8 @@ export const getContacts: API.OperationMethod<
   GetContactsError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(336, __c42, 0) as any as S.Schema<GetContactsRequest>,
-  output: __S(338, __c42, 2) as any as S.Schema<GetContactsResponse>,
+  input: __S(352, __c44, 0) as any as S.Schema<GetContactsRequest>,
+  output: __S(354, __c44, 2) as any as S.Schema<GetContactsResponse>,
   errors: [Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2818,8 +2861,8 @@ export const getDevice: API.OperationMethod<
   GetDeviceError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(344, __c43, 0) as any as S.Schema<GetDeviceRequest>,
-  output: __S(359, __c44, 7) as any as S.Schema<Device>,
+  input: __S(360, __c45, 0) as any as S.Schema<GetDeviceRequest>,
+  output: __S(375, __c46, 7) as any as S.Schema<Device>,
   errors: [BadRequest, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2835,8 +2878,8 @@ export const getDeviceInvite: API.OperationMethod<
   GetDeviceInviteError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(360, __c45, 0) as any as S.Schema<GetDeviceInviteRequest>,
-  output: __S(89, __c11, 1) as any as S.Schema<DeviceInvite>,
+  input: __S(376, __c47, 0) as any as S.Schema<GetDeviceInviteRequest>,
+  output: __S(113, __c14, 1) as any as S.Schema<DeviceInvite>,
   errors: [NotFound, DeviceInviteNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2852,8 +2895,8 @@ export const getDevicePostureAttributes: API.OperationMethod<
   GetDevicePostureAttributesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(368, __c46, 0) as any as S.Schema<GetDevicePostureAttributesRequest>,
-  output: __S(377, __c47, 1) as any as S.Schema<DevicePostureAttributes>,
+  input: __S(384, __c48, 0) as any as S.Schema<GetDevicePostureAttributesRequest>,
+  output: __S(393, __c49, 1) as any as S.Schema<DevicePostureAttributes>,
   errors: [NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2869,8 +2912,8 @@ export const getDnsConfiguration: API.OperationMethod<
   GetDnsConfigurationError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(384, __c48, 0) as any as S.Schema<GetDnsConfigurationRequest>,
-  output: __S(396, __c49, 4) as any as S.Schema<DnsConfiguration>,
+  input: __S(400, __c50, 0) as any as S.Schema<GetDnsConfigurationRequest>,
+  output: __S(412, __c51, 4) as any as S.Schema<DnsConfiguration>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2886,8 +2929,8 @@ export const getDnsPreferences: API.OperationMethod<
   GetDnsPreferencesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(400, __c50, 0) as any as S.Schema<GetDnsPreferencesRequest>,
-  output: __S(408, __c51, 0) as any as S.Schema<DnsPreferences>,
+  input: __S(416, __c52, 0) as any as S.Schema<GetDnsPreferencesRequest>,
+  output: __S(424, __c53, 0) as any as S.Schema<DnsPreferences>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2899,8 +2942,8 @@ export type GetKeyError = NotFound | TailnetNotFound | TailscaleOpError;
 /** Get key Returns a JSON object with information about a specific api access token, OAuth client, federated identity, or auth key, such as its creation and expiration dates and its capabilities. OAuth Scope: `api_access_tokens:read` grants access to personal API access tokens. OAuth Scope: `auth_keys:read` grants access to machine auth keys. OAuth Scope: `oauth_keys:read` grants access to OAuth clients and OAuth tokens. OAuth Scope: `federated_keys:read` grants access to federated identities. */
 export const getKey: API.OperationMethod<GetKeyRequest, Key, GetKeyError, TailscaleOpContext> =
   /*@__PURE__*/ API.make(() => ({
-    input: __S(416, __c52, 0) as any as S.Schema<GetKeyRequest>,
-    output: __S(132, __c16, 4) as any as S.Schema<Key>,
+    input: __S(432, __c54, 0) as any as S.Schema<GetKeyRequest>,
+    output: __S(148, __c18, 4) as any as S.Schema<Key>,
     errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
     protocol: TailscaleProtocol,
     retry: Retry.Retry,
@@ -2920,8 +2963,8 @@ export const getLogStreamingConfiguration: API.OperationMethod<
   GetLogStreamingConfigurationError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(424, __c53, 0) as any as S.Schema<GetLogStreamingConfigurationRequest>,
-  output: __S(425, __c53, 1) as any as S.Schema<LogstreamEndpointConfigurationOutput>,
+  input: __S(440, __c55, 0) as any as S.Schema<GetLogStreamingConfigurationRequest>,
+  output: __S(441, __c55, 1) as any as S.Schema<LogstreamEndpointConfigurationOutput>,
   errors: [NotFound, FeatureNotAvailable, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2941,8 +2984,8 @@ export const getLogStreamingStatus: API.OperationMethod<
   GetLogStreamingStatusError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(432, __c54, 0) as any as S.Schema<GetLogStreamingStatusRequest>,
-  output: __S(433, __c54, 1) as any as S.Schema<LogstreamEndpointPublishingStatus>,
+  input: __S(448, __c56, 0) as any as S.Schema<GetLogStreamingStatusRequest>,
+  output: __S(449, __c56, 1) as any as S.Schema<LogstreamEndpointPublishingStatus>,
   errors: [NotFound, FeatureNotAvailable, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2963,8 +3006,8 @@ export const getOAuthApp: API.OperationMethod<
   GetOAuthAppError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(440, __c55, 0) as any as S.Schema<GetOAuthAppRequest>,
-  output: __S(144, __c18, 0) as any as S.Schema<OAuthApp>,
+  input: __S(456, __c57, 0) as any as S.Schema<GetOAuthAppRequest>,
+  output: __S(160, __c20, 0) as any as S.Schema<OAuthApp>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -2985,13 +3028,35 @@ export const getPolicyFile: API.OperationMethod<
   GetPolicyFileError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(448, __c56, 0) as any as S.Schema<GetPolicyFileRequest>,
-  output: __S(456, __c57, 0) as any as S.Schema<GetPolicyFileResponse>,
+  input: __S(464, __c58, 0) as any as S.Schema<GetPolicyFileRequest>,
+  output: __S(472, __c59, 0) as any as S.Schema<GetPolicyFileResponse>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
   telemetry: TELEMETRY,
   span: "GetPolicyFile",
+}));
+
+export type GetPolicyFileDetailsError =
+  | BadRequest
+  | Forbidden
+  | NotFound
+  | TailnetNotFound
+  | TailscaleOpError;
+/** Get policy file details Retrieves the current policy file for the given tailnet with `details=true`: the HuJSON text base64-encoded as `acl`, with the `warnings` and `errors` Tailscale found in it. The response also includes the `ETag` header. OAuth Scope: `policy_file:read`. */
+export const getPolicyFileDetails: API.OperationMethod<
+  GetPolicyFileDetailsRequest,
+  GetPolicyFileDetailsResponse,
+  GetPolicyFileDetailsError,
+  TailscaleOpContext
+> = /*@__PURE__*/ API.make(() => ({
+  input: __S(480, __c60, 0) as any as S.Schema<GetPolicyFileDetailsRequest>,
+  output: __S(481, __c60, 1) as any as S.Schema<GetPolicyFileDetailsResponse>,
+  errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
+  protocol: TailscaleProtocol,
+  retry: Retry.Retry,
+  telemetry: TELEMETRY,
+  span: "GetPolicyFileDetails",
 }));
 
 export type GetPostureIntegrationError = NotFound | TailscaleOpError;
@@ -3002,8 +3067,8 @@ export const getPostureIntegration: API.OperationMethod<
   GetPostureIntegrationError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(464, __c58, 0) as any as S.Schema<GetPostureIntegrationRequest>,
-  output: __S(169, __c21, 1) as any as S.Schema<PostureIntegrationOutput>,
+  input: __S(488, __c61, 0) as any as S.Schema<GetPostureIntegrationRequest>,
+  output: __S(185, __c23, 1) as any as S.Schema<PostureIntegrationOutput>,
   errors: [NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3019,8 +3084,8 @@ export const getPostureIntegrations: API.OperationMethod<
   GetPostureIntegrationsError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(472, __c59, 0) as any as S.Schema<GetPostureIntegrationsRequest>,
-  output: __S(474, __c59, 2) as any as S.Schema<GetPostureIntegrationsResponse>,
+  input: __S(496, __c62, 0) as any as S.Schema<GetPostureIntegrationsRequest>,
+  output: __S(498, __c62, 2) as any as S.Schema<GetPostureIntegrationsResponse>,
   errors: [Forbidden, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3041,8 +3106,8 @@ export const getService: API.OperationMethod<
   GetServiceError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(480, __c60, 0) as any as S.Schema<GetServiceRequest>,
-  output: __S(488, __c61, 0) as any as S.Schema<VIPServiceInfo>,
+  input: __S(504, __c63, 0) as any as S.Schema<GetServiceRequest>,
+  output: __S(512, __c64, 0) as any as S.Schema<VIPServiceInfo>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3063,8 +3128,8 @@ export const getServiceDeviceApproval: API.OperationMethod<
   GetServiceDeviceApprovalError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(496, __c62, 0) as any as S.Schema<GetServiceDeviceApprovalRequest>,
-  output: __S(504, __c63, 0) as any as S.Schema<VIPServiceApproval>,
+  input: __S(520, __c65, 0) as any as S.Schema<GetServiceDeviceApprovalRequest>,
+  output: __S(528, __c66, 0) as any as S.Schema<VIPServiceApproval>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3080,8 +3145,8 @@ export const getSplitDns: API.OperationMethod<
   GetSplitDnsError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(512, __c64, 0) as any as S.Schema<GetSplitDnsRequest>,
-  output: __S(521, __c65, 1) as any as S.Schema<GetSplitDnsResponse>,
+  input: __S(536, __c67, 0) as any as S.Schema<GetSplitDnsRequest>,
+  output: __S(545, __c68, 1) as any as S.Schema<GetSplitDnsResponse>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3097,8 +3162,8 @@ export const getTailnetSettings: API.OperationMethod<
   GetTailnetSettingsError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(528, __c66, 0) as any as S.Schema<GetTailnetSettingsRequest>,
-  output: __S(536, __c67, 0) as any as S.Schema<TailnetSettings>,
+  input: __S(552, __c69, 0) as any as S.Schema<GetTailnetSettingsRequest>,
+  output: __S(560, __c70, 0) as any as S.Schema<TailnetSettings>,
   errors: [BadRequest, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3110,8 +3175,8 @@ export type GetUserError = BadRequest | Forbidden | NotFound | TailscaleOpError;
 /** Get a user Retrieve details about the specified user. OAuth Scope: `users:read`. */
 export const getUser: API.OperationMethod<GetUserRequest, User, GetUserError, TailscaleOpContext> =
   /*@__PURE__*/ API.make(() => ({
-    input: __S(544, __c68, 0) as any as S.Schema<GetUserRequest>,
-    output: __S(552, __c69, 0) as any as S.Schema<User>,
+    input: __S(568, __c71, 0) as any as S.Schema<GetUserRequest>,
+    output: __S(576, __c72, 0) as any as S.Schema<User>,
     errors: [BadRequest, Forbidden, NotFound, UnknownTailscaleError],
     protocol: TailscaleProtocol,
     retry: Retry.Retry,
@@ -3127,8 +3192,8 @@ export const getUserInvite: API.OperationMethod<
   GetUserInviteError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(560, __c70, 0) as any as S.Schema<GetUserInviteRequest>,
-  output: __S(184, __c23, 0) as any as S.Schema<UserInvite>,
+  input: __S(584, __c73, 0) as any as S.Schema<GetUserInviteRequest>,
+  output: __S(200, __c25, 0) as any as S.Schema<UserInvite>,
   errors: [NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3144,8 +3209,8 @@ export const getWebhook: API.OperationMethod<
   GetWebhookError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(568, __c71, 0) as any as S.Schema<GetWebhookRequest>,
-  output: __S(216, __c27, 0) as any as S.Schema<Webhook>,
+  input: __S(592, __c74, 0) as any as S.Schema<GetWebhookRequest>,
+  output: __S(232, __c29, 0) as any as S.Schema<Webhook>,
   errors: [BadRequest, Forbidden, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3166,8 +3231,8 @@ export const listConfigurationAuditLogs: API.OperationMethod<
   ListConfigurationAuditLogsError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(576, __c72, 0) as any as S.Schema<ListConfigurationAuditLogsRequest>,
-  output: __S(581, __c72, 5) as any as S.Schema<ListConfigurationAuditLogsResponse>,
+  input: __S(600, __c75, 0) as any as S.Schema<ListConfigurationAuditLogsRequest>,
+  output: __S(605, __c75, 5) as any as S.Schema<ListConfigurationAuditLogsResponse>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3183,8 +3248,8 @@ export const listDeviceInvites: API.OperationMethod<
   ListDeviceInvitesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(584, __c73, 0) as any as S.Schema<ListDeviceInvitesRequest>,
-  output: __S(97, __c12, 1) as any as S.Schema<ListDeviceInvitesResponse>,
+  input: __S(608, __c76, 0) as any as S.Schema<ListDeviceInvitesRequest>,
+  output: __S(121, __c15, 1) as any as S.Schema<ListDeviceInvitesResponse>,
   errors: [NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3200,8 +3265,8 @@ export const listDeviceRoutes: API.OperationMethod<
   ListDeviceRoutesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(592, __c74, 0) as any as S.Schema<ListDeviceRoutesRequest>,
-  output: __S(600, __c75, 0) as any as S.Schema<DeviceRoutes>,
+  input: __S(632, __c79, 0) as any as S.Schema<ListDeviceRoutesRequest>,
+  output: __S(640, __c80, 0) as any as S.Schema<DeviceRoutes>,
   errors: [NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3217,8 +3282,8 @@ export const listDnsNameservers: API.OperationMethod<
   ListDnsNameserversError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(608, __c76, 0) as any as S.Schema<ListDnsNameserversRequest>,
-  output: __S(609, __c76, 1) as any as S.Schema<ListDnsNameserversResponse>,
+  input: __S(648, __c81, 0) as any as S.Schema<ListDnsNameserversRequest>,
+  output: __S(649, __c81, 1) as any as S.Schema<ListDnsNameserversResponse>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3234,8 +3299,8 @@ export const listDnsSearchPaths: API.OperationMethod<
   ListDnsSearchPathsError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(616, __c77, 0) as any as S.Schema<ListDnsSearchPathsRequest>,
-  output: __S(624, __c78, 0) as any as S.Schema<DnsSearchPaths>,
+  input: __S(656, __c82, 0) as any as S.Schema<ListDnsSearchPathsRequest>,
+  output: __S(664, __c83, 0) as any as S.Schema<DnsSearchPaths>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3256,8 +3321,8 @@ export const listNetworkFlowLogs: API.OperationMethod<
   ListNetworkFlowLogsError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(632, __c79, 0) as any as S.Schema<ListNetworkFlowLogsRequest>,
-  output: __S(637, __c79, 5) as any as S.Schema<ListNetworkFlowLogsResponse>,
+  input: __S(672, __c84, 0) as any as S.Schema<ListNetworkFlowLogsRequest>,
+  output: __S(677, __c84, 5) as any as S.Schema<ListNetworkFlowLogsResponse>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3278,8 +3343,8 @@ export const listOAuthApps: API.OperationMethod<
   ListOAuthAppsError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(640, __c80, 0) as any as S.Schema<ListOAuthAppsRequest>,
-  output: __S(642, __c80, 2) as any as S.Schema<ListOAuthAppsResponse>,
+  input: __S(680, __c85, 0) as any as S.Schema<ListOAuthAppsRequest>,
+  output: __S(682, __c85, 2) as any as S.Schema<ListOAuthAppsResponse>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3297,8 +3362,8 @@ export const listOrganizationTailnets: API.PaginatedOperationMethod<
   OrganizationTailnet
 > = /*@__PURE__*/ API.makePaginated(
   () => ({
-    input: __S(648, __c81, 0) as any as S.Schema<ListOrganizationTailnetsRequest>,
-    output: __S(651, __c81, 3) as any as S.Schema<ListOrganizationTailnetsResponse>,
+    input: __S(688, __c86, 0) as any as S.Schema<ListOrganizationTailnetsRequest>,
+    output: __S(691, __c86, 3) as any as S.Schema<ListOrganizationTailnetsResponse>,
     errors: [BadRequest, Forbidden, NotFound, UnknownTailscaleError],
     protocol: TailscaleProtocol,
     retry: Retry.Retry,
@@ -3328,8 +3393,8 @@ export const listServiceHosts: API.OperationMethod<
   ListServiceHostsError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(656, __c82, 0) as any as S.Schema<ListServiceHostsRequest>,
-  output: __S(659, __c82, 3) as any as S.Schema<ListServiceHostsResponse>,
+  input: __S(696, __c87, 0) as any as S.Schema<ListServiceHostsRequest>,
+  output: __S(699, __c87, 3) as any as S.Schema<ListServiceHostsResponse>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3350,8 +3415,8 @@ export const listServices: API.OperationMethod<
   ListServicesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(664, __c83, 0) as any as S.Schema<ListServicesRequest>,
-  output: __S(666, __c83, 2) as any as S.Schema<ListServicesResponse>,
+  input: __S(704, __c88, 0) as any as S.Schema<ListServicesRequest>,
+  output: __S(706, __c88, 2) as any as S.Schema<ListServicesResponse>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3367,8 +3432,8 @@ export const listTailnetDevices: API.OperationMethod<
   ListTailnetDevicesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(672, __c84, 0) as any as S.Schema<ListTailnetDevicesRequest>,
-  output: __S(674, __c84, 2) as any as S.Schema<ListTailnetDevicesResponse>,
+  input: __S(712, __c89, 0) as any as S.Schema<ListTailnetDevicesRequest>,
+  output: __S(714, __c89, 2) as any as S.Schema<ListTailnetDevicesResponse>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3384,8 +3449,8 @@ export const listTailnetKeys: API.OperationMethod<
   ListTailnetKeysError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(680, __c85, 0) as any as S.Schema<ListTailnetKeysRequest>,
-  output: __S(682, __c85, 2) as any as S.Schema<ListTailnetKeysResponse>,
+  input: __S(720, __c90, 0) as any as S.Schema<ListTailnetKeysRequest>,
+  output: __S(722, __c90, 2) as any as S.Schema<ListTailnetKeysResponse>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3401,8 +3466,8 @@ export const listUserInvites: API.OperationMethod<
   ListUserInvitesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(688, __c86, 0) as any as S.Schema<ListUserInvitesRequest>,
-  output: __S(193, __c24, 1) as any as S.Schema<ListUserInvitesResponse>,
+  input: __S(728, __c91, 0) as any as S.Schema<ListUserInvitesRequest>,
+  output: __S(209, __c26, 1) as any as S.Schema<ListUserInvitesResponse>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3418,8 +3483,8 @@ export const listUsers: API.OperationMethod<
   ListUsersError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(696, __c87, 0) as any as S.Schema<ListUsersRequest>,
-  output: __S(698, __c87, 2) as any as S.Schema<ListUsersResponse>,
+  input: __S(736, __c92, 0) as any as S.Schema<ListUsersRequest>,
+  output: __S(738, __c92, 2) as any as S.Schema<ListUsersResponse>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3440,8 +3505,8 @@ export const listWebhooks: API.OperationMethod<
   ListWebhooksError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(704, __c88, 0) as any as S.Schema<ListWebhooksRequest>,
-  output: __S(706, __c88, 2) as any as S.Schema<ListWebhooksResponse>,
+  input: __S(744, __c93, 0) as any as S.Schema<ListWebhooksRequest>,
+  output: __S(746, __c93, 2) as any as S.Schema<ListWebhooksResponse>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3450,7 +3515,7 @@ export const listWebhooks: API.OperationMethod<
 }));
 
 export type PreviewRuleMatchesError =
-  | BadRequest
+  | PolicyFileRejected
   | Forbidden
   | NotFound
   | TailnetNotFound
@@ -3462,9 +3527,9 @@ export const previewRuleMatches: API.OperationMethod<
   PreviewRuleMatchesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(712, __c89, 0) as any as S.Schema<PreviewRuleMatchesRequest>,
-  output: __S(715, __c89, 3) as any as S.Schema<PreviewRuleMatchesResponse>,
-  errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
+  input: __S(752, __c94, 0) as any as S.Schema<PreviewRuleMatchesRequest>,
+  output: __S(755, __c94, 3) as any as S.Schema<PreviewRuleMatchesResponse>,
+  errors: [PolicyFileRejected, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
   telemetry: TELEMETRY,
@@ -3484,8 +3549,8 @@ export const resendContactVerificationEmail: API.OperationMethod<
   ResendContactVerificationEmailError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(720, __c90, 0) as any as S.Schema<ResendContactVerificationEmailRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<ResendContactVerificationEmailResponse>,
+  input: __S(760, __c95, 0) as any as S.Schema<ResendContactVerificationEmailRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<ResendContactVerificationEmailResponse>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3501,8 +3566,8 @@ export const resendDeviceInvite: API.OperationMethod<
   ResendDeviceInviteError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(728, __c91, 0) as any as S.Schema<ResendDeviceInviteRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<ResendDeviceInviteResponse>,
+  input: __S(768, __c96, 0) as any as S.Schema<ResendDeviceInviteRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<ResendDeviceInviteResponse>,
   errors: [NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3518,8 +3583,8 @@ export const resendUserInvite: API.OperationMethod<
   ResendUserInviteError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(736, __c92, 0) as any as S.Schema<ResendUserInviteRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<ResendUserInviteResponse>,
+  input: __S(776, __c97, 0) as any as S.Schema<ResendUserInviteRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<ResendUserInviteResponse>,
   errors: [NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3535,8 +3600,8 @@ export const restoreUser: API.OperationMethod<
   RestoreUserError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(744, __c93, 0) as any as S.Schema<RestoreUserRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<RestoreUserResponse>,
+  input: __S(784, __c98, 0) as any as S.Schema<RestoreUserRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<RestoreUserResponse>,
   errors: [BadRequest, Forbidden, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3552,8 +3617,8 @@ export const rotateWebhookSecret: API.OperationMethod<
   RotateWebhookSecretError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(752, __c94, 0) as any as S.Schema<RotateWebhookSecretRequest>,
-  output: __S(216, __c27, 0) as any as S.Schema<Webhook>,
+  input: __S(792, __c99, 0) as any as S.Schema<RotateWebhookSecretRequest>,
+  output: __S(232, __c29, 0) as any as S.Schema<Webhook>,
   errors: [BadRequest, Forbidden, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3572,8 +3637,8 @@ export const setCustomDevicePostureAttributes: API.OperationMethod<
   SetCustomDevicePostureAttributesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(760, __c95, 0) as any as S.Schema<SetCustomDevicePostureAttributesRequest>,
-  output: __S(377, __c47, 1) as any as S.Schema<DevicePostureAttributes>,
+  input: __S(800, __c100, 0) as any as S.Schema<SetCustomDevicePostureAttributesRequest>,
+  output: __S(393, __c49, 1) as any as S.Schema<DevicePostureAttributes>,
   errors: [NotFound, FeatureNotAvailable, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3589,8 +3654,8 @@ export const setDeviceIp: API.OperationMethod<
   SetDeviceIpError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(768, __c96, 0) as any as S.Schema<SetDeviceIpRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<SetDeviceIpResponse>,
+  input: __S(808, __c101, 0) as any as S.Schema<SetDeviceIpRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<SetDeviceIpResponse>,
   errors: [BadRequest, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3606,8 +3671,8 @@ export const setDeviceName: API.OperationMethod<
   SetDeviceNameError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(776, __c97, 0) as any as S.Schema<SetDeviceNameRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<SetDeviceNameResponse>,
+  input: __S(816, __c102, 0) as any as S.Schema<SetDeviceNameRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<SetDeviceNameResponse>,
   errors: [NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3623,8 +3688,8 @@ export const setDeviceRoutes: API.OperationMethod<
   SetDeviceRoutesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(784, __c98, 0) as any as S.Schema<SetDeviceRoutesRequest>,
-  output: __S(600, __c75, 0) as any as S.Schema<DeviceRoutes>,
+  input: __S(824, __c103, 0) as any as S.Schema<SetDeviceRoutesRequest>,
+  output: __S(640, __c80, 0) as any as S.Schema<DeviceRoutes>,
   errors: [NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3640,8 +3705,8 @@ export const setDeviceTags: API.OperationMethod<
   SetDeviceTagsError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(792, __c99, 0) as any as S.Schema<SetDeviceTagsRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<SetDeviceTagsResponse>,
+  input: __S(832, __c104, 0) as any as S.Schema<SetDeviceTagsRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<SetDeviceTagsResponse>,
   errors: [BadRequest, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3657,8 +3722,8 @@ export const setDnsConfiguration: API.OperationMethod<
   SetDnsConfigurationError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(800, __c100, 0) as any as S.Schema<SetDnsConfigurationRequest>,
-  output: __S(396, __c49, 4) as any as S.Schema<DnsConfiguration>,
+  input: __S(840, __c105, 0) as any as S.Schema<SetDnsConfigurationRequest>,
+  output: __S(412, __c51, 4) as any as S.Schema<DnsConfiguration>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3674,8 +3739,8 @@ export const setDnsNameservers: API.OperationMethod<
   SetDnsNameserversError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(808, __c101, 0) as any as S.Schema<SetDnsNameserversRequest>,
-  output: __S(809, __c101, 1) as any as S.Schema<SetDnsNameserversResponse>,
+  input: __S(848, __c106, 0) as any as S.Schema<SetDnsNameserversRequest>,
+  output: __S(849, __c106, 1) as any as S.Schema<SetDnsNameserversResponse>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3691,8 +3756,8 @@ export const setDnsPreferences: API.OperationMethod<
   SetDnsPreferencesError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(816, __c102, 0) as any as S.Schema<SetDnsPreferencesRequest>,
-  output: __S(408, __c51, 0) as any as S.Schema<DnsPreferences>,
+  input: __S(856, __c107, 0) as any as S.Schema<SetDnsPreferencesRequest>,
+  output: __S(424, __c53, 0) as any as S.Schema<DnsPreferences>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3708,8 +3773,8 @@ export const setDnsSearchPaths: API.OperationMethod<
   SetDnsSearchPathsError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(824, __c103, 0) as any as S.Schema<SetDnsSearchPathsRequest>,
-  output: __S(624, __c78, 0) as any as S.Schema<DnsSearchPaths>,
+  input: __S(864, __c108, 0) as any as S.Schema<SetDnsSearchPathsRequest>,
+  output: __S(664, __c83, 0) as any as S.Schema<DnsSearchPaths>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3721,8 +3786,8 @@ export type SetKeyError = NotFound | TailnetNotFound | TailscaleOpError;
 /** Set key Set the configuration for an existing OAuth client or federated identity. OAuth Scope: `oauth_keys` grants access to OAuth clients. OAuth Scope: `federated_keys` grants access to federated identities. */
 export const setKey: API.OperationMethod<SetKeyRequest, Key, SetKeyError, TailscaleOpContext> =
   /*@__PURE__*/ API.make(() => ({
-    input: __S(832, __c104, 0) as any as S.Schema<SetKeyRequest>,
-    output: __S(132, __c16, 4) as any as S.Schema<Key>,
+    input: __S(872, __c109, 0) as any as S.Schema<SetKeyRequest>,
+    output: __S(148, __c18, 4) as any as S.Schema<Key>,
     errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
     protocol: TailscaleProtocol,
     retry: Retry.Retry,
@@ -3744,8 +3809,8 @@ export const setLogStreamingConfiguration: API.OperationMethod<
   SetLogStreamingConfigurationError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(840, __c105, 0) as any as S.Schema<SetLogStreamingConfigurationRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<SetLogStreamingConfigurationResponse>,
+  input: __S(880, __c110, 0) as any as S.Schema<SetLogStreamingConfigurationRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<SetLogStreamingConfigurationResponse>,
   errors: [
     BadRequest,
     Forbidden,
@@ -3761,7 +3826,7 @@ export const setLogStreamingConfiguration: API.OperationMethod<
 }));
 
 export type SetPolicyFileError =
-  | BadRequest
+  | PolicyFileRejected
   | Forbidden
   | NotFound
   | PreconditionFailed
@@ -3774,10 +3839,10 @@ export const setPolicyFile: API.OperationMethod<
   SetPolicyFileError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(848, __c106, 0) as any as S.Schema<SetPolicyFileRequest>,
-  output: __S(456, __c57, 0) as any as S.Schema<SetPolicyFileResponse>,
+  input: __S(888, __c111, 0) as any as S.Schema<SetPolicyFileRequest>,
+  output: __S(472, __c59, 0) as any as S.Schema<SetPolicyFileResponse>,
   errors: [
-    BadRequest,
+    PolicyFileRejected,
     Forbidden,
     NotFound,
     PreconditionFailed,
@@ -3798,8 +3863,8 @@ export const setSplitDns: API.OperationMethod<
   SetSplitDnsError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(856, __c107, 0) as any as S.Schema<SetSplitDnsRequest>,
-  output: __S(521, __c65, 1) as any as S.Schema<SetSplitDnsResponse>,
+  input: __S(896, __c112, 0) as any as S.Schema<SetSplitDnsRequest>,
+  output: __S(545, __c68, 1) as any as S.Schema<SetSplitDnsResponse>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3815,8 +3880,8 @@ export const suspendUser: API.OperationMethod<
   SuspendUserError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(872, __c109, 0) as any as S.Schema<SuspendUserRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<SuspendUserResponse>,
+  input: __S(904, __c113, 0) as any as S.Schema<SuspendUserRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<SuspendUserResponse>,
   errors: [BadRequest, Forbidden, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3832,8 +3897,8 @@ export const testWebhook: API.OperationMethod<
   TestWebhookError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(880, __c110, 0) as any as S.Schema<TestWebhookRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<TestWebhookResponse>,
+  input: __S(912, __c114, 0) as any as S.Schema<TestWebhookRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<TestWebhookResponse>,
   errors: [BadRequest, Forbidden, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3849,8 +3914,8 @@ export const updateContact: API.OperationMethod<
   UpdateContactError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(888, __c111, 0) as any as S.Schema<UpdateContactRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<UpdateContactResponse>,
+  input: __S(920, __c115, 0) as any as S.Schema<UpdateContactRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<UpdateContactResponse>,
   errors: [Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3866,8 +3931,8 @@ export const updateDeviceKey: API.OperationMethod<
   UpdateDeviceKeyError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(896, __c112, 0) as any as S.Schema<UpdateDeviceKeyRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<UpdateDeviceKeyResponse>,
+  input: __S(928, __c116, 0) as any as S.Schema<UpdateDeviceKeyRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<UpdateDeviceKeyResponse>,
   errors: [NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3888,8 +3953,8 @@ export const updateOAuthApp: API.OperationMethod<
   UpdateOAuthAppError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(904, __c113, 0) as any as S.Schema<UpdateOAuthAppRequest>,
-  output: __S(144, __c18, 0) as any as S.Schema<OAuthApp>,
+  input: __S(936, __c117, 0) as any as S.Schema<UpdateOAuthAppRequest>,
+  output: __S(160, __c20, 0) as any as S.Schema<OAuthApp>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3905,8 +3970,8 @@ export const updatePostureIntegration: API.OperationMethod<
   UpdatePostureIntegrationError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(912, __c114, 0) as any as S.Schema<UpdatePostureIntegrationRequest>,
-  output: __S(169, __c21, 1) as any as S.Schema<PostureIntegrationOutput>,
+  input: __S(944, __c118, 0) as any as S.Schema<UpdatePostureIntegrationRequest>,
+  output: __S(185, __c23, 1) as any as S.Schema<PostureIntegrationOutput>,
   errors: [Forbidden, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3927,8 +3992,8 @@ export const updateService: API.OperationMethod<
   UpdateServiceError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(920, __c115, 0) as any as S.Schema<UpdateServiceRequest>,
-  output: __S(488, __c61, 0) as any as S.Schema<VIPServiceInfo>,
+  input: __S(952, __c119, 0) as any as S.Schema<UpdateServiceRequest>,
+  output: __S(512, __c64, 0) as any as S.Schema<VIPServiceInfo>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3949,8 +4014,8 @@ export const updateServiceDeviceApproval: API.OperationMethod<
   UpdateServiceDeviceApprovalError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(928, __c116, 0) as any as S.Schema<UpdateServiceDeviceApprovalRequest>,
-  output: __S(504, __c63, 0) as any as S.Schema<VIPServiceApproval>,
+  input: __S(960, __c120, 0) as any as S.Schema<UpdateServiceDeviceApprovalRequest>,
+  output: __S(528, __c66, 0) as any as S.Schema<VIPServiceApproval>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3966,8 +4031,8 @@ export const updateSplitDns: API.OperationMethod<
   UpdateSplitDnsError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(936, __c117, 0) as any as S.Schema<UpdateSplitDnsRequest>,
-  output: __S(521, __c65, 1) as any as S.Schema<UpdateSplitDnsResponse>,
+  input: __S(16, __c2, 0) as any as S.Schema<UpdateSplitDnsRequest>,
+  output: __S(545, __c68, 1) as any as S.Schema<UpdateSplitDnsResponse>,
   errors: [NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -3988,8 +4053,8 @@ export const updateTailnetSettings: API.OperationMethod<
   UpdateTailnetSettingsError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(944, __c118, 0) as any as S.Schema<UpdateTailnetSettingsRequest>,
-  output: __S(536, __c67, 0) as any as S.Schema<TailnetSettings>,
+  input: __S(24, __c3, 0) as any as S.Schema<UpdateTailnetSettingsRequest>,
+  output: __S(560, __c70, 0) as any as S.Schema<TailnetSettings>,
   errors: [BadRequest, NotFound, FeatureNotAvailable, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -4005,8 +4070,8 @@ export const updateUserRole: API.OperationMethod<
   UpdateUserRoleError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(8, __c1, 0) as any as S.Schema<UpdateUserRoleRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<UpdateUserRoleResponse>,
+  input: __S(32, __c4, 0) as any as S.Schema<UpdateUserRoleRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<UpdateUserRoleResponse>,
   errors: [BadRequest, Forbidden, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -4022,8 +4087,8 @@ export const updateWebhook: API.OperationMethod<
   UpdateWebhookError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(16, __c2, 0) as any as S.Schema<UpdateWebhookRequest>,
-  output: __S(216, __c27, 0) as any as S.Schema<Webhook>,
+  input: __S(40, __c5, 0) as any as S.Schema<UpdateWebhookRequest>,
+  output: __S(232, __c29, 0) as any as S.Schema<Webhook>,
   errors: [BadRequest, Forbidden, NotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -4044,8 +4109,8 @@ export const validateAndTestPolicyFile: API.OperationMethod<
   ValidateAndTestPolicyFileError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(25, __c3, 1) as any as S.Schema<ValidateAndTestPolicyFileRequest>,
-  output: __S(26, __c3, 2) as any as S.Schema<ValidateAndTestPolicyFileResponse>,
+  input: __S(49, __c6, 1) as any as S.Schema<ValidateAndTestPolicyFileRequest>,
+  output: __S(50, __c6, 2) as any as S.Schema<ValidateAndTestPolicyFileResponse>,
   errors: [BadRequest, Forbidden, NotFound, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -4066,8 +4131,8 @@ export const validateAwsExternalId: API.OperationMethod<
   ValidateAwsExternalIdError,
   TailscaleOpContext
 > = /*@__PURE__*/ API.make(() => ({
-  input: __S(32, __c4, 0) as any as S.Schema<ValidateAwsExternalIdRequest>,
-  output: __S(56, __c7, 0) as any as S.Schema<ValidateAwsExternalIdResponse>,
+  input: __S(56, __c7, 0) as any as S.Schema<ValidateAwsExternalIdRequest>,
+  output: __S(80, __c10, 0) as any as S.Schema<ValidateAwsExternalIdResponse>,
   errors: [Forbidden, NotFound, UnprocessableEntity, TailnetNotFound, UnknownTailscaleError],
   protocol: TailscaleProtocol,
   retry: Retry.Retry,
@@ -4091,10 +4156,9 @@ function __c1(j: number): any {
     case 0:
       return S.suspend(() =>
         S.Struct({
-          userId: S.String.pipe(T.Label()),
-          role: S.optional(S.String),
-        }).pipe(T.Http({ method: "POST", uri: "/users/{userId}/role", code: 200 })),
-      ).annotate({ identifier: "UpdateUserRoleRequest" });
+          message: S.optional(S.String),
+        }),
+      ).annotate({ identifier: "Error422Body" });
   }
 }
 function __c2(j: number): any {
@@ -4102,13 +4166,57 @@ function __c2(j: number): any {
     case 0:
       return S.suspend(() =>
         S.Struct({
+          tailnet: S.String.pipe(T.Label()),
+          body: S.optional(__S(544, __c68, 0).pipe(T.HttpBody())),
+        }).pipe(T.Http({ method: "PATCH", uri: "/tailnet/{tailnet}/dns/split-dns", code: 200 })),
+      ).annotate({ identifier: "UpdateSplitDnsRequest" });
+  }
+}
+function __c3(j: number): any {
+  switch (j) {
+    case 0:
+      return S.suspend(() =>
+        S.Struct({
+          tailnet: S.String.pipe(T.Label()),
+          aclsExternallyManagedOn: S.optional(S.NullOr(S.Boolean)),
+          aclsExternalLink: S.optional(S.String),
+          adminConsoleSessionTimeoutMinutes: S.optional(S.Number),
+          devicesApprovalOn: S.optional(S.NullOr(S.Boolean)),
+          devicesAutoUpdatesOn: S.optional(S.NullOr(S.Boolean)),
+          devicesKeyDurationDays: S.optional(S.Number),
+          usersApprovalOn: S.optional(S.NullOr(S.Boolean)),
+          usersRoleAllowedToJoinExternalTailnets: S.optional(S.String),
+          networkFlowLoggingOn: S.optional(S.NullOr(S.Boolean)),
+          routeSelection: S.optional(S.String),
+          postureIdentityCollectionOn: S.optional(S.NullOr(S.Boolean)),
+          httpsEnabled: S.optional(S.NullOr(S.Boolean)),
+        }).pipe(T.Http({ method: "PATCH", uri: "/tailnet/{tailnet}/settings", code: 200 })),
+      ).annotate({ identifier: "UpdateTailnetSettingsRequest" });
+  }
+}
+function __c4(j: number): any {
+  switch (j) {
+    case 0:
+      return S.suspend(() =>
+        S.Struct({
+          userId: S.String.pipe(T.Label()),
+          role: S.optional(S.String),
+        }).pipe(T.Http({ method: "POST", uri: "/users/{userId}/role", code: 200 })),
+      ).annotate({ identifier: "UpdateUserRoleRequest" });
+  }
+}
+function __c5(j: number): any {
+  switch (j) {
+    case 0:
+      return S.suspend(() =>
+        S.Struct({
           endpointId: S.String.pipe(T.Label()),
-          subscriptions: S.optional(__S(208, __c26, 0)),
+          subscriptions: S.optional(__S(224, __c28, 0)),
         }).pipe(T.Http({ method: "PATCH", uri: "/webhooks/{endpointId}", code: 200 })),
       ).annotate({ identifier: "UpdateWebhookRequest" });
   }
 }
-function __c3(j: number): any {
+function __c6(j: number): any {
   switch (j) {
     case 0:
       return S.Array(S.Unknown);
@@ -4130,12 +4238,12 @@ function __c3(j: number): any {
       return S.suspend(() =>
         S.Struct({
           message: S.optional(S.String),
-          data: S.optional(__S(24, __c3, 0)),
+          data: S.optional(__S(48, __c6, 0)),
         }),
       ).annotate({ identifier: "ValidateAndTestPolicyFileResponse" });
   }
 }
-function __c4(j: number): any {
+function __c7(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4153,7 +4261,7 @@ function __c4(j: number): any {
       ).annotate({ identifier: "ValidateAwsExternalIdRequest" });
   }
 }
-function __c5(j: number): any {
+function __c8(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4185,14 +4293,14 @@ function __c5(j: number): any {
     case 3:
       return S.suspend(() =>
         S.Struct({
-          device: S.optional(__S(41, __c5, 1)),
-          sharer: S.optional(__S(42, __c5, 2)),
-          acceptedBy: S.optional(__S(42, __c5, 2)),
+          device: S.optional(__S(65, __c8, 1)),
+          sharer: S.optional(__S(66, __c8, 2)),
+          acceptedBy: S.optional(__S(66, __c8, 2)),
         }),
       ).annotate({ identifier: "AcceptDeviceInviteResponse" });
   }
 }
-function __c6(j: number): any {
+function __c9(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4202,13 +4310,13 @@ function __c6(j: number): any {
       ).annotate({ identifier: "ApproveUserRequest" });
   }
 }
-function __c7(j: number): any {
+function __c10(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() => S.Struct({})).annotate({ identifier: "ApproveUserResponse" });
   }
 }
-function __c8(j: number): any {
+function __c11(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4219,7 +4327,7 @@ function __c8(j: number): any {
       ).annotate({ identifier: "AuthorizeDeviceRequest" });
   }
 }
-function __c9(j: number): any {
+function __c12(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4229,26 +4337,26 @@ function __c9(j: number): any {
         }),
       ).annotate({ identifier: "BatchUpdateCustomDevicePostureAttributesRequestNodesValueValue" });
     case 1:
-      return S.Record(S.String, /*@__PURE__*/ S.NullOr(__S(72, __c9, 0)));
+      return S.Record(S.String, /*@__PURE__*/ S.NullOr(__S(96, __c12, 0)));
     case 2:
-      return S.Record(S.String, __S(73, __c9, 1));
+      return S.Record(S.String, __S(97, __c12, 1));
     case 3:
       return S.suspend(() =>
         S.Struct({
           tailnet: S.String.pipe(T.Label()),
-          nodes: S.optional(__S(74, __c9, 2)),
+          nodes: S.optional(__S(98, __c12, 2)),
           comment: S.optional(S.String),
         }).pipe(
           T.Http({ method: "PATCH", uri: "/tailnet/{tailnet}/device-attributes", code: 200 }),
         ),
       ).annotate({ identifier: "BatchUpdateCustomDevicePostureAttributesRequest" });
     case 4:
-      return S.suspend(() => S.Unknown.pipe(T.RawResponseRoot())).annotate({
+      return S.suspend(() => S.NullOr(S.Unknown).pipe(T.RawResponseRoot())).annotate({
         identifier: "BatchUpdateCustomDevicePostureAttributesResponse",
       });
   }
 }
-function __c10(j: number): any {
+function __c13(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4259,17 +4367,17 @@ function __c10(j: number): any {
         }),
       ).annotate({ identifier: "CreateDeviceInvitesRequestBodyItem" });
     case 1:
-      return S.Array(__S(80, __c10, 0));
+      return S.Array(__S(104, __c13, 0));
     case 2:
       return S.suspend(() =>
         S.Struct({
           deviceId: S.String.pipe(T.Label()),
-          body: S.optional(__S(81, __c10, 1).pipe(T.HttpBody())),
+          body: S.optional(__S(105, __c13, 1).pipe(T.HttpBody())),
         }).pipe(T.Http({ method: "POST", uri: "/device/{deviceId}/device-invites", code: 200 })),
       ).annotate({ identifier: "CreateDeviceInvitesRequest" });
   }
 }
-function __c11(j: number): any {
+function __c14(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4293,22 +4401,22 @@ function __c11(j: number): any {
           lastEmailSentAt: S.optional(S.String),
           inviteUrl: S.optional(S.String.pipe(T.SensitiveValue({}))),
           accepted: S.optional(S.Boolean),
-          acceptedBy: S.optional(__S(88, __c11, 0)),
+          acceptedBy: S.optional(__S(112, __c14, 0)),
         }),
       ).annotate({ identifier: "DeviceInvite" });
   }
 }
-function __c12(j: number): any {
+function __c15(j: number): any {
   switch (j) {
     case 0:
-      return S.Array(__S(89, __c11, 1));
+      return S.Array(__S(113, __c14, 1));
     case 1:
-      return S.suspend(() => __S(96, __c12, 0).pipe(T.RawResponseRoot())).annotate({
+      return S.suspend(() => __S(120, __c15, 0).pipe(T.RawResponseRoot())).annotate({
         identifier: "CreateDeviceInvitesResponse",
       });
   }
 }
-function __c13(j: number): any {
+function __c16(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4316,31 +4424,25 @@ function __c13(j: number): any {
           tailnet: S.String.pipe(T.Label()),
           keyType: S.optional(S.String),
           description: S.optional(S.String),
-          capabilities: S.optional(__S(131, __c16, 3)),
+          capabilities: S.optional(__S(147, __c18, 3)),
           expirySeconds: S.optional(S.Number),
-          scopes: S.optional(__S(112, __c14, 0)),
-          tags: S.optional(__S(112, __c14, 0)),
+          scopes: S.optional(__S(616, __c77, 0)),
+          tags: S.optional(__S(616, __c77, 0)),
           issuer: S.optional(S.String),
           subject: S.optional(S.String),
           audience: S.optional(S.String),
-          customClaimRules: S.optional(__S(120, __c15, 0)),
+          customClaimRules: S.optional(__S(136, __c17, 0)),
         }).pipe(T.Http({ method: "POST", uri: "/tailnet/{tailnet}/keys", code: 200 })),
       ).annotate({ identifier: "CreateKeyRequest" });
   }
 }
-function __c14(j: number): any {
-  switch (j) {
-    case 0:
-      return S.Array(S.String);
-  }
-}
-function __c15(j: number): any {
+function __c17(j: number): any {
   switch (j) {
     case 0:
       return S.Record(S.String, S.String);
   }
 }
-function __c16(j: number): any {
+function __c18(j: number): any {
   switch (j) {
     case 0:
       return S.Record(S.String, S.Unknown);
@@ -4350,20 +4452,20 @@ function __c16(j: number): any {
           reusable: S.optional(S.Boolean),
           ephemeral: S.optional(S.Boolean),
           preauthorized: S.optional(S.Boolean),
-          tags: S.optional(__S(112, __c14, 0)),
-          nodeAttributes: S.optional(__S(128, __c16, 0)),
+          tags: S.optional(__S(616, __c77, 0)),
+          nodeAttributes: S.optional(__S(144, __c18, 0)),
         }),
       ).annotate({ identifier: "KeyCapabilitiesDevicesCreate" });
     case 2:
       return S.suspend(() =>
         S.Struct({
-          create: S.optional(__S(129, __c16, 1)),
+          create: S.optional(__S(145, __c18, 1)),
         }),
       ).annotate({ identifier: "KeyCapabilitiesDevices" });
     case 3:
       return S.suspend(() =>
         S.Struct({
-          devices: S.optional(__S(130, __c16, 2)),
+          devices: S.optional(__S(146, __c18, 2)),
         }),
       ).annotate({ identifier: "KeyCapabilities" });
     case 4:
@@ -4377,21 +4479,21 @@ function __c16(j: number): any {
           updated: S.optional(S.String),
           expires: S.optional(S.String),
           revoked: S.optional(S.String),
-          capabilities: S.optional(__S(131, __c16, 3)),
-          scopes: S.optional(__S(112, __c14, 0)),
-          tags: S.optional(__S(112, __c14, 0)),
+          capabilities: S.optional(__S(147, __c18, 3)),
+          scopes: S.optional(__S(616, __c77, 0)),
+          tags: S.optional(__S(616, __c77, 0)),
           description: S.optional(S.String),
           invalid: S.optional(S.Boolean),
           userId: S.optional(S.String),
           audience: S.optional(S.String),
           issuer: S.optional(S.String),
           subject: S.optional(S.String),
-          customClaimRules: S.optional(__S(120, __c15, 0)),
+          customClaimRules: S.optional(__S(136, __c17, 0)),
         }),
       ).annotate({ identifier: "Key" });
   }
 }
-function __c17(j: number): any {
+function __c19(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4399,14 +4501,14 @@ function __c17(j: number): any {
           tailnet: S.String.pipe(T.Label()),
           name: S.String,
           description: S.optional(S.String),
-          redirectURIs: __S(112, __c14, 0),
-          scopes: __S(112, __c14, 0),
-          allowedNodeAttributes: S.optional(__S(112, __c14, 0)),
+          redirectURIs: __S(616, __c77, 0),
+          scopes: __S(616, __c77, 0),
+          allowedNodeAttributes: S.optional(__S(616, __c77, 0)),
         }).pipe(T.Http({ method: "POST", uri: "/tailnet/{tailnet}/oauth-apps", code: 200 })),
       ).annotate({ identifier: "CreateOAuthAppRequest" });
   }
 }
-function __c18(j: number): any {
+function __c20(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4414,9 +4516,9 @@ function __c18(j: number): any {
           id: S.optional(S.String),
           name: S.optional(S.String),
           description: S.optional(S.String),
-          redirectURIs: S.optional(__S(112, __c14, 0)),
-          scopes: S.optional(__S(112, __c14, 0)),
-          allowedNodeAttributes: S.optional(__S(112, __c14, 0)),
+          redirectURIs: S.optional(__S(616, __c77, 0)),
+          scopes: S.optional(__S(616, __c77, 0)),
+          allowedNodeAttributes: S.optional(__S(616, __c77, 0)),
           clientSecret: S.optional(S.String.pipe(T.SensitiveValue({}))),
           created: S.optional(S.String),
           updated: S.optional(S.String),
@@ -4424,7 +4526,7 @@ function __c18(j: number): any {
       ).annotate({ identifier: "OAuthApp" });
   }
 }
-function __c19(j: number): any {
+function __c21(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4450,13 +4552,13 @@ function __c19(j: number): any {
           orgId: S.optional(S.String),
           dnsName: S.optional(S.String),
           createdAt: S.optional(S.String),
-          oauthClient: S.optional(__S(153, __c19, 1)),
+          oauthClient: S.optional(__S(169, __c21, 1)),
           alreadyExists: S.optional(S.Boolean),
         }),
       ).annotate({ identifier: "CreateOrganizationTailnetResponse" });
   }
 }
-function __c20(j: number): any {
+function __c22(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4473,7 +4575,7 @@ function __c20(j: number): any {
       ).annotate({ identifier: "CreatePostureIntegrationRequest" });
   }
 }
-function __c21(j: number): any {
+function __c23(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4494,12 +4596,12 @@ function __c21(j: number): any {
           tenantId: S.optional(S.String),
           id: S.optional(S.String),
           configUpdated: S.optional(S.String),
-          status: S.optional(__S(168, __c21, 0)),
+          status: S.optional(__S(184, __c23, 0)),
         }),
       ).annotate({ identifier: "PostureIntegrationOutput" });
   }
 }
-function __c22(j: number): any {
+function __c24(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4509,17 +4611,17 @@ function __c22(j: number): any {
         }),
       ).annotate({ identifier: "CreateUserInvitesRequestBodyItem" });
     case 1:
-      return S.Array(__S(176, __c22, 0));
+      return S.Array(__S(192, __c24, 0));
     case 2:
       return S.suspend(() =>
         S.Struct({
           tailnet: S.String.pipe(T.Label()),
-          body: S.optional(__S(177, __c22, 1).pipe(T.HttpBody())),
+          body: S.optional(__S(193, __c24, 1).pipe(T.HttpBody())),
         }).pipe(T.Http({ method: "POST", uri: "/tailnet/{tailnet}/user-invites", code: 200 })),
       ).annotate({ identifier: "CreateUserInvitesRequest" });
   }
 }
-function __c23(j: number): any {
+function __c25(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4535,17 +4637,17 @@ function __c23(j: number): any {
       ).annotate({ identifier: "UserInvite" });
   }
 }
-function __c24(j: number): any {
+function __c26(j: number): any {
   switch (j) {
     case 0:
-      return S.Array(__S(184, __c23, 0));
+      return S.Array(__S(200, __c25, 0));
     case 1:
-      return S.suspend(() => __S(192, __c24, 0).pipe(T.RawResponseRoot())).annotate({
+      return S.suspend(() => __S(208, __c26, 0).pipe(T.RawResponseRoot())).annotate({
         identifier: "CreateUserInvitesResponse",
       });
   }
 }
-function __c25(j: number): any {
+function __c27(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4553,18 +4655,18 @@ function __c25(j: number): any {
           tailnet: S.String.pipe(T.Label()),
           endpointUrl: S.String.pipe(T.SensitiveValue({})),
           providerType: S.optional(S.String),
-          subscriptions: __S(208, __c26, 0),
+          subscriptions: __S(224, __c28, 0),
         }).pipe(T.Http({ method: "POST", uri: "/tailnet/{tailnet}/webhooks", code: 200 })),
       ).annotate({ identifier: "CreateWebhookRequest" });
   }
 }
-function __c26(j: number): any {
+function __c28(j: number): any {
   switch (j) {
     case 0:
       return S.Array(S.String);
   }
 }
-function __c27(j: number): any {
+function __c29(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4575,13 +4677,13 @@ function __c27(j: number): any {
           creatorLoginName: S.optional(S.String),
           created: S.optional(S.String),
           lastModified: S.optional(S.String),
-          subscriptions: S.optional(__S(208, __c26, 0)),
+          subscriptions: S.optional(__S(224, __c28, 0)),
           secret: S.optional(S.String.pipe(T.SensitiveValue({}))),
         }),
       ).annotate({ identifier: "Webhook" });
   }
 }
-function __c28(j: number): any {
+function __c30(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4598,7 +4700,7 @@ function __c28(j: number): any {
       ).annotate({ identifier: "DeleteCustomDevicePostureAttributesRequest" });
   }
 }
-function __c29(j: number): any {
+function __c31(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4608,7 +4710,7 @@ function __c29(j: number): any {
       ).annotate({ identifier: "DeleteDeviceRequest" });
   }
 }
-function __c30(j: number): any {
+function __c32(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4618,7 +4720,7 @@ function __c30(j: number): any {
       ).annotate({ identifier: "DeleteDeviceInviteRequest" });
   }
 }
-function __c31(j: number): any {
+function __c33(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4629,7 +4731,7 @@ function __c31(j: number): any {
       ).annotate({ identifier: "DeleteKeyRequest" });
   }
 }
-function __c32(j: number): any {
+function __c34(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4642,7 +4744,7 @@ function __c32(j: number): any {
       ).annotate({ identifier: "DeleteOAuthAppRequest" });
   }
 }
-function __c33(j: number): any {
+function __c35(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4652,7 +4754,7 @@ function __c33(j: number): any {
       ).annotate({ identifier: "DeletePostureIntegrationRequest" });
   }
 }
-function __c34(j: number): any {
+function __c36(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4665,7 +4767,7 @@ function __c34(j: number): any {
       ).annotate({ identifier: "DeleteServiceRequest" });
   }
 }
-function __c35(j: number): any {
+function __c37(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4675,7 +4777,7 @@ function __c35(j: number): any {
       ).annotate({ identifier: "DeleteTailnetRequest" });
   }
 }
-function __c36(j: number): any {
+function __c38(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4685,7 +4787,7 @@ function __c36(j: number): any {
       ).annotate({ identifier: "DeleteUserRequest" });
   }
 }
-function __c37(j: number): any {
+function __c39(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4695,7 +4797,7 @@ function __c37(j: number): any {
       ).annotate({ identifier: "DeleteUserInviteRequest" });
   }
 }
-function __c38(j: number): any {
+function __c40(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4705,7 +4807,7 @@ function __c38(j: number): any {
       ).annotate({ identifier: "DeleteWebhookRequest" });
   }
 }
-function __c39(j: number): any {
+function __c41(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4722,7 +4824,7 @@ function __c39(j: number): any {
       ).annotate({ identifier: "DisableLogStreamingRequest" });
   }
 }
-function __c40(j: number): any {
+function __c42(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4732,7 +4834,7 @@ function __c40(j: number): any {
       ).annotate({ identifier: "ExpireDeviceKeyRequest" });
   }
 }
-function __c41(j: number): any {
+function __c43(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4750,7 +4852,7 @@ function __c41(j: number): any {
       ).annotate({ identifier: "AwsExternalId" });
   }
 }
-function __c42(j: number): any {
+function __c44(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4769,14 +4871,14 @@ function __c42(j: number): any {
     case 2:
       return S.suspend(() =>
         S.Struct({
-          account: S.optional(__S(337, __c42, 1)),
-          support: S.optional(__S(337, __c42, 1)),
-          security: S.optional(__S(337, __c42, 1)),
+          account: S.optional(__S(353, __c44, 1)),
+          support: S.optional(__S(353, __c44, 1)),
+          security: S.optional(__S(353, __c44, 1)),
         }),
       ).annotate({ identifier: "GetContactsResponse" });
   }
 }
-function __c43(j: number): any {
+function __c45(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4787,7 +4889,7 @@ function __c43(j: number): any {
       ).annotate({ identifier: "GetDeviceRequest" });
   }
 }
-function __c44(j: number): any {
+function __c46(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4797,7 +4899,7 @@ function __c44(j: number): any {
         }),
       ).annotate({ identifier: "DeviceClientConnectivityLatencyValue" });
     case 1:
-      return S.Record(S.String, __S(352, __c44, 0));
+      return S.Record(S.String, __S(368, __c46, 0));
     case 2:
       return S.suspend(() =>
         S.Struct({
@@ -4812,16 +4914,16 @@ function __c44(j: number): any {
     case 3:
       return S.suspend(() =>
         S.Struct({
-          endpoints: S.optional(__S(112, __c14, 0)),
+          endpoints: S.optional(__S(616, __c77, 0)),
           mappingVariesByDestIP: S.optional(S.Boolean),
-          latency: S.optional(__S(353, __c44, 1)),
-          clientSupports: S.optional(__S(354, __c44, 2)),
+          latency: S.optional(__S(369, __c46, 1)),
+          clientSupports: S.optional(__S(370, __c46, 2)),
         }),
       ).annotate({ identifier: "DeviceClientConnectivity" });
     case 4:
       return S.suspend(() =>
         S.Struct({
-          serialNumbers: S.optional(__S(112, __c14, 0)),
+          serialNumbers: S.optional(__S(616, __c77, 0)),
           disabled: S.optional(S.Boolean),
         }),
       ).annotate({ identifier: "DevicePostureIdentity" });
@@ -4830,7 +4932,7 @@ function __c44(j: number): any {
         S.Struct({
           passing: S.optional(S.Boolean),
           impacting: S.optional(S.Boolean),
-          failingAssertions: S.optional(__S(112, __c14, 0)),
+          failingAssertions: S.optional(__S(616, __c77, 0)),
         }),
       ).annotate({ identifier: "DevicePostureStatus" });
     case 6:
@@ -4844,7 +4946,7 @@ function __c44(j: number): any {
     case 7:
       return S.suspend(() =>
         S.Struct({
-          addresses: S.optional(__S(112, __c14, 0)),
+          addresses: S.optional(__S(616, __c77, 0)),
           id: S.optional(S.String),
           nodeId: S.optional(S.String),
           user: S.optional(S.String),
@@ -4864,22 +4966,22 @@ function __c44(j: number): any {
           machineKey: S.optional(S.String),
           nodeKey: S.optional(S.String),
           blocksIncomingConnections: S.optional(S.Boolean),
-          enabledRoutes: S.optional(__S(112, __c14, 0)),
-          advertisedRoutes: S.optional(__S(112, __c14, 0)),
-          clientConnectivity: S.optional(__S(355, __c44, 3)),
-          tags: S.optional(__S(112, __c14, 0)),
+          enabledRoutes: S.optional(__S(616, __c77, 0)),
+          advertisedRoutes: S.optional(__S(616, __c77, 0)),
+          clientConnectivity: S.optional(__S(371, __c46, 3)),
+          tags: S.optional(__S(616, __c77, 0)),
           tailnetLockError: S.optional(S.String),
           tailnetLockKey: S.optional(S.String),
           sshEnabled: S.optional(S.Boolean),
-          postureIdentity: S.optional(__S(356, __c44, 4)),
-          postureStatus: S.optional(__S(357, __c44, 5)),
+          postureIdentity: S.optional(__S(372, __c46, 4)),
+          postureStatus: S.optional(__S(373, __c46, 5)),
           isEphemeral: S.optional(S.Boolean),
-          distro: S.optional(__S(358, __c44, 6)),
+          distro: S.optional(__S(374, __c46, 6)),
         }),
       ).annotate({ identifier: "Device" });
   }
 }
-function __c45(j: number): any {
+function __c47(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4889,7 +4991,7 @@ function __c45(j: number): any {
       ).annotate({ identifier: "GetDeviceInviteRequest" });
   }
 }
-function __c46(j: number): any {
+function __c48(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4899,20 +5001,20 @@ function __c46(j: number): any {
       ).annotate({ identifier: "GetDevicePostureAttributesRequest" });
   }
 }
-function __c47(j: number): any {
+function __c49(j: number): any {
   switch (j) {
     case 0:
       return S.Record(S.String, S.Unknown);
     case 1:
       return S.suspend(() =>
         S.Struct({
-          attributes: S.optional(__S(376, __c47, 0)),
-          expiries: S.optional(__S(120, __c15, 0)),
+          attributes: S.optional(__S(392, __c49, 0)),
+          expiries: S.optional(__S(136, __c17, 0)),
         }),
       ).annotate({ identifier: "DevicePostureAttributes" });
   }
 }
-function __c48(j: number): any {
+function __c50(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4922,7 +5024,7 @@ function __c48(j: number): any {
       ).annotate({ identifier: "GetDnsConfigurationRequest" });
   }
 }
-function __c49(j: number): any {
+function __c51(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4932,9 +5034,9 @@ function __c49(j: number): any {
         }),
       ).annotate({ identifier: "DnsConfigurationResolver" });
     case 1:
-      return S.Array(__S(392, __c49, 0));
+      return S.Array(__S(408, __c51, 0));
     case 2:
-      return S.Record(S.String, /*@__PURE__*/ S.NullOr(__S(393, __c49, 1)));
+      return S.Record(S.String, /*@__PURE__*/ S.NullOr(__S(409, __c51, 1)));
     case 3:
       return S.suspend(() =>
         S.Struct({
@@ -4945,15 +5047,15 @@ function __c49(j: number): any {
     case 4:
       return S.suspend(() =>
         S.Struct({
-          nameservers: S.optional(__S(393, __c49, 1)),
-          splitDNS: S.optional(__S(394, __c49, 2)),
-          searchPaths: S.optional(__S(112, __c14, 0)),
-          preferences: S.optional(__S(395, __c49, 3)),
+          nameservers: S.optional(__S(409, __c51, 1)),
+          splitDNS: S.optional(__S(410, __c51, 2)),
+          searchPaths: S.optional(__S(616, __c77, 0)),
+          preferences: S.optional(__S(411, __c51, 3)),
         }),
       ).annotate({ identifier: "DnsConfiguration" });
   }
 }
-function __c50(j: number): any {
+function __c52(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4963,7 +5065,7 @@ function __c50(j: number): any {
       ).annotate({ identifier: "GetDnsPreferencesRequest" });
   }
 }
-function __c51(j: number): any {
+function __c53(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4973,7 +5075,7 @@ function __c51(j: number): any {
       ).annotate({ identifier: "DnsPreferences" });
   }
 }
-function __c52(j: number): any {
+function __c54(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -4984,7 +5086,7 @@ function __c52(j: number): any {
       ).annotate({ identifier: "GetKeyRequest" });
   }
 }
-function __c53(j: number): any {
+function __c55(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5013,13 +5115,13 @@ function __c53(j: number): any {
           s3ExternalId: S.optional(S.String),
           gcsBucket: S.optional(S.String),
           gcsKeyPrefix: S.optional(S.String),
-          gcsScopes: S.optional(__S(112, __c14, 0)),
+          gcsScopes: S.optional(__S(616, __c77, 0)),
           gcsCredentials: S.optional(S.String.pipe(T.SensitiveValue({}))),
         }),
       ).annotate({ identifier: "LogstreamEndpointConfigurationOutput" });
   }
 }
-function __c54(j: number): any {
+function __c56(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5053,7 +5155,7 @@ function __c54(j: number): any {
       ).annotate({ identifier: "LogstreamEndpointPublishingStatus" });
   }
 }
-function __c55(j: number): any {
+function __c57(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5064,19 +5166,18 @@ function __c55(j: number): any {
       ).annotate({ identifier: "GetOAuthAppRequest" });
   }
 }
-function __c56(j: number): any {
+function __c58(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
         S.Struct({
           tailnet: S.String.pipe(T.Label()),
-          details: S.optional(S.Boolean.pipe(T.Query())),
           accept: S.optional(S.String.pipe(T.Header("Accept"))),
         }).pipe(T.Http({ method: "GET", uri: "/tailnet/{tailnet}/acl", code: 200 })),
       ).annotate({ identifier: "GetPolicyFileRequest" });
   }
 }
-function __c57(j: number): any {
+function __c59(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5087,7 +5188,26 @@ function __c57(j: number): any {
       ).annotate({ identifier: "GetPolicyFileResponse" });
   }
 }
-function __c58(j: number): any {
+function __c60(j: number): any {
+  switch (j) {
+    case 0:
+      return S.suspend(() =>
+        S.Struct({
+          tailnet: S.String.pipe(T.Label()),
+        }).pipe(T.Http({ method: "GET", uri: "/tailnet/{tailnet}/acl?details=true", code: 200 })),
+      ).annotate({ identifier: "GetPolicyFileDetailsRequest" });
+    case 1:
+      return S.suspend(() =>
+        S.Struct({
+          acl: S.String,
+          warnings: S.NullOr(__S(616, __c77, 0)),
+          errors: S.NullOr(__S(616, __c77, 0)),
+          eTag: S.optional(S.String.pipe(T.Header("ETag"))),
+        }),
+      ).annotate({ identifier: "GetPolicyFileDetailsResponse" });
+  }
+}
+function __c61(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5097,7 +5217,7 @@ function __c58(j: number): any {
       ).annotate({ identifier: "GetPostureIntegrationRequest" });
   }
 }
-function __c59(j: number): any {
+function __c62(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5108,16 +5228,16 @@ function __c59(j: number): any {
         ),
       ).annotate({ identifier: "GetPostureIntegrationsRequest" });
     case 1:
-      return S.Array(__S(169, __c21, 1));
+      return S.Array(__S(185, __c23, 1));
     case 2:
       return S.suspend(() =>
         S.Struct({
-          integrations: S.optional(__S(473, __c59, 1)),
+          integrations: S.optional(__S(497, __c62, 1)),
         }),
       ).annotate({ identifier: "GetPostureIntegrationsResponse" });
   }
 }
-function __c60(j: number): any {
+function __c63(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5130,22 +5250,22 @@ function __c60(j: number): any {
       ).annotate({ identifier: "GetServiceRequest" });
   }
 }
-function __c61(j: number): any {
+function __c64(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
         S.Struct({
           name: S.optional(S.String),
           displayName: S.optional(S.String),
-          addrs: S.optional(__S(112, __c14, 0)),
+          addrs: S.optional(__S(616, __c77, 0)),
           comment: S.optional(S.String),
-          ports: S.optional(__S(112, __c14, 0)),
-          tags: S.optional(__S(112, __c14, 0)),
+          ports: S.optional(__S(616, __c77, 0)),
+          tags: S.optional(__S(616, __c77, 0)),
         }),
       ).annotate({ identifier: "VIPServiceInfo" });
   }
 }
-function __c62(j: number): any {
+function __c65(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5163,7 +5283,7 @@ function __c62(j: number): any {
       ).annotate({ identifier: "GetServiceDeviceApprovalRequest" });
   }
 }
-function __c63(j: number): any {
+function __c66(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5174,7 +5294,7 @@ function __c63(j: number): any {
       ).annotate({ identifier: "VIPServiceApproval" });
   }
 }
-function __c64(j: number): any {
+function __c67(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5184,17 +5304,17 @@ function __c64(j: number): any {
       ).annotate({ identifier: "GetSplitDnsRequest" });
   }
 }
-function __c65(j: number): any {
+function __c68(j: number): any {
   switch (j) {
     case 0:
-      return S.Record(S.String, /*@__PURE__*/ S.NullOr(__S(112, __c14, 0)));
+      return S.Record(S.String, /*@__PURE__*/ S.NullOr(__S(616, __c77, 0)));
     case 1:
-      return S.suspend(() => __S(520, __c65, 0).pipe(T.RawResponseRoot())).annotate({
+      return S.suspend(() => __S(544, __c68, 0).pipe(T.RawResponseRoot())).annotate({
         identifier: "GetSplitDnsResponse",
       });
   }
 }
-function __c66(j: number): any {
+function __c69(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5204,7 +5324,7 @@ function __c66(j: number): any {
       ).annotate({ identifier: "GetTailnetSettingsRequest" });
   }
 }
-function __c67(j: number): any {
+function __c70(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5226,7 +5346,7 @@ function __c67(j: number): any {
       ).annotate({ identifier: "TailnetSettings" });
   }
 }
-function __c68(j: number): any {
+function __c71(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5236,7 +5356,7 @@ function __c68(j: number): any {
       ).annotate({ identifier: "GetUserRequest" });
   }
 }
-function __c69(j: number): any {
+function __c72(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5257,7 +5377,7 @@ function __c69(j: number): any {
       ).annotate({ identifier: "User" });
   }
 }
-function __c70(j: number): any {
+function __c73(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5267,7 +5387,7 @@ function __c70(j: number): any {
       ).annotate({ identifier: "GetUserInviteRequest" });
   }
 }
-function __c71(j: number): any {
+function __c74(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5277,7 +5397,7 @@ function __c71(j: number): any {
       ).annotate({ identifier: "GetWebhookRequest" });
   }
 }
-function __c72(j: number): any {
+function __c75(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5285,9 +5405,9 @@ function __c72(j: number): any {
           tailnet: S.String.pipe(T.Label()),
           start: S.String.pipe(T.Query()),
           end: S.String.pipe(T.Query()),
-          actor: S.optional(__S(112, __c14, 0).pipe(T.Query())),
-          target: S.optional(__S(112, __c14, 0).pipe(T.Query())),
-          event: S.optional(__S(208, __c26, 0).pipe(T.Query())),
+          actor: S.optional(__S(616, __c77, 0).pipe(T.Query())),
+          target: S.optional(__S(616, __c77, 0).pipe(T.Query())),
+          event: S.optional(__S(224, __c28, 0).pipe(T.Query())),
         }).pipe(
           T.Http({ method: "GET", uri: "/tailnet/{tailnet}/logging/configuration", code: 200 }),
         ),
@@ -5299,7 +5419,7 @@ function __c72(j: number): any {
           type: S.optional(S.String),
           loginName: S.optional(S.String),
           displayName: S.optional(S.String),
-          tags: S.optional(__S(112, __c14, 0)),
+          tags: S.optional(__S(616, __c77, 0)),
         }),
       ).annotate({ identifier: "ConfigurationAuditLogActor" });
     case 2:
@@ -5320,8 +5440,8 @@ function __c72(j: number): any {
           deferredAt: S.optional(S.String),
           eventGroupID: S.String,
           origin: S.String,
-          actor: __S(577, __c72, 1),
-          target: __S(578, __c72, 2),
+          actor: __S(601, __c75, 1),
+          target: __S(602, __c75, 2),
           action: S.String,
           old: S.optional(S.Unknown),
           new: S.optional(S.Unknown),
@@ -5330,18 +5450,18 @@ function __c72(j: number): any {
         }),
       ).annotate({ identifier: "ConfigurationAuditLog" });
     case 4:
-      return S.Array(__S(579, __c72, 3));
+      return S.Array(__S(603, __c75, 3));
     case 5:
       return S.suspend(() =>
         S.Struct({
           version: S.optional(S.String),
           tailnet: S.optional(S.String),
-          logs: S.optional(__S(580, __c72, 4)),
+          logs: S.optional(__S(604, __c75, 4)),
         }),
       ).annotate({ identifier: "ListConfigurationAuditLogsResponse" });
   }
 }
-function __c73(j: number): any {
+function __c76(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5351,7 +5471,34 @@ function __c73(j: number): any {
       ).annotate({ identifier: "ListDeviceInvitesRequest" });
   }
 }
-function __c74(j: number): any {
+function __c77(j: number): any {
+  switch (j) {
+    case 0:
+      return S.Array(S.String);
+  }
+}
+function __c78(j: number): any {
+  switch (j) {
+    case 0:
+      return S.suspend(() =>
+        S.Struct({
+          user: S.optional(S.String),
+          errors: S.optional(__S(616, __c77, 0)),
+          warnings: S.optional(__S(616, __c77, 0)),
+        }),
+      ).annotate({ identifier: "PolicyFileFinding" });
+    case 1:
+      return S.Array(__S(624, __c78, 0));
+    case 2:
+      return S.suspend(() =>
+        S.Struct({
+          message: S.String,
+          data: S.optional(S.NullOr(__S(625, __c78, 1))),
+        }),
+      ).annotate({ identifier: "PolicyFileRejectedBody" });
+  }
+}
+function __c79(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5361,18 +5508,18 @@ function __c74(j: number): any {
       ).annotate({ identifier: "ListDeviceRoutesRequest" });
   }
 }
-function __c75(j: number): any {
+function __c80(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
         S.Struct({
-          advertisedRoutes: S.optional(__S(112, __c14, 0)),
-          enabledRoutes: S.optional(__S(112, __c14, 0)),
+          advertisedRoutes: S.optional(__S(616, __c77, 0)),
+          enabledRoutes: S.optional(__S(616, __c77, 0)),
         }),
       ).annotate({ identifier: "DeviceRoutes" });
   }
 }
-function __c76(j: number): any {
+function __c81(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5383,12 +5530,12 @@ function __c76(j: number): any {
     case 1:
       return S.suspend(() =>
         S.Struct({
-          dns: S.optional(__S(112, __c14, 0)),
+          dns: S.optional(__S(616, __c77, 0)),
         }),
       ).annotate({ identifier: "ListDnsNameserversResponse" });
   }
 }
-function __c77(j: number): any {
+function __c82(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5398,17 +5545,17 @@ function __c77(j: number): any {
       ).annotate({ identifier: "ListDnsSearchPathsRequest" });
   }
 }
-function __c78(j: number): any {
+function __c83(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
         S.Struct({
-          searchPaths: __S(112, __c14, 0),
+          searchPaths: __S(616, __c77, 0),
         }),
       ).annotate({ identifier: "DnsSearchPaths" });
   }
 }
-function __c79(j: number): any {
+function __c84(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5431,7 +5578,7 @@ function __c79(j: number): any {
         }),
       ).annotate({ identifier: "ConnectionCounts" });
     case 2:
-      return S.Array(__S(633, __c79, 1));
+      return S.Array(__S(673, __c84, 1));
     case 3:
       return S.suspend(() =>
         S.Struct({
@@ -5439,23 +5586,23 @@ function __c79(j: number): any {
           nodeId: S.optional(S.String),
           start: S.optional(S.String),
           end: S.optional(S.String),
-          virtualTraffic: S.optional(__S(634, __c79, 2)),
-          subnetTraffic: S.optional(__S(634, __c79, 2)),
-          exitTraffic: S.optional(__S(634, __c79, 2)),
-          physicalTraffic: S.optional(__S(634, __c79, 2)),
+          virtualTraffic: S.optional(__S(674, __c84, 2)),
+          subnetTraffic: S.optional(__S(674, __c84, 2)),
+          exitTraffic: S.optional(__S(674, __c84, 2)),
+          physicalTraffic: S.optional(__S(674, __c84, 2)),
         }),
       ).annotate({ identifier: "NetworkFlowLog" });
     case 4:
-      return S.Array(__S(635, __c79, 3));
+      return S.Array(__S(675, __c84, 3));
     case 5:
       return S.suspend(() =>
         S.Struct({
-          logs: S.optional(__S(636, __c79, 4)),
+          logs: S.optional(__S(676, __c84, 4)),
         }),
       ).annotate({ identifier: "ListNetworkFlowLogsResponse" });
   }
 }
-function __c80(j: number): any {
+function __c85(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5464,16 +5611,16 @@ function __c80(j: number): any {
         }).pipe(T.Http({ method: "GET", uri: "/tailnet/{tailnet}/oauth-apps", code: 200 })),
       ).annotate({ identifier: "ListOAuthAppsRequest" });
     case 1:
-      return S.Array(__S(144, __c18, 0));
+      return S.Array(__S(160, __c20, 0));
     case 2:
       return S.suspend(() =>
         S.Struct({
-          oauthApps: S.optional(__S(641, __c80, 1)),
+          oauthApps: S.optional(__S(681, __c85, 1)),
         }),
       ).annotate({ identifier: "ListOAuthAppsResponse" });
   }
 }
-function __c81(j: number): any {
+function __c86(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5495,18 +5642,18 @@ function __c81(j: number): any {
         }),
       ).annotate({ identifier: "OrganizationTailnet" });
     case 2:
-      return S.Array(__S(649, __c81, 1));
+      return S.Array(__S(689, __c86, 1));
     case 3:
       return S.suspend(() =>
         S.Struct({
-          tailnets: __S(650, __c81, 2),
+          tailnets: __S(690, __c86, 2),
           cursor: S.optional(S.String),
           totalCount: S.optional(S.Number),
         }),
       ).annotate({ identifier: "ListOrganizationTailnetsResponse" });
   }
 }
-function __c82(j: number): any {
+function __c87(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5530,16 +5677,16 @@ function __c82(j: number): any {
         }),
       ).annotate({ identifier: "ServiceHostInfo" });
     case 2:
-      return S.Array(__S(657, __c82, 1));
+      return S.Array(__S(697, __c87, 1));
     case 3:
       return S.suspend(() =>
         S.Struct({
-          hosts: S.optional(__S(658, __c82, 2)),
+          hosts: S.optional(__S(698, __c87, 2)),
         }),
       ).annotate({ identifier: "ListServiceHostsResponse" });
   }
 }
-function __c83(j: number): any {
+function __c88(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5548,16 +5695,16 @@ function __c83(j: number): any {
         }).pipe(T.Http({ method: "GET", uri: "/tailnet/{tailnet}/services", code: 200 })),
       ).annotate({ identifier: "ListServicesRequest" });
     case 1:
-      return S.Array(__S(488, __c61, 0));
+      return S.Array(__S(512, __c64, 0));
     case 2:
       return S.suspend(() =>
         S.Struct({
-          vipServices: S.optional(__S(665, __c83, 1)),
+          vipServices: S.optional(__S(705, __c88, 1)),
         }),
       ).annotate({ identifier: "ListServicesResponse" });
   }
 }
-function __c84(j: number): any {
+function __c89(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5568,16 +5715,16 @@ function __c84(j: number): any {
         }).pipe(T.Http({ method: "GET", uri: "/tailnet/{tailnet}/devices", code: 200 })),
       ).annotate({ identifier: "ListTailnetDevicesRequest" });
     case 1:
-      return S.Array(__S(359, __c44, 7));
+      return S.Array(__S(375, __c46, 7));
     case 2:
       return S.suspend(() =>
         S.Struct({
-          devices: S.optional(__S(673, __c84, 1)),
+          devices: S.optional(__S(713, __c89, 1)),
         }),
       ).annotate({ identifier: "ListTailnetDevicesResponse" });
   }
 }
-function __c85(j: number): any {
+function __c90(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5587,16 +5734,16 @@ function __c85(j: number): any {
         }).pipe(T.Http({ method: "GET", uri: "/tailnet/{tailnet}/keys", code: 200 })),
       ).annotate({ identifier: "ListTailnetKeysRequest" });
     case 1:
-      return S.Array(__S(132, __c16, 4));
+      return S.Array(__S(148, __c18, 4));
     case 2:
       return S.suspend(() =>
         S.Struct({
-          keys: S.optional(__S(681, __c85, 1)),
+          keys: S.optional(__S(721, __c90, 1)),
         }),
       ).annotate({ identifier: "ListTailnetKeysResponse" });
   }
 }
-function __c86(j: number): any {
+function __c91(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5606,7 +5753,7 @@ function __c86(j: number): any {
       ).annotate({ identifier: "ListUserInvitesRequest" });
   }
 }
-function __c87(j: number): any {
+function __c92(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5617,16 +5764,16 @@ function __c87(j: number): any {
         }).pipe(T.Http({ method: "GET", uri: "/tailnet/{tailnet}/users", code: 200 })),
       ).annotate({ identifier: "ListUsersRequest" });
     case 1:
-      return S.Array(__S(552, __c69, 0));
+      return S.Array(__S(576, __c72, 0));
     case 2:
       return S.suspend(() =>
         S.Struct({
-          users: S.optional(__S(697, __c87, 1)),
+          users: S.optional(__S(737, __c92, 1)),
         }),
       ).annotate({ identifier: "ListUsersResponse" });
   }
 }
-function __c88(j: number): any {
+function __c93(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5635,16 +5782,16 @@ function __c88(j: number): any {
         }).pipe(T.Http({ method: "GET", uri: "/tailnet/{tailnet}/webhooks", code: 200 })),
       ).annotate({ identifier: "ListWebhooksRequest" });
     case 1:
-      return S.Array(__S(216, __c27, 0));
+      return S.Array(__S(232, __c29, 0));
     case 2:
       return S.suspend(() =>
         S.Struct({
-          webhooks: S.optional(S.NullOr(__S(705, __c88, 1))),
+          webhooks: S.optional(S.NullOr(__S(745, __c93, 1))),
         }),
       ).annotate({ identifier: "ListWebhooksResponse" });
   }
 }
-function __c89(j: number): any {
+function __c94(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5652,29 +5799,37 @@ function __c89(j: number): any {
           tailnet: S.String.pipe(T.Label()),
           type: S.String.pipe(T.Query()),
           previewFor: S.String.pipe(T.Query()),
-        }).pipe(T.Http({ method: "POST", uri: "/tailnet/{tailnet}/acl/preview", code: 200 })),
+          body: S.String.pipe(T.HttpBody()),
+        }).pipe(
+          T.Http({
+            method: "POST",
+            uri: "/tailnet/{tailnet}/acl/preview",
+            code: 200,
+            bodyMediaType: "application/hujson",
+          }),
+        ),
       ).annotate({ identifier: "PreviewRuleMatchesRequest" });
     case 1:
       return S.suspend(() =>
         S.Struct({
-          users: __S(112, __c14, 0),
-          ports: __S(112, __c14, 0),
+          users: __S(616, __c77, 0),
+          ports: __S(616, __c77, 0),
           lineNumber: S.Number,
         }),
       ).annotate({ identifier: "PreviewRuleMatchesResponseMatchesItem" });
     case 2:
-      return S.Array(__S(713, __c89, 1));
+      return S.Array(__S(753, __c94, 1));
     case 3:
       return S.suspend(() =>
         S.Struct({
-          matches: __S(714, __c89, 2),
+          matches: __S(754, __c94, 2),
           type: S.String,
           previewFor: S.String,
         }),
       ).annotate({ identifier: "PreviewRuleMatchesResponse" });
   }
 }
-function __c90(j: number): any {
+function __c95(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5691,7 +5846,7 @@ function __c90(j: number): any {
       ).annotate({ identifier: "ResendContactVerificationEmailRequest" });
   }
 }
-function __c91(j: number): any {
+function __c96(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5703,7 +5858,7 @@ function __c91(j: number): any {
       ).annotate({ identifier: "ResendDeviceInviteRequest" });
   }
 }
-function __c92(j: number): any {
+function __c97(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5713,7 +5868,7 @@ function __c92(j: number): any {
       ).annotate({ identifier: "ResendUserInviteRequest" });
   }
 }
-function __c93(j: number): any {
+function __c98(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5723,7 +5878,7 @@ function __c93(j: number): any {
       ).annotate({ identifier: "RestoreUserRequest" });
   }
 }
-function __c94(j: number): any {
+function __c99(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5733,7 +5888,7 @@ function __c94(j: number): any {
       ).annotate({ identifier: "RotateWebhookSecretRequest" });
   }
 }
-function __c95(j: number): any {
+function __c100(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5753,7 +5908,7 @@ function __c95(j: number): any {
       ).annotate({ identifier: "SetCustomDevicePostureAttributesRequest" });
   }
 }
-function __c96(j: number): any {
+function __c101(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5764,7 +5919,7 @@ function __c96(j: number): any {
       ).annotate({ identifier: "SetDeviceIpRequest" });
   }
 }
-function __c97(j: number): any {
+function __c102(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5775,61 +5930,61 @@ function __c97(j: number): any {
       ).annotate({ identifier: "SetDeviceNameRequest" });
   }
 }
-function __c98(j: number): any {
+function __c103(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
         S.Struct({
           deviceId: S.String.pipe(T.Label()),
-          routes: S.optional(__S(112, __c14, 0)),
+          routes: S.optional(__S(616, __c77, 0)),
         }).pipe(T.Http({ method: "POST", uri: "/device/{deviceId}/routes", code: 200 })),
       ).annotate({ identifier: "SetDeviceRoutesRequest" });
   }
 }
-function __c99(j: number): any {
+function __c104(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
         S.Struct({
           deviceId: S.String.pipe(T.Label()),
-          tags: S.optional(__S(112, __c14, 0)),
+          tags: S.optional(__S(616, __c77, 0)),
         }).pipe(T.Http({ method: "POST", uri: "/device/{deviceId}/tags", code: 200 })),
       ).annotate({ identifier: "SetDeviceTagsRequest" });
   }
 }
-function __c100(j: number): any {
+function __c105(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
         S.Struct({
           tailnet: S.String.pipe(T.Label()),
-          nameservers: S.optional(__S(393, __c49, 1)),
-          splitDNS: S.optional(__S(394, __c49, 2)),
-          searchPaths: S.optional(__S(112, __c14, 0)),
-          preferences: S.optional(__S(395, __c49, 3)),
+          nameservers: S.optional(__S(409, __c51, 1)),
+          splitDNS: S.optional(__S(410, __c51, 2)),
+          searchPaths: S.optional(__S(616, __c77, 0)),
+          preferences: S.optional(__S(411, __c51, 3)),
         }).pipe(T.Http({ method: "POST", uri: "/tailnet/{tailnet}/dns/configuration", code: 200 })),
       ).annotate({ identifier: "SetDnsConfigurationRequest" });
   }
 }
-function __c101(j: number): any {
+function __c106(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
         S.Struct({
           tailnet: S.String.pipe(T.Label()),
-          dns: S.optional(__S(112, __c14, 0)),
+          dns: S.optional(__S(616, __c77, 0)),
         }).pipe(T.Http({ method: "POST", uri: "/tailnet/{tailnet}/dns/nameservers", code: 200 })),
       ).annotate({ identifier: "SetDnsNameserversRequest" });
     case 1:
       return S.suspend(() =>
         S.Struct({
-          dns: S.optional(__S(112, __c14, 0)),
+          dns: S.optional(__S(616, __c77, 0)),
           magicDNS: S.optional(S.Boolean),
         }),
       ).annotate({ identifier: "SetDnsNameserversResponse" });
   }
 }
-function __c102(j: number): any {
+function __c107(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5840,18 +5995,18 @@ function __c102(j: number): any {
       ).annotate({ identifier: "SetDnsPreferencesRequest" });
   }
 }
-function __c103(j: number): any {
+function __c108(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
         S.Struct({
           tailnet: S.String.pipe(T.Label()),
-          searchPaths: __S(112, __c14, 0),
+          searchPaths: __S(616, __c77, 0),
         }).pipe(T.Http({ method: "POST", uri: "/tailnet/{tailnet}/dns/searchpaths", code: 200 })),
       ).annotate({ identifier: "SetDnsSearchPathsRequest" });
   }
 }
-function __c104(j: number): any {
+function __c109(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5860,17 +6015,17 @@ function __c104(j: number): any {
           keyId: S.String.pipe(T.Label()),
           keyType: S.optional(S.String),
           description: S.optional(S.String),
-          scopes: S.optional(__S(112, __c14, 0)),
-          tags: S.optional(__S(112, __c14, 0)),
+          scopes: S.optional(__S(616, __c77, 0)),
+          tags: S.optional(__S(616, __c77, 0)),
           issuer: S.optional(S.String),
           subject: S.optional(S.String),
           audience: S.optional(S.String),
-          customClaimRules: S.optional(__S(120, __c15, 0)),
+          customClaimRules: S.optional(__S(136, __c17, 0)),
         }).pipe(T.Http({ method: "PUT", uri: "/tailnet/{tailnet}/keys/{keyId}", code: 200 })),
       ).annotate({ identifier: "SetKeyRequest" });
   }
 }
-function __c105(j: number): any {
+function __c110(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5892,7 +6047,7 @@ function __c105(j: number): any {
           s3RoleArn: S.optional(S.String),
           gcsBucket: S.optional(S.String),
           gcsKeyPrefix: S.optional(S.String),
-          gcsScopes: S.optional(__S(112, __c14, 0)),
+          gcsScopes: S.optional(__S(616, __c77, 0)),
           gcsCredentials: S.optional(S.String.pipe(T.SensitiveValue({}))),
         }).pipe(
           T.Http({ method: "PUT", uri: "/tailnet/{tailnet}/logging/{logType}/stream", code: 200 }),
@@ -5900,7 +6055,7 @@ function __c105(j: number): any {
       ).annotate({ identifier: "SetLogStreamingConfigurationRequest" });
   }
 }
-function __c106(j: number): any {
+function __c111(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5920,28 +6075,18 @@ function __c106(j: number): any {
       ).annotate({ identifier: "SetPolicyFileRequest" });
   }
 }
-function __c107(j: number): any {
+function __c112(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
         S.Struct({
           tailnet: S.String.pipe(T.Label()),
-          body: S.optional(__S(520, __c65, 0).pipe(T.HttpBody())),
+          body: S.optional(__S(544, __c68, 0).pipe(T.HttpBody())),
         }).pipe(T.Http({ method: "PUT", uri: "/tailnet/{tailnet}/dns/split-dns", code: 200 })),
       ).annotate({ identifier: "SetSplitDnsRequest" });
   }
 }
-function __c108(j: number): any {
-  switch (j) {
-    case 0:
-      return S.suspend(() =>
-        S.Struct({
-          message: S.optional(S.String),
-        }),
-      ).annotate({ identifier: "Error422Body" });
-  }
-}
-function __c109(j: number): any {
+function __c113(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5951,7 +6096,7 @@ function __c109(j: number): any {
       ).annotate({ identifier: "SuspendUserRequest" });
   }
 }
-function __c110(j: number): any {
+function __c114(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5961,7 +6106,7 @@ function __c110(j: number): any {
       ).annotate({ identifier: "TestWebhookRequest" });
   }
 }
-function __c111(j: number): any {
+function __c115(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5975,7 +6120,7 @@ function __c111(j: number): any {
       ).annotate({ identifier: "UpdateContactRequest" });
   }
 }
-function __c112(j: number): any {
+function __c116(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5986,7 +6131,7 @@ function __c112(j: number): any {
       ).annotate({ identifier: "UpdateDeviceKeyRequest" });
   }
 }
-function __c113(j: number): any {
+function __c117(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -5995,14 +6140,14 @@ function __c113(j: number): any {
           appId: S.String.pipe(T.Label()),
           name: S.String,
           description: S.optional(S.String),
-          redirectURIs: __S(112, __c14, 0),
-          scopes: __S(112, __c14, 0),
-          allowedNodeAttributes: S.optional(__S(112, __c14, 0)),
+          redirectURIs: __S(616, __c77, 0),
+          scopes: __S(616, __c77, 0),
+          allowedNodeAttributes: S.optional(__S(616, __c77, 0)),
         }).pipe(T.Http({ method: "PUT", uri: "/tailnet/{tailnet}/oauth-apps/{appId}", code: 200 })),
       ).annotate({ identifier: "UpdateOAuthAppRequest" });
   }
 }
-function __c114(j: number): any {
+function __c118(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -6017,26 +6162,26 @@ function __c114(j: number): any {
       ).annotate({ identifier: "UpdatePostureIntegrationRequest" });
   }
 }
-function __c115(j: number): any {
+function __c119(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
         S.Struct({
           tailnet: S.String.pipe(T.Label()),
           serviceName: S.String.pipe(T.Label()),
-          addrs: S.optional(__S(112, __c14, 0)),
+          addrs: S.optional(__S(616, __c77, 0)),
           name: S.optional(S.String),
           displayName: S.optional(S.String),
           comment: S.optional(S.String),
-          ports: S.optional(__S(112, __c14, 0)),
-          tags: S.optional(__S(112, __c14, 0)),
+          ports: S.optional(__S(616, __c77, 0)),
+          tags: S.optional(__S(616, __c77, 0)),
         }).pipe(
           T.Http({ method: "PUT", uri: "/tailnet/{tailnet}/services/{serviceName}", code: 200 }),
         ),
       ).annotate({ identifier: "UpdateServiceRequest" });
   }
 }
-function __c116(j: number): any {
+function __c120(j: number): any {
   switch (j) {
     case 0:
       return S.suspend(() =>
@@ -6053,39 +6198,6 @@ function __c116(j: number): any {
           }),
         ),
       ).annotate({ identifier: "UpdateServiceDeviceApprovalRequest" });
-  }
-}
-function __c117(j: number): any {
-  switch (j) {
-    case 0:
-      return S.suspend(() =>
-        S.Struct({
-          tailnet: S.String.pipe(T.Label()),
-          body: S.optional(__S(520, __c65, 0).pipe(T.HttpBody())),
-        }).pipe(T.Http({ method: "PATCH", uri: "/tailnet/{tailnet}/dns/split-dns", code: 200 })),
-      ).annotate({ identifier: "UpdateSplitDnsRequest" });
-  }
-}
-function __c118(j: number): any {
-  switch (j) {
-    case 0:
-      return S.suspend(() =>
-        S.Struct({
-          tailnet: S.String.pipe(T.Label()),
-          aclsExternallyManagedOn: S.optional(S.NullOr(S.Boolean)),
-          aclsExternalLink: S.optional(S.String),
-          adminConsoleSessionTimeoutMinutes: S.optional(S.Number),
-          devicesApprovalOn: S.optional(S.NullOr(S.Boolean)),
-          devicesAutoUpdatesOn: S.optional(S.NullOr(S.Boolean)),
-          devicesKeyDurationDays: S.optional(S.Number),
-          usersApprovalOn: S.optional(S.NullOr(S.Boolean)),
-          usersRoleAllowedToJoinExternalTailnets: S.optional(S.String),
-          networkFlowLoggingOn: S.optional(S.NullOr(S.Boolean)),
-          routeSelection: S.optional(S.String),
-          postureIdentityCollectionOn: S.optional(S.NullOr(S.Boolean)),
-          httpsEnabled: S.optional(S.NullOr(S.Boolean)),
-        }).pipe(T.Http({ method: "PATCH", uri: "/tailnet/{tailnet}/settings", code: 200 })),
-      ).annotate({ identifier: "UpdateTailnetSettingsRequest" });
   }
 }
 // Schema table: entry i is schema j of builder f, made on first reach.
