@@ -1,0 +1,46 @@
+{
+  "description": "Type GitHub's refusal of an App JWT signed with a key it has not finished registering. For a few seconds after an App is created from a manifest, GitHub answers that App's JWT with the message \"Integration must generate a public key\", and the same request succeeds once the key has propagated. Alchemy's GitHub.AppInstallation retries these App-JWT operations on it (pattobrien/alchemy packages/github/src/Octokit.ts, retryFreshAppKey). The status is not recorded there, so the matcher keys on the message alone.",
+  "patches": [
+    {
+      "op": "add",
+      "path": "/shapes/com.github.apps#AppKeyNotReady",
+      "value": {
+        "type": "structure",
+        "members": {
+          "message": {
+            "target": "smithy.api#String"
+          }
+        },
+        "traits": {
+          "smithy.api#error": "client",
+          "smithy.api#documentation": "GitHub has not finished registering the App's private key, so it refuses the App's JWT. A freshly created App gets this for a few seconds; retry the request.",
+          "com.distilled.openapi#errorMatchers": [
+            {
+              "message": { "includes": "Integration must generate a public key" }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/shapes/com.github.apps#ListInstallations/errors",
+      "value": [{ "target": "com.github.apps#AppKeyNotReady" }]
+    },
+    {
+      "op": "add",
+      "path": "/shapes/com.github.apps#GetInstallation/errors",
+      "value": [{ "target": "com.github.apps#AppKeyNotReady" }]
+    },
+    {
+      "op": "add",
+      "path": "/shapes/com.github.apps#SuspendInstallation/errors",
+      "value": [{ "target": "com.github.apps#AppKeyNotReady" }]
+    },
+    {
+      "op": "add",
+      "path": "/shapes/com.github.apps#UnsuspendInstallation/errors",
+      "value": [{ "target": "com.github.apps#AppKeyNotReady" }]
+    }
+  ]
+}
